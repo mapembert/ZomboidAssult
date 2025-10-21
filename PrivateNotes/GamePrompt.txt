@@ -1,0 +1,37 @@
+Design a 2D/2.5D mobile game prototype called “Zomboid Assult” where players defend against 
+zombie hordes advancing from two lanes (columns). The game features configurable rounds loaded 
+from a JSON config file, with increasing horde size and difficulty, rewards (power-ups, coins), 
+and barriers. Shooting 'Zomboids' triggers a countdown timer, and the goal is to survive each 
+round’s duration.
+
+Layout:
+Column based game where powerups and different types of Zomboids pregress downward at the same speed.
+At the bottom the player can move their character, or team of characters back and forth.
+
+Strategy:
+The player must decide to shoot either the horde to prevent them from reaching the bottom where the
+player character(s) are or shoot at a decending timer object to release an upgrade.
+
+Upgrades:
+Beginning with a simple gun shooting continously upward.
+Progressive upgrades double, tripple the gun, turn it into a pulse laser, mega machine gun etc.
+
+Graphics:
+Let's start with a simple black themed game where colors and shapes represent different types of Zomboids.
+Simple zomboids will be small circles and then they can get upto 2 sizes bigger. Then represent Different 
+types of zomboids using other shapes like squares and hex.
+
+Upgrade countdown timers:
+These should be thin, full column (for the half of the screen they appear on) with a number counter
+Some counter ideas:
+ - Start with a red thin box with -25 centerd, and as it is shot at that number increases until it reaches 0 and when it goes positive
+ it turns light blue and starts to go positive. The number it reaches either removes heros or adds heros to
+ the player. All heros can shoot the same gun currently equipt.
+
+Theme:
+Think Dark Mode Chrome like graphics with minimalistic outline highlights on all shapes.
+
+Configuration:
+Try to create one definition for the properties of the game like zomboids, heros (player characters), 
+Upgrades etc.
+Make another folder for Chapters and defined levels showcasing waves of zomboids attacking.
