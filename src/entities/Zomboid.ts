@@ -12,6 +12,7 @@ export class Zomboid extends Phaser.GameObjects.Container {
   private currentHealth: number;
   private speed: number;
   private columnIndex: number = 0;
+  private isDestroying: boolean = false;
 
   constructor(scene: Phaser.Scene) {
     super(scene);
@@ -51,9 +52,14 @@ export class Zomboid extends Phaser.GameObjects.Container {
     this.currentHealth = config.health;
     this.speed = config.speed;
     this.columnIndex = columnIndex;
+    this.isDestroying = false;
 
     // Set position
     this.setPosition(x, y);
+
+    // Reset scale and alpha
+    this.setScale(1);
+    this.setAlpha(1);
 
     // Render shape
     this.renderShape();
@@ -118,7 +124,7 @@ export class Zomboid extends Phaser.GameObjects.Container {
    * Update zomboid position (move downward)
    */
   update(delta: number): void {
-    if (!this.active) return;
+    if (!this.active || this.isDestroying) return;
 
     // Move downward based on speed
     const deltaSeconds = delta / 1000;
@@ -135,14 +141,41 @@ export class Zomboid extends Phaser.GameObjects.Container {
    * Apply damage to zomboid
    */
   takeDamage(amount: number): boolean {
+    if (this.isDestroying) return false;
+
     this.currentHealth -= amount;
 
     if (this.currentHealth <= 0) {
-      this.destroy();
+      this.playDestructionEffect();
       return true; // Zomboid destroyed
     }
 
     return false; // Zomboid still alive
+  }
+
+  /**
+   * Play destruction effect (scale down + fade out)
+   */
+  private playDestructionEffect(): void {
+    this.isDestroying = true;
+
+    // Create tween for destruction effect
+    this.scene.tweens.add({
+      targets: this,
+      scaleX: 0,
+      scaleY: 0,
+      alpha: 0,
+      duration: 200,
+      ease: 'Power2',
+      onComplete: () => {
+        // Emit destroyed event with score value
+        this.emit('destroyed', this.config.scoreValue);
+
+        // Deactivate
+        this.setActive(false);
+        this.setVisible(false);
+      },
+    });
   }
 
   /**
@@ -162,6 +195,8 @@ export class Zomboid extends Phaser.GameObjects.Container {
    * Reset for object pooling
    */
   resetForPool(x: number, y: number, config: ZomboidType, columnIndex: number): void {
+    // Stop any active tweens
+    this.scene.tweens.killTweensOf(this);
     this.spawn(x, y, config, columnIndex);
   }
 
@@ -216,6 +251,8 @@ export class Zomboid extends Phaser.GameObjects.Container {
    * Cleanup
    */
   destroy(fromScene?: boolean): void {
+    // Stop any active tweens
+    this.scene.tweens.killTweensOf(this);
     this.sprite.clear();
     super.destroy(fromScene);
   }

@@ -3,28 +3,28 @@
 **Epic:** 2.4 Collision Detection
 **Phase:** 2 - Core Gameplay Mechanics (Days 3-5)
 **Estimated Time:** 2 hours
-**Status:** ⏸️ NOT STARTED
+**Status:** ✅ COMPLETED
 
 ## Description
 Check zomboid Y position every frame, trigger game over if zomboid reaches safe zone (Y > screenHeight - safeZoneHeight), display "Game Over - Zomboid Reached Bottom" message, and transition to GameOverScene with final score and wave data.
 
 ## Tasks
-- [ ] Check zomboid Y position every frame
-- [ ] Trigger game over if zomboid reaches safe zone
-- [ ] Stop spawning zomboids after game over
-- [ ] Stop projectile firing after game over
-- [ ] Pass final score to GameOverScene
-- [ ] Pass wave reached to GameOverScene
-- [ ] Clean scene transition
+- [x] Check zomboid Y position every frame
+- [x] Trigger game over if zomboid reaches safe zone
+- [x] Stop spawning zomboids after game over
+- [x] Stop projectile firing after game over
+- [x] Pass final score to GameOverScene
+- [x] Pass wave reached to GameOverScene
+- [x] Clean scene transition
 
 ## Acceptance Criteria
-- [ ] Game over triggers correctly when zomboid reaches bottom
-- [ ] Final score passed to GameOverScene
-- [ ] Wave number passed correctly
-- [ ] No zomboids spawn after game over
-- [ ] No projectiles fire after game over
-- [ ] Clean scene transition (no errors)
-- [ ] Safe zone boundary correct (from config)
+- [x] Game over triggers correctly when zomboid reaches bottom
+- [x] Final score passed to GameOverScene
+- [x] Wave number passed correctly
+- [x] No zomboids spawn after game over
+- [x] No projectiles fire after game over
+- [x] Clean scene transition (no errors)
+- [x] Safe zone boundary correct (from config)
 
 ## Files Created/Modified
 - `src/scenes/GameScene.ts` (modify to add game over logic)

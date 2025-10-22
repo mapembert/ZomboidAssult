@@ -5,6 +5,7 @@ import { HeroManager } from '@/systems/HeroManager';
 import { InputManager } from '@/systems/InputManager';
 import { WeaponSystem } from '@/systems/WeaponSystem';
 import { WaveManager } from '@/systems/WaveManager';
+import { CollisionManager } from '@/systems/CollisionManager';
 
 export class GameScene extends Phaser.Scene {
   private currentChapter: ChapterData | null = null;
@@ -12,9 +13,16 @@ export class GameScene extends Phaser.Scene {
   private inputManager: InputManager | null = null;
   private weaponSystem: WeaponSystem | null = null;
   private waveManager: WaveManager | null = null;
+  private collisionManager: CollisionManager | null = null;
   private heroCountText: Phaser.GameObjects.Text | null = null;
   private weaponText: Phaser.GameObjects.Text | null = null;
   private waveInfoText: Phaser.GameObjects.Text | null = null;
+  private scoreText: Phaser.GameObjects.Text | null = null;
+
+  // Game state
+  private score: number = 0;
+  private gameActive: boolean = true;
+  private safeZoneHeight: number = 150;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -64,6 +72,11 @@ export class GameScene extends Phaser.Scene {
     const gameSettings = loader.getGameSettings();
     const weaponTypes = loader.getWeaponTypes();
 
+    // Load safe zone height from game settings
+    if (gameSettings && gameSettings.gameplay) {
+      this.safeZoneHeight = gameSettings.gameplay.safeZoneHeight || 150;
+    }
+
     if (heroConfig && gameSettings) {
       this.heroManager = new HeroManager(this, heroConfig, gameSettings);
       this.inputManager = new InputManager(this);
@@ -101,6 +114,18 @@ export class GameScene extends Phaser.Scene {
       this.waveManager.startWave(0);
       this.updateWaveDisplay();
     }
+
+    // Initialize CollisionManager
+    this.collisionManager = new CollisionManager(this);
+
+    // Create score display
+    this.scoreText = this.add.text(20, 210, 'Score: 0', {
+      fontSize: '18px',
+      color: '#E0E0E0',
+    });
+
+    // Listen for collision events
+    this.events.on('collision', this.handleCollision, this);
 
     const pauseButton = this.add
       .text(width - 20, 20, '⏸ MENU', {
@@ -144,6 +169,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    // Only update game logic if game is active
+    if (!this.gameActive) return;
+
     if (this.heroManager && this.inputManager) {
       if (this.inputManager.isMovingLeft()) {
         this.heroManager.moveLeft();
@@ -164,6 +192,18 @@ export class GameScene extends Phaser.Scene {
     if (this.waveManager) {
       this.waveManager.update(time, delta);
       this.updateWaveDisplay();
+
+      // Check if any zomboid reached the bottom immediately after wave update
+      // WaveManager only removes zomboids that are off-screen (past screenHeight + maxSize)
+      // Safe zone is at screenHeight - safeZoneHeight, so we should catch them before removal
+      this.checkGameOver();
+    }
+
+    // Check collisions between projectiles and zomboids
+    if (this.collisionManager && this.weaponSystem && this.waveManager) {
+      const projectiles = this.weaponSystem.getActiveProjectiles();
+      const zomboids = this.waveManager.getActiveZomboids();
+      this.collisionManager.processCollisions(projectiles, zomboids);
     }
   }
 
@@ -189,6 +229,59 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Handle collision events from CollisionManager
+   */
+  private handleCollision(data: { projectile: unknown; zomboid: unknown; destroyed: boolean; score: number }): void {
+    if (data.destroyed) {
+      // Zomboid was destroyed, add score
+      this.score += data.score;
+      this.updateScoreDisplay();
+    }
+  }
+
+  /**
+   * Update score display
+   */
+  private updateScoreDisplay(): void {
+    if (this.scoreText) {
+      this.scoreText.setText('Score: ' + this.score);
+    }
+  }
+
+  /**
+   * Check if any zomboid reached the bottom (game over condition)
+   */
+  private checkGameOver(): void {
+    if (!this.waveManager || !this.gameActive) return;
+
+    const zomboids = this.waveManager.getActiveZomboids();
+    const threshold = this.scale.height - this.safeZoneHeight;
+
+    for (const zomboid of zomboids) {
+      if (zomboid.y > threshold) {
+        this.triggerGameOver();
+        break;
+      }
+    }
+  }
+
+  /**
+   * Trigger game over and transition to GameOverScene
+   */
+  private triggerGameOver(): void {
+    this.gameActive = false;
+
+    console.log('Game Over! Zomboid reached the bottom.');
+
+    // Transition to GameOverScene with score and wave data
+    this.scene.start('GameOverScene', {
+      score: this.score,
+      wave: this.waveManager?.getCurrentWaveNumber() || 1,
+      chapter: this.currentChapter,
+    });
+  }
+
   private returnToMenu(): void {
     console.log('Returning to MenuScene');
     this.shutdown();
@@ -196,6 +289,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   shutdown(): void {
+    // Remove event listeners
+    this.events.off('collision', this.handleCollision, this);
+
     if (this.heroManager) {
       this.heroManager.destroy();
       this.heroManager = null;
@@ -216,8 +312,14 @@ export class GameScene extends Phaser.Scene {
       this.waveManager = null;
     }
 
+    if (this.collisionManager) {
+      this.collisionManager.destroy();
+      this.collisionManager = null;
+    }
+
     this.heroCountText = null;
     this.weaponText = null;
     this.waveInfoText = null;
+    this.scoreText = null;
   }
 }

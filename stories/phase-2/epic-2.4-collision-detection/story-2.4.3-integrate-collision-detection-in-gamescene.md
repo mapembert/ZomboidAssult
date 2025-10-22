@@ -3,26 +3,26 @@
 **Epic:** 2.4 Collision Detection
 **Phase:** 2 - Core Gameplay Mechanics (Days 3-5)
 **Estimated Time:** 2 hours
-**Status:** ⏸️ NOT STARTED
+**Status:** ✅ COMPLETED
 
 ## Description
 Call CollisionManager.checkProjectileZomboidCollisions() every frame in GameScene, listen for zomboid_destroyed events, update score display, and track destroyed zomboids per wave.
 
 ## Tasks
-- [ ] Instantiate CollisionManager in GameScene
-- [ ] Call checkProjectileZomboidCollisions() every frame in update()
-- [ ] Listen for zomboid_destroyed events
-- [ ] Update score display in HUD
-- [ ] Track destroyed zomboids per wave
-- [ ] Maintain 60 FPS with collision checks
+- [x] Instantiate CollisionManager in GameScene
+- [x] Call checkProjectileZomboidCollisions() every frame in update()
+- [x] Listen for zomboid_destroyed events
+- [x] Update score display in HUD
+- [x] Track destroyed zomboids per wave
+- [x] Maintain 60 FPS with collision checks
 
 ## Acceptance Criteria
-- [ ] Shooting zomboids works correctly
-- [ ] Score updates in real-time
-- [ ] Different zomboid types award correct scores
-- [ ] Performance maintained (60 FPS)
-- [ ] No missed collisions
-- [ ] Score persists across waves
+- [x] Shooting zomboids works correctly
+- [x] Score updates in real-time
+- [x] Different zomboid types award correct scores
+- [x] Performance maintained (60 FPS)
+- [x] No missed collisions
+- [x] Score persists across waves
 
 ## Files Created/Modified
 - `src/scenes/GameScene.ts` (modify to add collision detection)

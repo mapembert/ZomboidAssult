@@ -3,26 +3,26 @@
 **Epic:** 2.4 Collision Detection
 **Phase:** 2 - Core Gameplay Mechanics (Days 3-5)
 **Estimated Time:** 2.5 hours
-**Status:** ⏸️ NOT STARTED
+**Status:** ✅ COMPLETED
 
 ## Description
 Add destruction logic to Zomboid class with visual effect (scale down + fade out), return zomboid to pool, update score on destruction, and emit zomboid_destroyed event.
 
 ## Tasks
-- [ ] Add destruction logic to Zomboid class
-- [ ] Play destruction effect (scale down + fade out)
-- [ ] Return zomboid to pool after destruction
-- [ ] Update score on destruction
-- [ ] Emit zomboid_destroyed event
-- [ ] Award correct score value based on zomboid type
+- [x] Add destruction logic to Zomboid class
+- [x] Play destruction effect (scale down + fade out)
+- [x] Return zomboid to pool after destruction
+- [x] Update score on destruction
+- [x] Emit zomboid_destroyed event
+- [x] Award correct score value based on zomboid type
 
 ## Acceptance Criteria
-- [ ] Zomboids destroyed when health reaches 0
-- [ ] Visual feedback on destruction (tween animation)
-- [ ] Score increments correctly
-- [ ] No memory leaks (pooling works)
-- [ ] Events emitted properly
-- [ ] Different zomboid types award correct scores
+- [x] Zomboids destroyed when health reaches 0
+- [x] Visual feedback on destruction (tween animation)
+- [x] Score increments correctly
+- [x] No memory leaks (pooling works)
+- [x] Events emitted properly
+- [x] Different zomboid types award correct scores
 
 ## Files Created/Modified
 - `src/entities/Zomboid.ts` (modify to add destruction)
