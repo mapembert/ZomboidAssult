@@ -3,7 +3,7 @@
 **Epic:** 3.1 Countdown Timer Mechanic
 **Phase:** 3 - Timer and Upgrade Systems (Days 6-7)
 **Estimated Time:** 3 hours
-**Status:** ⏳ PENDING
+**Status:** ✅ COMPLETED
 
 ## Description
 Detect when timers exit the screen bottom, call timer.onExitScreen() to retrieve final counter value, pass the value to HeroManager to add or remove heroes, ensure hero count never drops below minimum (1), and update hero count display immediately.

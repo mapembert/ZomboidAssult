@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Projectile } from '@/entities/Projectile';
 import { Zomboid } from '@/entities/Zomboid';
+import { Timer } from '@/entities/Timer';
 
 /**
  * CollisionManager System
@@ -88,11 +89,76 @@ export class CollisionManager {
   }
 
   /**
+   * Check collisions between projectiles and timers
+   */
+  checkProjectileTimerCollisions(
+    projectiles: Projectile[],
+    timers: Timer[]
+  ): { projectile: Projectile; timer: Timer }[] {
+    const collisions: { projectile: Projectile; timer: Timer }[] = [];
+
+    // Check each projectile against each timer
+    for (const projectile of projectiles) {
+      if (!projectile.active) continue;
+
+      const projectileBounds = projectile.getBounds();
+
+      for (const timer of timers) {
+        if (!timer.active) continue;
+
+        const timerBounds = timer.getBounds();
+
+        // Check AABB collision
+        if (this.checkAABB(projectileBounds, timerBounds)) {
+          collisions.push({ projectile, timer });
+        }
+      }
+    }
+
+    return collisions;
+  }
+
+  /**
+   * Handle timer collision outcomes
+   */
+  handleTimerCollisions(collisions: { projectile: Projectile; timer: Timer }[]): void {
+    for (const collision of collisions) {
+      const { projectile, timer } = collision;
+
+      // Skip if either entity is already inactive
+      if (!projectile.active || !timer.active) continue;
+
+      // Increment timer counter
+      const incrementValue = timer.getIncrementValue();
+      timer.incrementCounter(incrementValue);
+
+      // Destroy projectile
+      projectile.setActive(false);
+      projectile.setVisible(false);
+
+      // Emit collision event
+      this.scene.events.emit('timer_hit', {
+        timer: timer,
+        newValue: timer.getCounterValue(),
+        incrementValue: incrementValue,
+      });
+    }
+  }
+
+  /**
    * Process all collisions (check + handle)
    */
   processCollisions(projectiles: Projectile[], zomboids: Zomboid[]): void {
     const collisions = this.checkProjectileZomboidCollisions(projectiles, zomboids);
     this.handleCollisions(collisions);
+  }
+
+  /**
+   * Process timer collisions (check + handle)
+   */
+  processTimerCollisions(projectiles: Projectile[], timers: Timer[]): void {
+    const collisions = this.checkProjectileTimerCollisions(projectiles, timers);
+    this.handleTimerCollisions(collisions);
   }
 
   /**

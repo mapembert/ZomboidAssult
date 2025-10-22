@@ -69,13 +69,21 @@ export class HeroManager {
   addHero(count: number): void {
     const maxCount = this.config.heroConfig.maxHeroCount;
     const targetCount = Math.min(this.heroes.length + count, maxCount);
+    const heroesAdded = targetCount - this.heroes.length;
 
     while (this.heroes.length < targetCount) {
       this.createHero();
     }
 
     this.repositionHeroes();
-    console.log(`Heroes added. Total count: ${this.heroes.length}`);
+
+    // Emit hero count changed event
+    this.scene.events.emit('hero_count_changed', {
+      count: this.heroes.length,
+      change: heroesAdded
+    });
+
+    console.log(`Heroes added: ${heroesAdded}. Total count: ${this.heroes.length}`);
   }
 
   /**
@@ -84,6 +92,7 @@ export class HeroManager {
   removeHero(count: number): void {
     const minCount = this.config.heroConfig.minHeroCount;
     const targetCount = Math.max(this.heroes.length - count, minCount);
+    const heroesRemoved = this.heroes.length - targetCount;
 
     while (this.heroes.length > targetCount) {
       const hero = this.heroes.pop();
@@ -93,7 +102,14 @@ export class HeroManager {
     }
 
     this.repositionHeroes();
-    console.log(`Heroes removed. Total count: ${this.heroes.length}`);
+
+    // Emit hero count changed event
+    this.scene.events.emit('hero_count_changed', {
+      count: this.heroes.length,
+      change: -heroesRemoved
+    });
+
+    console.log(`Heroes removed: ${heroesRemoved}. Total count: ${this.heroes.length}`);
   }
 
   /**

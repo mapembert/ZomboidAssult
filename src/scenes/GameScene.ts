@@ -127,6 +127,9 @@ export class GameScene extends Phaser.Scene {
     // Listen for collision events
     this.events.on('collision', this.handleCollision, this);
 
+    // Listen for timer exit events
+    this.events.on('timer_exited', this.handleTimerExit, this);
+
     const pauseButton = this.add
       .text(width - 20, 20, '⏸ MENU', {
         fontSize: '20px',
@@ -203,7 +206,10 @@ export class GameScene extends Phaser.Scene {
     if (this.collisionManager && this.weaponSystem && this.waveManager) {
       const projectiles = this.weaponSystem.getActiveProjectiles();
       const zomboids = this.waveManager.getActiveZomboids();
+      const timers = this.waveManager.getActiveTimers();
+
       this.collisionManager.processCollisions(projectiles, zomboids);
+      this.collisionManager.processTimerCollisions(projectiles, timers);
     }
   }
 
@@ -238,6 +244,64 @@ export class GameScene extends Phaser.Scene {
       this.score += data.score;
       this.updateScoreDisplay();
     }
+  }
+
+  /**
+   * Handle timer exit events from WaveManager
+   */
+  private handleTimerExit(data: { timerType: string; finalValue: number; column: number }): void {
+    const { timerType, finalValue } = data;
+
+    console.log(`Timer exited: ${timerType} with value ${finalValue}`);
+
+    // Handle hero_add_timer (hero count modification)
+    if (timerType === 'hero_add_timer' || timerType === 'rapid_hero_timer') {
+      if (finalValue > 0) {
+        this.heroManager?.addHero(finalValue);
+        this.showFeedback(`+${finalValue} Heroes!`, 0x00B0FF);
+      } else if (finalValue < 0) {
+        this.heroManager?.removeHero(Math.abs(finalValue));
+        this.showFeedback(`${finalValue} Heroes`, 0xFF1744);
+      }
+    }
+    // Handle weapon_upgrade_timer (to be implemented in Story 3.2.2)
+    else if (timerType === 'weapon_upgrade_timer') {
+      if (finalValue > 0) {
+        // TODO: Story 3.2.2 - Weapon upgrade logic
+        this.showFeedback(`Weapon Ready! (+${finalValue})`, 0x76FF03);
+      } else {
+        this.showFeedback(`Weapon Locked (${finalValue})`, 0xFF1744);
+      }
+    }
+  }
+
+  /**
+   * Show visual feedback for timer effects
+   */
+  private showFeedback(text: string, color: number): void {
+    const { width, height } = this.scale;
+    const feedback = this.add.text(
+      width / 2,
+      height / 2,
+      text,
+      {
+        fontSize: '32px',
+        color: `#${color.toString(16).padStart(6, '0')}`,
+        fontStyle: 'bold',
+        stroke: '#000000',
+        strokeThickness: 4
+      }
+    );
+    feedback.setOrigin(0.5);
+
+    this.tweens.add({
+      targets: feedback,
+      y: feedback.y - 100,
+      alpha: 0,
+      duration: 1500,
+      ease: 'Power2',
+      onComplete: () => feedback.destroy()
+    });
   }
 
   /**
@@ -291,6 +355,7 @@ export class GameScene extends Phaser.Scene {
   shutdown(): void {
     // Remove event listeners
     this.events.off('collision', this.handleCollision, this);
+    this.events.off('timer_exited', this.handleTimerExit, this);
 
     if (this.heroManager) {
       this.heroManager.destroy();

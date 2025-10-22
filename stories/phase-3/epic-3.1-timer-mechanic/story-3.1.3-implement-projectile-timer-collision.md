@@ -3,7 +3,7 @@
 **Epic:** 3.1 Countdown Timer Mechanic
 **Phase:** 3 - Timer and Upgrade Systems (Days 6-7)
 **Estimated Time:** 3 hours
-**Status:** ⏳ PENDING
+**Status:** ✅ COMPLETED
 
 ## Description
 Extend `src/systems/CollisionManager.ts` to detect collisions between projectiles and timers, increment timer counter on hit, destroy the colliding projectile, and update timer visual immediately to reflect the new counter value.
