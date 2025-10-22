@@ -41,7 +41,7 @@ Detect when timers exit the screen bottom, call timer.onExitScreen() to retrieve
 - Story 3.1.1: Create Timer Entity Class (onExitScreen method)
 - Story 3.1.2: Implement Timer Spawning in WaveManager
 - Story 2.1.2: Implement HeroManager System
-- `config/entities/heroes.json` (minHeroCount configuration)
+- `public/config/entities/heroes.json` (minHeroCount configuration)
 
 ## Implementation Details
 

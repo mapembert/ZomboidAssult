@@ -31,19 +31,19 @@ Integrate weapon upgrade functionality with the existing timer system by using t
 ## Files Created/Modified
 - `src/entities/Timer.ts` (modified - add getTimerType method if not present)
 - `src/scenes/GameScene.ts` (modified - extend timer exit handler)
-- `config/entities/timers.json` (verify weapon_upgrade_timer exists)
+- `public/config/entities/timers.json` (verify weapon_upgrade_timer exists)
 
 ## Dependencies
 - Story 3.1.1: Create Timer Entity Class
 - Story 3.1.2: Implement Timer Spawning in WaveManager
 - Story 3.1.4: Implement Timer Exit and Hero Modification (timer exit infrastructure)
 - Story 3.2.1: Implement Weapon Upgrade Logic
-- `config/entities/timers.json` (weapon_upgrade_timer configuration)
+- `public/config/entities/timers.json` (weapon_upgrade_timer configuration)
 
 ## Implementation Details
 
 ### Timer Configuration
-Verify `config/entities/timers.json` contains:
+Verify `public/config/entities/timers.json` contains:
 ```json
 {
   "weapon_upgrade_timer": {

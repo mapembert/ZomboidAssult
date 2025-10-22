@@ -332,7 +332,7 @@ Each chapter consists of multiple waves defined in JSON:
 
 **JSON Configuration Files:**
 
-1. **`config/entities/zomboids.json`**
+1. **`public/config/entities/zomboids.json`**
 ```json
 {
   "zomboidTypes": [
@@ -396,7 +396,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-2. **`config/entities/weapons.json`**
+2. **`public/config/entities/weapons.json`**
 ```json
 {
   "weaponTypes": [
@@ -464,7 +464,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-3. **`config/entities/timers.json`**
+3. **`public/config/entities/timers.json`**
 ```json
 {
   "timerTypes": [
@@ -492,7 +492,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-4. **`config/entities/heroes.json`**
+4. **`public/config/entities/heroes.json`**
 ```json
 {
   "heroConfig": {
@@ -511,7 +511,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-5. **`config/chapters/chapter-01.json`**
+5. **`public/config/chapters/chapter-01.json`**
 ```json
 {
   "chapterId": "chapter-01",
@@ -570,7 +570,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-6. **`config/chapters/chapter-02.json`**
+6. **`public/config/chapters/chapter-02.json`**
 ```json
 {
   "chapterId": "chapter-02",
@@ -617,7 +617,7 @@ Each chapter consists of multiple waves defined in JSON:
 }
 ```
 
-7. **`config/game-settings.json`**
+7. **`public/config/game-settings.json`**
 ```json
 {
   "gameSettings": {

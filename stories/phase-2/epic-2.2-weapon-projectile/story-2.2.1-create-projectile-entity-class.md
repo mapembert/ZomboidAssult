@@ -34,7 +34,7 @@ Create `src/entities/Projectile.ts` entity class that renders as a small circle 
 ## Dependencies
 - Story 1.2.1: Create TypeScript Type Definitions (WeaponType interface) ✅
 - Story 1.2.2: Implement ConfigLoader System (for weapon configs) ✅
-- `config/entities/weapons.json` (weapon configurations) ✅
+- `public/config/entities/weapons.json` (weapon configurations) ✅
 
 ## Implementation Details
 
@@ -114,7 +114,7 @@ Example for 3 projectiles with 30° spread:
 - Clears graphics before redrawing ✅
 
 ## Weapon Configuration Examples
-From `config/entities/weapons.json`:
+From `public/config/entities/weapons.json`:
 
 **Single Gun (Tier 1):**
 - `projectileSpeed`: 400 px/s

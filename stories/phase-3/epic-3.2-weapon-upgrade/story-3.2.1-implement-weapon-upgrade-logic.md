@@ -37,7 +37,7 @@ Extend `src/systems/WeaponSystem.ts` to implement weapon progression through tie
 ## Dependencies
 - Story 2.2.3: Implement WeaponSystem (base weapon implementation)
 - Story 1.2.2: Implement ConfigLoader System (to load weapon configs)
-- `config/entities/weapons.json` (all weapon tier configurations)
+- `public/config/entities/weapons.json` (all weapon tier configurations)
 
 ## Implementation Details
 
@@ -121,7 +121,7 @@ class WeaponSystem {
 ```
 
 ### Weapon Tier Specifications
-From `config/entities/weapons.json`:
+From `public/config/entities/weapons.json`:
 
 **Tier 0 - single_gun:**
 - projectileCount: 1

@@ -35,8 +35,8 @@ Create `src/systems/HeroManager.ts` system to manage multiple hero entities, cal
 ## Dependencies
 - Story 2.1.1: Create Hero Entity Class (Hero entity must exist)
 - Story 1.2.2: Implement ConfigLoader System (to load heroes.json)
-- `config/game-settings.json` (screen dimensions, column count)
-- `config/entities/heroes.json` (hero configuration)
+- `public/config/game-settings.json` (screen dimensions, column count)
+- `public/config/entities/heroes.json` (hero configuration)
 
 ## Implementation Details
 
@@ -76,14 +76,14 @@ class HeroManager {
 ```
 
 ## Configuration Values
-From `config/entities/heroes.json`:
+From `public/config/entities/heroes.json`:
 - `defaultHeroCount`: 1
 - `minHeroCount`: 1
 - `maxHeroCount`: 5
 - `spacing`: 15px
 - `positionFromBottom`: 100px
 
-From `config/game-settings.json`:
+From `public/config/game-settings.json`:
 - `screenWidth`: 720px
 - `screenHeight`: 1280px
 - `columnCount`: 2

@@ -223,7 +223,7 @@ Mark stories complete as you finish them to track progress.
 If a story is unclear, check the reference docs:
 - `docs/game-architecture.md`
 - `docs/zomboid-assult-prototype-design.md`
-- `config/` JSON files
+- `public/config/` JSON files
 
 ## 📚 Reference Links
 

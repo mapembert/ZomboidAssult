@@ -34,7 +34,7 @@ Create `src/systems/WaveManager.ts` to parse WaveData from chapter config, build
 - Story 2.3.2: Create Zomboid Entity Class ✅
 - Story 2.2.2: Implement ObjectPool Utility ✅
 - Story 1.2.2: Implement ConfigLoader System ✅
-- `config/chapters/*.json` (chapter/wave configs) ✅
+- `public/config/chapters/*.json` (chapter/wave configs) ✅
 
 ## Implementation Details
 

@@ -36,7 +36,7 @@ Create `src/systems/WeaponSystem.ts` to manage weapon firing, load weapon config
 - Story 2.2.1: Create Projectile Entity Class ✅
 - Story 2.2.2: Implement ObjectPool Utility ✅
 - Story 1.2.2: Implement ConfigLoader System ✅
-- `config/entities/weapons.json` ✅
+- `public/config/entities/weapons.json` ✅
 
 ## Implementation Details
 
@@ -123,7 +123,7 @@ upgradeWeapon(): boolean {
 ```
 
 ## Weapon Configurations
-From `config/entities/weapons.json`:
+From `public/config/entities/weapons.json`:
 
 | Weapon | Tier | Fire Rate | Count | Damage | Spread | Speed | Color |
 |--------|------|-----------|-------|--------|--------|-------|-------|

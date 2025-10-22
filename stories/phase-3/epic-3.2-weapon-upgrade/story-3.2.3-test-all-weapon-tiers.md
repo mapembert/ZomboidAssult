@@ -39,19 +39,19 @@ Comprehensive testing of all five weapon tiers to verify correct projectile coun
 - [ ] All tiers feel balanced and useful
 
 ## Files Created/Modified
-- `config/chapters/test-weapons.json` (create test chapter with weapon timers)
+- `public/config/chapters/test-weapons.json` (create test chapter with weapon timers)
 - Test results documented in this story
 
 ## Dependencies
 - Story 3.2.1: Implement Weapon Upgrade Logic
 - Story 3.2.2: Create Weapon Upgrade Timer Type
-- All weapon configurations in `config/entities/weapons.json`
+- All weapon configurations in `public/config/entities/weapons.json`
 - All existing weapon/projectile systems
 
 ## Implementation Details
 
 ### Test Chapter Configuration
-Create `config/chapters/test-weapons.json`:
+Create `public/config/chapters/test-weapons.json`:
 ```json
 {
   "id": "test-weapons",

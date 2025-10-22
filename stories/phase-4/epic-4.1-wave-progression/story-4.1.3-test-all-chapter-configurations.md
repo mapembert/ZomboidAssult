@@ -37,9 +37,9 @@ Comprehensive end-to-end testing of all chapter configurations to verify spawn p
 - [ ] All chapter transitions smooth
 
 ## Files to Test
-- `config/chapters/chapter-01.json`
-- `config/chapters/chapter-02.json`
-- `config/chapters/chapter-03.json`
+- `public/config/chapters/chapter-01.json`
+- `public/config/chapters/chapter-02.json`
+- `public/config/chapters/chapter-03.json`
 - All related systems (WaveManager, spawning, progression)
 
 ## Dependencies

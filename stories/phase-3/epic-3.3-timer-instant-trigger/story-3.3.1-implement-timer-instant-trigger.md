@@ -36,7 +36,7 @@ Add optional `maxValue` property to timer configuration that triggers instant co
 
 ## Files Created/Modified
 - `src/types/ConfigTypes.ts` (modified - add maxValue to TimerType)
-- `config/entities/timers.json` (modified - add maxValue to timer configs)
+- `public/config/entities/timers.json` (modified - add maxValue to timer configs)
 - `src/entities/Timer.ts` (modified - add instant trigger logic)
 - `src/systems/WaveManager.ts` (modified - handle timer_completed event)
 - `src/scenes/GameScene.ts` (modified - handle instant completion)

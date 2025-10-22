@@ -35,7 +35,7 @@ Create `src/entities/Timer.ts` entity class that renders as a horizontal barrier
 ## Dependencies
 - Story 1.2.1: Create TypeScript Type Definitions (TimerConfig type)
 - Story 1.2.2: Implement ConfigLoader System (to load timers.json)
-- `config/entities/timers.json` (timer configuration)
+- `public/config/entities/timers.json` (timer configuration)
 - Phaser.GameObjects.Graphics for rectangle rendering
 - Phaser.GameObjects.Text for counter display
 
@@ -72,7 +72,7 @@ class Timer extends Phaser.GameObjects.Container {
 ```
 
 ### Configuration Used
-From `config/entities/timers.json`:
+From `public/config/entities/timers.json`:
 - Timer type: "hero_count_timer" or "weapon_upgrade_timer"
 - `sprite.width`: 40px (thin vertical bar)
 - `sprite.height`: Full screen height (1280px)

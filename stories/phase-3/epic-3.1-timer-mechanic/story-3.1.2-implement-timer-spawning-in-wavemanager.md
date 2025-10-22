@@ -38,7 +38,7 @@ Extend `src/systems/WaveManager.ts` to parse timer spawn data from wave configur
 - Story 3.1.1: Create Timer Entity Class
 - Story 2.3.3: Implement WaveManager System (base implementation)
 - Story 2.2.2: Implement ObjectPool Utility (for timer pooling)
-- Wave configuration JSON files in `config/chapters/`
+- Wave configuration JSON files in `public/config/chapters/`
 
 ## Implementation Details
 

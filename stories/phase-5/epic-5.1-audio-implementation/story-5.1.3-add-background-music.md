@@ -39,9 +39,9 @@ Source or create background music tracks for all game scenes and implement seaml
 - [ ] Works on mobile browsers
 
 ## Files to Create/Modify
-- `assets/audio/music/menu_music.mp3` - Menu background music
-- `assets/audio/music/game_music.mp3` - Gameplay background music
-- `assets/audio/music/gameover_music.mp3` - Game over background music
+- `public/assets/audio/music/menu_music.mp3` - Menu background music
+- `public/assets/audio/music/game_music.mp3` - Gameplay background music
+- `public/assets/audio/music/gameover_music.mp3` - Game over background music
 - `src/scenes/MenuScene.ts` - Play menu music
 - `src/scenes/GameScene.ts` - Play game music
 - `src/scenes/GameOverScene.ts` - Play game over music

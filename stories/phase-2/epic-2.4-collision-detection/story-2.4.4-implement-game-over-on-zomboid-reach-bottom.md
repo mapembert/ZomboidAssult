@@ -35,7 +35,7 @@ Check zomboid Y position every frame, trigger game over if zomboid reaches safe 
 - Story 1.3.4: Implement GameOverScene
 
 ## Safe Zone Configuration
-From `config/game-settings.json`:
+From `public/config/game-settings.json`:
 - `safeZoneHeight`: 100px from bottom
 - If zomboid Y > (screenHeight - 100), trigger game over
 

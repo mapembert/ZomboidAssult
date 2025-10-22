@@ -33,7 +33,7 @@ export class ConfigLoader {
     if (this.gameSettings) return this.gameSettings;
 
     try {
-      const response = await fetch('/config/game-settings.json');
+      const response = await fetch('/public/config/game-settings.json');
       if (!response.ok) throw new Error('Failed to load game settings');
       const data: GameSettings = await response.json();
       this.gameSettings = data;
@@ -48,7 +48,7 @@ export class ConfigLoader {
     if (this.zomboidTypes.size > 0) return this.zomboidTypes;
 
     try {
-      const response = await fetch('/config/entities/zomboids.json');
+      const response = await fetch('/public/config/entities/zomboids.json');
       if (!response.ok) throw new Error('Failed to load zomboid types');
       const data: ZomboidTypesConfig = await response.json();
 
@@ -67,7 +67,7 @@ export class ConfigLoader {
     if (this.weaponTypes.size > 0) return this.weaponTypes;
 
     try {
-      const response = await fetch('/config/entities/weapons.json');
+      const response = await fetch('/public/config/entities/weapons.json');
       if (!response.ok) throw new Error('Failed to load weapon types');
       const data: WeaponTypesConfig = await response.json();
 
@@ -86,7 +86,7 @@ export class ConfigLoader {
     if (this.timerTypes.size > 0) return this.timerTypes;
 
     try {
-      const response = await fetch('/config/entities/timers.json');
+      const response = await fetch('/public/config/entities/timers.json');
       if (!response.ok) throw new Error('Failed to load timer types');
       const data: TimerTypesConfig = await response.json();
 
@@ -105,7 +105,7 @@ export class ConfigLoader {
     if (this.heroConfig) return this.heroConfig;
 
     try {
-      const response = await fetch('/config/entities/heroes.json');
+      const response = await fetch('/public/config/entities/heroes.json');
       if (!response.ok) throw new Error('Failed to load hero config');
       const data: HeroConfig = await response.json();
       this.heroConfig = data;
@@ -122,7 +122,7 @@ export class ConfigLoader {
     }
 
     try {
-      const response = await fetch(`/config/chapters/${chapterId}.json`);
+      const response = await fetch(`/public/config/chapters/${chapterId}.json`);
       if (!response.ok) throw new Error(`Failed to load chapter ${chapterId}`);
       const chapter: ChapterData = await response.json();
       this.chapters.set(chapterId, chapter);

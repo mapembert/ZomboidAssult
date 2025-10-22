@@ -24,18 +24,18 @@
 ### 🗂️ JSON Configuration Files Created
 
 **Game Settings:**
-- `config/game-settings.json` - Screen size, columns, performance targets
+- `public/config/game-settings.json` - Screen size, columns, performance targets
 
 **Entity Definitions:**
-- `config/entities/zomboids.json` - 8 zomboid types (circles, squares, hexagons)
-- `config/entities/weapons.json` - 5 weapon tiers (single → double → triple → pulse laser → mega machine gun)
-- `config/entities/timers.json` - 3 timer types (hero modifier, weapon upgrade, rapid)
-- `config/entities/heroes.json` - Hero properties and behavior
+- `public/config/entities/zomboids.json` - 8 zomboid types (circles, squares, hexagons)
+- `public/config/entities/weapons.json` - 5 weapon tiers (single → double → triple → pulse laser → mega machine gun)
+- `public/config/entities/timers.json` - 3 timer types (hero modifier, weapon upgrade, rapid)
+- `public/config/entities/heroes.json` - Hero properties and behavior
 
 **Chapter/Level Definitions:**
-- `config/chapters/chapter-01.json` - Tutorial chapter (3 waves)
-- `config/chapters/chapter-02.json` - Rising threat (2 waves)
-- `config/chapters/chapter-03.json` - Maximum chaos (2 waves)
+- `public/config/chapters/chapter-01.json` - Tutorial chapter (3 waves)
+- `public/config/chapters/chapter-02.json` - Rising threat (2 waves)
+- `public/config/chapters/chapter-03.json` - Maximum chaos (2 waves)
 
 ### 🛠️ Project Infrastructure
 
@@ -135,8 +135,8 @@ Start with **Phase 1: Foundation (Days 1-2)**
 - `docs/implementation-roadmap.md`
 
 **For Entity Configurations:**
-- `config/entities/*.json`
-- `config/chapters/*.json`
+- `public/config/entities/*.json`
+- `public/config/chapters/*.json`
 
 ---
 
@@ -176,10 +176,10 @@ Start with **Phase 1: Foundation (Days 1-2)**
 ## 🔑 Key Configuration Files
 
 ### To Adjust Game Balance:
-- **Zomboid difficulty:** Edit `config/entities/zomboids.json` (health, speed, size)
-- **Weapon power:** Edit `config/entities/weapons.json` (fire rate, damage, spread)
-- **Timer challenge:** Edit `config/entities/timers.json` (start value, increment, speed)
-- **Wave composition:** Edit `config/chapters/chapter-XX.json` (spawn patterns, duration)
+- **Zomboid difficulty:** Edit `public/config/entities/zomboids.json` (health, speed, size)
+- **Weapon power:** Edit `public/config/entities/weapons.json` (fire rate, damage, spread)
+- **Timer challenge:** Edit `public/config/entities/timers.json` (start value, increment, speed)
+- **Wave composition:** Edit `public/config/chapters/chapter-XX.json` (spawn patterns, duration)
 
 ### To Add New Content:
 1. **New Zomboid Type:** Add entry to `zomboids.json`

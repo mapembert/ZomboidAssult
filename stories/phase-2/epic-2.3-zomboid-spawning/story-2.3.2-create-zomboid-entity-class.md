@@ -33,7 +33,7 @@ Create `src/entities/Zomboid.ts` entity class to load zomboid config (shape, siz
 ## Dependencies
 - Story 2.3.1: Implement ShapeRenderer Utility ✅
 - Story 1.2.2: Implement ConfigLoader System ✅
-- `config/entities/zomboids.json` ✅
+- `public/config/entities/zomboids.json` ✅
 
 ## Implementation Details
 
@@ -108,7 +108,7 @@ takeDamage(amount: number): boolean {
 ```
 
 ## Configuration
-From `config/entities/zomboids.json`:
+From `public/config/entities/zomboids.json`:
 - **Shapes:** circle, square, hexagon ✅
 - **Sizes:** small (15-18px), medium (25px), large (35px) ✅
 - **Health:** 1-6 HP ✅

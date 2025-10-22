@@ -32,7 +32,7 @@ Create `src/entities/Hero.ts` entity class that renders as a triangle using Phas
 ## Dependencies
 - Story 1.2.1: Create TypeScript Type Definitions (HeroConfig type)
 - Story 1.2.2: Implement ConfigLoader System (to load heroes.json)
-- `config/entities/heroes.json` (hero configuration)
+- `public/config/entities/heroes.json` (hero configuration)
 
 ## Implementation Details
 
@@ -61,7 +61,7 @@ class Hero extends Phaser.GameObjects.Container {
 ```
 
 ### Configuration Used
-From `config/entities/heroes.json`:
+From `public/config/entities/heroes.json`:
 - `sprite.baseWidth`: 30px
 - `sprite.height`: 30px
 - `sprite.color`: "#03DAC6"
