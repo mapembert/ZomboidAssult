@@ -7,7 +7,6 @@ export class Timer extends Phaser.GameObjects.Container {
   private config: TimerType;
   private counter: number;
   private columnIndex: number;
-  private screenHeight: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, timerConfig: TimerType, columnIndex: number = 0) {
     super(scene, x, y);
@@ -15,7 +14,6 @@ export class Timer extends Phaser.GameObjects.Container {
     this.config = timerConfig;
     this.counter = timerConfig.startValue;
     this.columnIndex = columnIndex;
-    this.screenHeight = scene.scale.height;
 
     // Create graphics object for rectangle rendering
     this.background = new Phaser.GameObjects.Graphics(scene);
@@ -39,10 +37,10 @@ export class Timer extends Phaser.GameObjects.Container {
   }
 
   /**
-   * Render the timer as a thin vertical rectangle
+   * Render the timer as a horizontal barrier
    */
   renderShape(): void {
-    const { width, negativeColor, positiveColor, neutralColor } = this.config;
+    const { width, height, negativeColor, positiveColor, neutralColor } = this.config;
 
     // Clear previous graphics
     this.background.clear();
@@ -60,30 +58,29 @@ export class Timer extends Phaser.GameObjects.Container {
     // Convert hex color string to number
     const fillColor = Phaser.Display.Color.HexStringToColor(fillColorHex).color;
 
-    // Draw vertical rectangle (full screen height)
-    this.background.fillStyle(fillColor, 0.8);
+    // Draw horizontal barrier rectangle
+    this.background.fillStyle(fillColor, 0.9);
     this.background.fillRect(
       -width / 2,
-      -this.screenHeight / 2,
+      -height / 2,
       width,
-      this.screenHeight
+      height
     );
 
     // Draw outline
-    this.background.lineStyle(2, 0x18FFFF, 1);
+    this.background.lineStyle(3, 0x18FFFF, 1);
     this.background.strokeRect(
       -width / 2,
-      -this.screenHeight / 2,
+      -height / 2,
       width,
-      this.screenHeight
+      height
     );
 
     // Update counter text
     this.counterText.setText(this.formatCounter());
 
-    // Update text color to match timer color for better visibility
-    const textColor = this.counter >= 0 ? '#FFFFFF' : '#FFFFFF';
-    this.counterText.setColor(textColor);
+    // Update text color for visibility
+    this.counterText.setColor('#FFFFFF');
   }
 
   /**
@@ -146,9 +143,9 @@ export class Timer extends Phaser.GameObjects.Container {
   getBounds(): Phaser.Geom.Rectangle {
     return new Phaser.Geom.Rectangle(
       this.x - this.config.width / 2,
-      this.y - this.screenHeight / 2,
+      this.y - this.config.height / 2,
       this.config.width,
-      this.screenHeight
+      this.config.height
     );
   }
 

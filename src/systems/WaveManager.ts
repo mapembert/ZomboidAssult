@@ -82,7 +82,11 @@ export class WaveManager {
         if (!timerConfig) {
           throw new Error('Failed to load hero_add_timer config for timer pool');
         }
-        return new Timer(this.scene, 0, 0, timerConfig, 0);
+        const timer = new Timer(this.scene, 0, 0, timerConfig, 0);
+        // Immediately hide the timer after creation
+        timer.setActive(false);
+        timer.setVisible(false);
+        return timer;
       },
       (timer: Timer) => {
         timer.setActive(false);
@@ -300,9 +304,9 @@ export class WaveManager {
     // Acquire timer from pool
     const timer = this.timerPool.acquire();
 
-    // Calculate spawn position
+    // Calculate spawn position (above screen)
     const x = this.columnPositions[columnIndex];
-    const y = -this.scene.scale.height / 2; // Spawn above screen
+    const y = -timerConfig.height; // Spawn just above screen
 
     // Reset timer with new config
     timer.resetForPool(x, y, timerConfig, columnIndex);

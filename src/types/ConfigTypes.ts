@@ -57,6 +57,7 @@ export interface TimerType {
   startValue: number;
   increment: number;
   width: number;
+  height: number;
   speed: number;
   negativeColor: string;
   positiveColor: string;
