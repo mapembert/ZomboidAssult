@@ -8,7 +8,7 @@
       "color": "#FF5252",
       "outlineColor": "#FF8A80",
       "health": 1,
-      "speed": 50,
+      "speed": 80,
       "scoreValue": 10
     },
     {
@@ -19,7 +19,7 @@
       "color": "#FF5252",
       "outlineColor": "#FF8A80",
       "health": 2,
-      "speed": 50,
+      "speed": 75,
       "scoreValue": 20
     },
     {
@@ -30,7 +30,7 @@
       "color": "#FF5252",
       "outlineColor": "#FF8A80",
       "health": 3,
-      "speed": 50,
+      "speed": 70,
       "scoreValue": 30
     },
     {
@@ -42,7 +42,7 @@
       "color": "#FFC107",
       "outlineColor": "#FFD54F",
       "health": 2,
-      "speed": 60,
+      "speed": 90,
       "scoreValue": 25
     },
     {
@@ -54,7 +54,7 @@
       "color": "#FFC107",
       "outlineColor": "#FFD54F",
       "health": 3,
-      "speed": 55,
+      "speed": 85,
       "scoreValue": 35
     },
     {
@@ -65,7 +65,7 @@
       "color": "#4CAF50",
       "outlineColor": "#81C784",
       "health": 3,
-      "speed": 45,
+      "speed": 70,
       "scoreValue": 40
     },
     {
@@ -76,7 +76,7 @@
       "color": "#4CAF50",
       "outlineColor": "#81C784",
       "health": 4,
-      "speed": 40,
+      "speed": 65,
       "scoreValue": 50
     },
     {
@@ -87,7 +87,7 @@
       "color": "#4CAF50",
       "outlineColor": "#81C784",
       "health": 6,
-      "speed": 35,
+      "speed": 55,
       "scoreValue": 75
     }
   ]

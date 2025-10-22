@@ -7,33 +7,33 @@
     {
       "waveId": 1,
       "waveName": "Speed Increase",
-      "duration": 40,
+      "duration": 25,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 20,
-            "spawnRate": 0.3,
+            "count": 30,
+            "spawnRate": 1.5,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 8,
-            "spawnRate": 0.4,
+            "count": 15,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
-            "spawnDelay": 5
+            "spawnDelay": 2
           }
         ],
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 15,
+            "spawnTime": 8,
             "column": "right"
           },
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 25,
+            "spawnTime": 15,
             "column": "left"
           }
         ]
@@ -42,40 +42,40 @@
     {
       "waveId": 2,
       "waveName": "Hexagon Introduction",
-      "duration": 50,
+      "duration": 30,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_medium",
-            "count": 12,
-            "spawnRate": 0.35,
+            "count": 20,
+            "spawnRate": 1.8,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 10,
-            "spawnRate": 0.4,
+            "count": 18,
+            "spawnRate": 1.5,
             "columns": ["left", "right"],
-            "spawnDelay": 3
+            "spawnDelay": 2
           },
           {
             "type": "hex_small",
-            "count": 5,
-            "spawnRate": 0.5,
+            "count": 10,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
-            "spawnDelay": 8
+            "spawnDelay": 5
           }
         ],
         "timers": [
           {
             "type": "rapid_hero_timer",
-            "spawnTime": 12,
+            "spawnTime": 5,
             "column": "left"
           },
           {
             "type": "hero_add_timer",
-            "spawnTime": 28,
+            "spawnTime": 15,
             "column": "right"
           }
         ]

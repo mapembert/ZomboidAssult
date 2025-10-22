@@ -7,15 +7,15 @@
     {
       "waveId": 1,
       "waveName": "Tutorial Wave",
-      "duration": 30,
+      "duration": 20,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 15,
-            "spawnRate": 0.5,
+            "count": 25,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
-            "spawnDelay": 1
+            "spawnDelay": 0.5
           }
         ],
         "timers": []
@@ -24,28 +24,28 @@
     {
       "waveId": 2,
       "waveName": "Introduction to Variety",
-      "duration": 45,
+      "duration": 25,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 10,
-            "spawnRate": 0.4,
+            "count": 20,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "basic_circle_medium",
-            "count": 5,
-            "spawnRate": 0.3,
+            "count": 10,
+            "spawnRate": 0.8,
             "columns": ["left", "right"],
-            "spawnDelay": 5
+            "spawnDelay": 2
           }
         ],
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 20,
+            "spawnTime": 10,
             "column": "left"
           }
         ]
@@ -54,40 +54,40 @@
     {
       "waveId": 3,
       "waveName": "Strategic Decisions",
-      "duration": 60,
+      "duration": 35,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 15,
-            "spawnRate": 0.3,
+            "count": 25,
+            "spawnRate": 1.5,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "basic_circle_medium",
-            "count": 8,
-            "spawnRate": 0.35,
+            "count": 15,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
-            "spawnDelay": 5
+            "spawnDelay": 3
           },
           {
             "type": "square_small",
-            "count": 5,
-            "spawnRate": 0.4,
+            "count": 10,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
-            "spawnDelay": 10
+            "spawnDelay": 5
           }
         ],
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 15,
+            "spawnTime": 8,
             "column": "right"
           },
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 35,
+            "spawnTime": 20,
             "column": "left"
           }
         ]
