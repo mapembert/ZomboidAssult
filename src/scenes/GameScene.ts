@@ -104,6 +104,29 @@ export class GameScene extends Phaser.Scene {
       this.returnToMenu();
     });
 
+    // Test Game Over button (for testing GameOverScene)
+    const gameOverButton = this.add
+      .text(centerX, centerY + 150, '☠ TEST GAME OVER', {
+        fontSize: '20px',
+        color: '#FF5252',
+        backgroundColor: '#2e2e2e',
+        padding: { x: 15, y: 8 },
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+
+    gameOverButton.on('pointerover', () => {
+      gameOverButton.setBackgroundColor('#3e3e3e');
+    });
+
+    gameOverButton.on('pointerout', () => {
+      gameOverButton.setBackgroundColor('#2e2e2e');
+    });
+
+    gameOverButton.on('pointerdown', () => {
+      this.triggerGameOver();
+    });
+
     // Debug info at bottom
     this.add
       .text(centerX, height - 40, 'Click "MENU" to return to chapter selection', {
@@ -123,6 +146,20 @@ export class GameScene extends Phaser.Scene {
     // - Projectile physics
     // - Wave progression
     // - Collision detection
+  }
+
+  private triggerGameOver(): void {
+    console.log('Triggering Game Over (test)');
+
+    // Simulate game over with test data
+    const testScore = Math.floor(Math.random() * 10000) + 1000;
+    const testWave = Math.floor(Math.random() * 3) + 1;
+
+    this.scene.start('GameOverScene', {
+      score: testScore,
+      wave: testWave,
+      chapter: this.currentChapter,
+    });
   }
 
   private returnToMenu(): void {

@@ -7,7 +7,8 @@
       "Bash(npm run lint)",
       "Bash(powershell:*)",
       "Bash(npx tsc:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
