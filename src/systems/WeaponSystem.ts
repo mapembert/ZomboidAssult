@@ -69,24 +69,27 @@ export class WeaponSystem {
    */
   private fireFromPosition(x: number, y: number): void {
     const count = this.currentWeapon.projectileCount;
-    const spread = this.currentWeapon.spread;
+    const spacing = 15; // Horizontal spacing between projectiles (pixels)
 
     for (let i = 0; i < count; i++) {
-      // Calculate angle for this projectile
-      let angle = 0;
+      // Calculate horizontal offset for side-by-side positioning
+      let offsetX = 0;
 
       if (count === 1) {
-        // Single projectile - straight up
-        angle = 0;
+        // Single projectile - center
+        offsetX = 0;
       } else {
-        // Multiple projectiles - distribute evenly across spread
-        const step = spread / (count - 1);
-        angle = -spread / 2 + i * step;
+        // Multiple projectiles - distribute horizontally
+        const totalWidth = (count - 1) * spacing;
+        offsetX = -totalWidth / 2 + i * spacing;
       }
+
+      // All projectiles fire straight up (angle = 0)
+      const angle = 0;
 
       // Acquire projectile from pool
       const projectile = this.projectilePool.acquire();
-      projectile.fire(x, y, angle, this.currentWeapon);
+      projectile.fire(x + offsetX, y, angle, this.currentWeapon);
       this.activeProjectiles.push(projectile);
     }
   }
@@ -119,6 +122,15 @@ export class WeaponSystem {
     if (nextWeapon) {
       this.currentWeapon = nextWeapon;
       console.log(`Weapon upgraded to ${nextWeapon.name} (Tier ${nextWeapon.tier})`);
+
+      // Emit weapon upgraded event
+      this.scene.events.emit('weapon_upgraded', {
+        tier: nextWeapon.tier,
+        weaponName: nextWeapon.name,
+        weaponId: nextWeapon.id,
+        config: nextWeapon
+      });
+
       return true;
     }
 

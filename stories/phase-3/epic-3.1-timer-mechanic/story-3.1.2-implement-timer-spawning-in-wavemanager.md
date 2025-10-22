@@ -120,16 +120,24 @@ this.scene.events.emit('timer_exited', {
 ```
 
 ## Testing Checklist
-- [ ] TypeScript compiles without errors
-- [ ] ESLint passes with no warnings
-- [ ] Timers spawn at configured times
-- [ ] Timer types load correctly (hero_count, weapon_upgrade)
-- [ ] Column assignment accurate
-- [ ] Initial counter values match config
-- [ ] Multiple timers can be active
-- [ ] Timer exit event emits with correct data
-- [ ] Object pool reuses timers correctly
-- [ ] No console errors during timer lifecycle
+- [x] TypeScript compiles without errors
+- [x] ESLint passes with no warnings
+- [x] Timers spawn at configured times
+- [x] Timer types load correctly (hero_count, weapon_upgrade)
+- [x] Column assignment accurate
+- [x] Initial counter values match config
+- [x] Multiple timers can be active
+- [x] Timer exit event emits with correct data
+- [x] Object pool reuses timers correctly
+- [x] No console errors during timer lifecycle
+
+## Implementation Notes
+- Added timer object pool with proper initialization (hidden by default)
+- Implemented buildTimerSpawnSchedule() and processTimerSpawnSchedule()
+- Added handleTimerCompleted() for instant trigger events
+- Timers assigned unique instance IDs for tracking
+- Event listeners properly managed in constructor and destroy
+- Fixed pool factory to immediately hide timers (prevents red box artifact)
 
 ## Integration Points
 - GameScene listens for 'timer_exited' event

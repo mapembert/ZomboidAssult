@@ -64,6 +64,10 @@ export interface TimerType {
   neutralColor: string;
   fontSize: number;
   fontColor: string;
+  maxValue?: number; // Optional - instant trigger when reached
+  instantReward?: string; // Optional - reward type (e.g., "hero", "weapon_upgrade")
+  instantRewardCount?: number; // Optional - reward amount (e.g., 1 hero, 2 heroes)
+  rewardDisplayText?: string; // Optional - display text (e.g., "+1 Hero", "Weapon Upgrade")
 }
 
 // Hero Config

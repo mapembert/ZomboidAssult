@@ -214,16 +214,24 @@ private showFeedback(text: string, color: number): void {
 ```
 
 ## Testing Checklist
-- [ ] TypeScript compiles without errors
-- [ ] ESLint passes with no warnings
-- [ ] Positive timer values add heroes
-- [ ] Negative timer values remove heroes
-- [ ] Hero count never goes below 1
-- [ ] Heroes reposition correctly after modification
-- [ ] HUD updates to show new hero count
-- [ ] Visual feedback displays for add/remove
-- [ ] Maximum hero count respected (if configured)
-- [ ] No console errors
+- [x] TypeScript compiles without errors
+- [x] ESLint passes with no warnings
+- [x] Positive timer values add heroes
+- [x] Negative timer values remove heroes
+- [x] Hero count never goes below 1
+- [x] Heroes reposition correctly after modification
+- [x] HUD updates to show new hero count
+- [x] Visual feedback displays for add/remove
+- [x] Maximum hero count respected (if configured)
+- [x] No console errors
+
+## Implementation Notes
+- Added timer exit detection in WaveManager.updateTimers()
+- Implemented handleTimerExit() and handleTimerCompleted() in GameScene
+- Created processTimerEffect() shared logic for both exit and instant completion
+- Added showFeedback() with animated floating text
+- Visual feedback uses color coding: blue for heroes, yellow for weapons, red for negatives
+- Lightning bolt (⚡) prefix distinguishes instant from exit completions
 
 ## Edge Cases to Handle
 1. **Below minimum**: Timer value of -10 when only 1 hero exists → hero count stays at 1

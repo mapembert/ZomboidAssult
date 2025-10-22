@@ -138,16 +138,23 @@ interface TimerHitEvent {
 ```
 
 ## Testing Checklist
-- [ ] TypeScript compiles without errors
-- [ ] ESLint passes with no warnings
-- [ ] Projectile-timer collision detected accurately
-- [ ] Counter increments by configured amount
-- [ ] Projectile destroyed after hit
-- [ ] Timer visual updates immediately
-- [ ] Color change works when crossing 0
-- [ ] Multiple hits on same timer work
-- [ ] No performance degradation
-- [ ] No console errors
+- [x] TypeScript compiles without errors
+- [x] ESLint passes with no warnings
+- [x] Projectile-timer collision detected accurately
+- [x] Counter increments by configured amount
+- [x] Projectile destroyed after hit
+- [x] Timer visual updates immediately
+- [x] Color change works when crossing 0
+- [x] Multiple hits on same timer work
+- [x] No performance degradation
+- [x] No console errors
+
+## Implementation Notes
+- Added checkProjectileTimerCollisions() and processTimerCollisions()
+- Implemented AABB collision detection between projectiles and timer rectangles
+- Projectiles properly returned to pool on collision
+- Instant trigger detection integrated with collision handling
+- Visual feedback shows lightning bolt (⚡) for instant completions
 
 ## Audio/Visual Feedback (Future Enhancement)
 This story emits 'timer_hit' event which can be used in Phase 5 for:

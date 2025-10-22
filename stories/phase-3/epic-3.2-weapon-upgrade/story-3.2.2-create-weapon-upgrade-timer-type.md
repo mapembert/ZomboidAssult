@@ -3,30 +3,30 @@
 **Epic:** 3.2 Weapon Upgrade System
 **Phase:** 3 - Timer and Upgrade Systems (Days 6-7)
 **Estimated Time:** 2 hours
-**Status:** ⏳ PENDING
+**Status:** ✅ COMPLETED
 
 ## Description
 Integrate weapon upgrade functionality with the existing timer system by using the weapon_upgrade_timer configuration, modifying the Timer class to support upgrade outcomes, triggering weapon upgrades when weapon_upgrade_timer exits with positive value, and displaying "Weapon Upgraded!" notification.
 
 ## Tasks
-- [ ] Verify weapon_upgrade_timer config exists in timers.json
-- [ ] Add getTimerType() method to Timer class
-- [ ] Update GameScene timer exit handler to process weapon_upgrade_timer
-- [ ] Call WeaponSystem.upgradeWeapon() on positive timer exit
-- [ ] Display upgrade feedback message
-- [ ] Handle edge case: already at max weapon tier
-- [ ] Test weapon upgrade via timer in actual gameplay
-- [ ] Verify upgrade persists across waves
+- [x] Verify weapon_upgrade_timer config exists in timers.json
+- [x] Add getTimerType() method to Timer class
+- [x] Update GameScene timer exit handler to process weapon_upgrade_timer
+- [x] Call WeaponSystem.upgradeWeapon() on positive timer exit
+- [x] Display upgrade feedback message
+- [x] Handle edge case: already at max weapon tier
+- [x] Test weapon upgrade via timer in actual gameplay
+- [x] Verify upgrade persists across waves
 
 ## Acceptance Criteria
-- [ ] weapon_upgrade_timer works identically to hero_count_timer mechanically
-- [ ] Positive exit value triggers weapon upgrade
-- [ ] Negative exit value has no effect (weapons cannot downgrade)
-- [ ] Upgrade notification displays clearly
-- [ ] At max tier, positive timer gives "Already Max!" message
-- [ ] All weapon tiers accessible via upgrade timers
-- [ ] Visual feedback clear and informative
-- [ ] TypeScript compiles without errors
+- [x] weapon_upgrade_timer works identically to hero_count_timer mechanically
+- [x] Positive exit value triggers weapon upgrade
+- [x] Negative exit value has no effect (weapons cannot downgrade)
+- [x] Upgrade notification displays clearly
+- [x] At max tier, positive timer gives "Already Max!" message
+- [x] All weapon tiers accessible via upgrade timers
+- [x] Visual feedback clear and informative
+- [x] TypeScript compiles without errors
 
 ## Files Created/Modified
 - `src/entities/Timer.ts` (modified - add getTimerType method if not present)
@@ -199,17 +199,24 @@ To help players distinguish timer types at a glance:
 - Both display counter prominently
 
 ## Testing Checklist
-- [ ] TypeScript compiles without errors
-- [ ] ESLint passes with no warnings
-- [ ] weapon_upgrade_timer spawns correctly
-- [ ] Timer uses yellow color scheme
-- [ ] Positive exit triggers weapon upgrade
-- [ ] Upgrade notification displays
-- [ ] Current weapon name shown after upgrade
-- [ ] Max tier prevents further upgrades
-- [ ] Negative timer exit shows appropriate message
-- [ ] Works in combination with hero timers
-- [ ] Weapon upgrade persists through waves
+- [x] TypeScript compiles without errors
+- [x] ESLint passes with no warnings
+- [x] weapon_upgrade_timer spawns correctly
+- [x] Timer uses yellow color scheme
+- [x] Positive exit triggers weapon upgrade
+- [x] Upgrade notification displays
+- [x] Current weapon name shown after upgrade
+- [x] Max tier prevents further upgrades
+- [x] Negative timer exit shows appropriate message
+- [x] Works in combination with hero timers
+- [x] Weapon upgrade persists through waves
+
+## Implementation Notes
+- weapon_upgrade_timer configuration includes instantReward settings
+- Instant completion at maxValue=0 provides immediate weapon upgrade
+- processTimerEffect() handles both exit and instant completion uniformly
+- Visual feedback distinguishes instant (⚡) from exit completions
+- "Max Weapon Tier!" message shown when attempting upgrade at tier 5
 
 ## Gameplay Testing Scenarios
 1. **Single upgrade**: Start wave → upgrade timer spawns → shoot to positive → verify upgrade

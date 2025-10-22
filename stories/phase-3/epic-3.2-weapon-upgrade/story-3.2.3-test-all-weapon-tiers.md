@@ -3,7 +3,13 @@
 **Epic:** 3.2 Weapon Upgrade System
 **Phase:** 3 - Timer and Upgrade Systems (Days 6-7)
 **Estimated Time:** 3 hours
-**Status:** ⏳ PENDING
+**Status:** ⏳ READY FOR TESTING
+
+## Recent Changes
+- **Projectile Positioning**: Changed from angle-based V-spread to side-by-side horizontal layout
+- All projectiles now fire straight up (angle = 0) with horizontal offset positioning
+- Spacing: 15 pixels between adjacent projectiles
+- This better fits the column-based gameplay where zomboids and heroes are vertically aligned
 
 ## Description
 Comprehensive testing of all five weapon tiers to verify correct projectile count, spread angles, fire rates, damage values, and visual distinctions. Ensure smooth transitions between tiers and validate weapon balance.
@@ -125,21 +131,22 @@ Create `config/chapters/test-weapons.json`:
 **Expected Configuration:**
 - projectileCount: 2
 - fireRate: 0.3s
-- spreadAngle: 15°
+- spreadAngle: 15° (not used - replaced with horizontal spacing)
 - damage: 10
 - color: #03DAC6 (teal)
 
 **Test Steps:**
 1. Upgrade to double_gun via timer
 2. Fire continuously
-3. Measure spread angle visually
-4. Verify 2 projectiles per shot
+3. Verify 2 projectiles side-by-side (15px spacing)
+4. Verify both projectiles fire straight up
 5. Test damage against square_zomboid (health: 20) → should destroy in 2 hits
 
 **Pass Criteria:**
 - [ ] Fires exactly 2 projectiles per shot
-- [ ] Spread angle approximately 15° total
-- [ ] Projectiles diverge symmetrically
+- [ ] Projectiles positioned horizontally adjacent (not V-spread)
+- [ ] Both projectiles travel straight upward
+- [ ] Spacing approximately 15 pixels
 - [ ] Color changes to teal
 
 ---
@@ -148,22 +155,22 @@ Create `config/chapters/test-weapons.json`:
 **Expected Configuration:**
 - projectileCount: 3
 - fireRate: 0.3s
-- spreadAngle: 20°
+- spreadAngle: 20° (not used - replaced with horizontal spacing)
 - damage: 15
 - color: #00E676 (green)
 
 **Test Steps:**
 1. Upgrade to triple_gun
 2. Fire continuously
-3. Verify 3 projectiles: left, center, right
-4. Measure spread angle
+3. Verify 3 projectiles: left, center, right (side-by-side)
+4. Verify all 3 projectiles fire straight up
 5. Test damage (square_zomboid should take 2 hits)
 
 **Pass Criteria:**
 - [ ] Fires exactly 3 projectiles per shot
-- [ ] Center projectile goes straight
-- [ ] Left/right projectiles spread evenly
-- [ ] Spread angle approximately 20°
+- [ ] All projectiles travel straight upward
+- [ ] Projectiles positioned at -15px, 0px, +15px offsets
+- [ ] Spacing evenly distributed
 - [ ] Color changes to green
 
 ---
@@ -172,7 +179,7 @@ Create `config/chapters/test-weapons.json`:
 **Expected Configuration:**
 - projectileCount: 5
 - fireRate: 0.2s (faster)
-- spreadAngle: 30°
+- spreadAngle: 30° (not used - replaced with horizontal spacing)
 - damage: 20
 - color: #FFEA00 (yellow)
 
@@ -180,13 +187,14 @@ Create `config/chapters/test-weapons.json`:
 1. Upgrade to pulse_laser
 2. Fire continuously for 10 seconds
 3. Count projectiles fired (should be ~50 projectiles per hero)
-4. Verify 5 projectiles with wide spread
+4. Verify 5 projectiles side-by-side firing straight up
 5. Test damage (square_zomboid should destroy in 1 hit)
 
 **Pass Criteria:**
 - [ ] Fires exactly 5 projectiles per shot
 - [ ] Fire rate increased to 5 shots/second
-- [ ] Wide spread covers more area
+- [ ] All 5 projectiles travel straight upward
+- [ ] Projectiles positioned at -30px, -15px, 0px, +15px, +30px offsets
 - [ ] Color changes to yellow
 - [ ] Noticeably faster fire rate
 
@@ -194,27 +202,29 @@ Create `config/chapters/test-weapons.json`:
 
 #### Tier 4: mega_machine_gun (Max Tier)
 **Expected Configuration:**
-- projectileCount: 7
-- fireRate: 0.1s (very fast)
-- spreadAngle: 25°
+- projectileCount: 1 (rapid single shots)
+- fireRate: 0.05s (very fast)
+- spreadAngle: 5° (not used - single projectile fires straight)
 - damage: 25
 - color: #FF5252 (red)
 
 **Test Steps:**
 1. Upgrade to mega_machine_gun
 2. Fire continuously for 10 seconds
-3. Count projectiles fired (should be ~100 projectiles per hero)
-4. Verify 7 projectiles fan out
+3. Count projectiles fired (should be ~200 projectiles per hero - 20 shots/sec)
+4. Verify single projectile fires straight up at rapid rate
 5. Test damage (hex_zomboid health: 50 should take 2 hits)
 6. **Performance test**: 3 heroes + mega_machine_gun + 20 zomboids → verify 60 FPS
 
 **Pass Criteria:**
-- [ ] Fires exactly 7 projectiles per shot
-- [ ] Fire rate increased to 10 shots/second
-- [ ] Spread covers good area without being too wide
-- [ ] Color changes to red
-- [ ] Screen fills with projectiles but maintains 60 FPS
+- [ ] Fires exactly 1 projectile per shot
+- [ ] Fire rate increased to 20 shots/second (extremely rapid)
+- [ ] Projectile fires straight upward
+- [ ] Color changes to yellow/gold
+- [ ] Rapid stream of projectiles but maintains 60 FPS
 - [ ] Attempting to upgrade shows "Max Tier" message
+
+**Note**: mega_machine_gun uses rapid single shots instead of spread, differentiating it from pulse_laser
 
 ---
 

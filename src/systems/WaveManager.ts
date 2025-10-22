@@ -58,6 +58,9 @@ export class WaveManager {
     this.waves = waves;
     this.configLoader = ConfigLoader.getInstance();
 
+    // Listen for instant timer completions
+    this.scene.events.on('timer_completed', this.handleTimerCompleted, this);
+
     // Calculate column positions (same as HeroManager)
     // Left column: SCREEN_WIDTH / 4
     // Right column: (3 * SCREEN_WIDTH) / 4
@@ -310,9 +313,40 @@ export class WaveManager {
 
     // Reset timer with new config
     timer.resetForPool(x, y, timerConfig, columnIndex);
+
+    // Add unique instance ID for tracking
+    const instanceId = `timer_${Date.now()}_${Math.random()}`;
+    timer.setData('instanceId', instanceId);
+
     this.activeTimers.push(timer);
 
     console.log(`Timer spawned: ${timerTypeId} in column ${columnIndex}`);
+  }
+
+  /**
+   * Handle instant timer completion
+   */
+  private handleTimerCompleted(data: {
+    timerId: string;
+    timerType: string;
+    finalValue: number;
+    column: number;
+    instant: boolean;
+  }): void {
+    // Find and remove the timer
+    const timerIndex = this.activeTimers.findIndex(t => t.getData('instanceId') === data.timerId);
+
+    if (timerIndex !== -1) {
+      const timer = this.activeTimers[timerIndex];
+
+      // Remove from active timers
+      this.activeTimers.splice(timerIndex, 1);
+
+      // Return to pool
+      this.timerPool.release(timer);
+
+      console.log(`Timer ${data.timerType} instantly completed with value ${data.finalValue}`);
+    }
   }
 
   /**
@@ -402,6 +436,9 @@ export class WaveManager {
    * Cleanup
    */
   destroy(): void {
+    // Remove event listeners
+    this.scene.events.off('timer_completed', this.handleTimerCompleted, this);
+
     // Clear all active zomboids
     this.activeZomboids.forEach((zomboid) => {
       zomboid.destroy();

@@ -130,6 +130,12 @@ export class GameScene extends Phaser.Scene {
     // Listen for timer exit events
     this.events.on('timer_exited', this.handleTimerExit, this);
 
+    // Listen for instant timer completion events
+    this.events.on('timer_completed', this.handleTimerCompleted, this);
+
+    // Listen for weapon upgrade events
+    this.events.on('weapon_upgraded', this.handleWeaponUpgrade, this);
+
     const pauseButton = this.add
       .text(width - 20, 20, '⏸ MENU', {
         fontSize: '20px',
@@ -250,29 +256,128 @@ export class GameScene extends Phaser.Scene {
    * Handle timer exit events from WaveManager
    */
   private handleTimerExit(data: { timerType: string; finalValue: number; column: number }): void {
-    const { timerType, finalValue } = data;
+    console.log(`Timer exited: ${data.timerType} with value ${data.finalValue}`);
+    this.processTimerEffect(data.timerType, data.finalValue, false);
+  }
 
-    console.log(`Timer exited: ${timerType} with value ${finalValue}`);
+  /**
+   * Handle instant timer completion events
+   */
+  private handleTimerCompleted(data: {
+    timerId: string;
+    timerType: string;
+    finalValue: number;
+    column: number;
+    instant: boolean;
+    instantReward?: string;
+    instantRewardCount?: number;
+  }): void {
+    console.log(`Timer completed instantly: ${data.timerType} with value ${data.finalValue}`);
+
+    // Process instant reward if configured
+    if (data.instantReward && data.instantRewardCount !== undefined) {
+      this.processInstantReward(data.instantReward, data.instantRewardCount);
+    } else {
+      // Fallback to old behavior
+      this.processTimerEffect(data.timerType, data.finalValue, true);
+    }
+  }
+
+  /**
+   * Process instant reward from timer completion
+   */
+  private processInstantReward(rewardType: string, rewardCount: number): void {
+    if (rewardType === 'hero') {
+      // Add heroes
+      this.heroManager?.addHero(rewardCount);
+      const heroText = rewardCount === 1 ? 'Hero' : 'Heroes';
+      this.showFeedback(`⚡ +${rewardCount} ${heroText}!`, 0x00B0FF);
+    } else if (rewardType === 'weapon_upgrade') {
+      // Upgrade weapon
+      const upgraded = this.weaponSystem?.upgradeWeapon();
+
+      if (upgraded) {
+        this.showFeedback('⚡ Weapon Upgraded!', 0xFFEA00);
+      } else {
+        this.showFeedback('⚡ Max Weapon Tier!', 0xFF5252);
+      }
+    }
+  }
+
+  /**
+   * Process timer effect (shared logic for exit and instant completion)
+   */
+  private processTimerEffect(timerType: string, finalValue: number, isInstant: boolean): void {
+    const prefix = isInstant ? '⚡ ' : '';
 
     // Handle hero_add_timer (hero count modification)
     if (timerType === 'hero_add_timer' || timerType === 'rapid_hero_timer') {
       if (finalValue > 0) {
+        // Positive value: add heroes
         this.heroManager?.addHero(finalValue);
-        this.showFeedback(`+${finalValue} Heroes!`, 0x00B0FF);
+        this.showFeedback(`${prefix}+${finalValue} Heroes!`, 0x00B0FF);
       } else if (finalValue < 0) {
+        // Negative value: remove heroes
         this.heroManager?.removeHero(Math.abs(finalValue));
-        this.showFeedback(`${finalValue} Heroes`, 0xFF1744);
-      }
-    }
-    // Handle weapon_upgrade_timer (to be implemented in Story 3.2.2)
-    else if (timerType === 'weapon_upgrade_timer') {
-      if (finalValue > 0) {
-        // TODO: Story 3.2.2 - Weapon upgrade logic
-        this.showFeedback(`Weapon Ready! (+${finalValue})`, 0x76FF03);
+        this.showFeedback(`${prefix}${finalValue} Heroes`, 0xFF1744);
       } else {
-        this.showFeedback(`Weapon Locked (${finalValue})`, 0xFF1744);
+        // Zero value: timer was neutralized, no effect
+        // This happens when player successfully shoots a negative timer to 0
+        this.showFeedback(`${prefix}Timer Neutralized!`, 0x757575);
       }
     }
+    // Handle weapon_upgrade_timer
+    else if (timerType === 'weapon_upgrade_timer') {
+      if (finalValue >= 0) {
+        // Zero or positive: attempt to upgrade weapon
+        const upgraded = this.weaponSystem?.upgradeWeapon();
+
+        if (upgraded) {
+          this.showFeedback(`${prefix}Weapon Upgraded!`, 0xFFEA00);
+        } else {
+          // Already at max tier
+          this.showFeedback(`${prefix}Max Weapon Tier!`, 0xFF5252);
+        }
+      } else {
+        // Negative values don't upgrade
+        this.showFeedback(`${prefix}Weapon Not Upgraded`, 0xCF6679);
+      }
+    }
+  }
+
+  /**
+   * Handle weapon upgrade events
+   */
+  private handleWeaponUpgrade(data: { tier: number; weaponName: string; weaponId: string }): void {
+    console.log(`Weapon upgraded to tier ${data.tier}: ${data.weaponName}`);
+
+    // Update weapon display
+    this.updateWeaponDisplay();
+
+    // Show weapon name notification below the main upgrade message
+    const { width, height } = this.scale;
+    const weaponNameText = this.add.text(
+      width / 2,
+      height / 2 + 50,
+      data.weaponName,
+      {
+        fontSize: '24px',
+        color: '#FFEA00',
+        fontStyle: 'bold',
+        stroke: '#000000',
+        strokeThickness: 3
+      }
+    );
+    weaponNameText.setOrigin(0.5);
+
+    this.tweens.add({
+      targets: weaponNameText,
+      y: weaponNameText.y - 80,
+      alpha: 0,
+      duration: 1800,
+      ease: 'Power2',
+      onComplete: () => weaponNameText.destroy()
+    });
   }
 
   /**
@@ -356,6 +461,8 @@ export class GameScene extends Phaser.Scene {
     // Remove event listeners
     this.events.off('collision', this.handleCollision, this);
     this.events.off('timer_exited', this.handleTimerExit, this);
+    this.events.off('timer_completed', this.handleTimerCompleted, this);
+    this.events.off('weapon_upgraded', this.handleWeaponUpgrade, this);
 
     if (this.heroManager) {
       this.heroManager.destroy();

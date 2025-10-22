@@ -107,15 +107,22 @@ if (this.counter < 0) {
 ```
 
 ## Testing Checklist
-- [ ] TypeScript compiles without errors
-- [ ] ESLint passes with no warnings
-- [ ] Timer renders with correct dimensions
-- [ ] Counter text displays correctly
-- [ ] Color changes when counter crosses 0
-- [ ] Timer moves downward smoothly
-- [ ] incrementCounter() updates value and visual
-- [ ] onExitScreen() returns final counter value
-- [ ] resetForPool() resets all state
+- [x] TypeScript compiles without errors
+- [x] ESLint passes with no warnings
+- [x] Timer renders with correct dimensions
+- [x] Counter text displays correctly
+- [x] Color changes when counter crosses 0
+- [x] Timer moves downward smoothly
+- [x] incrementCounter() updates value and visual
+- [x] onExitScreen() returns final counter value
+- [x] resetForPool() resets all state
+
+## Implementation Notes
+- Timer renders as horizontal barrier (360px width, 70-90px height)
+- Added reward display text below counter for instant rewards
+- Implemented instant trigger mechanism when maxValue reached
+- Added unique instance ID tracking for event handling
+- Fixed pool initialization to prevent visible timers at start
 
 ## Next Story
 Story 3.1.2: Implement Timer Spawning in WaveManager

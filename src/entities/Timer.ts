@@ -4,6 +4,7 @@ import type { TimerType } from '@/types/ConfigTypes';
 export class Timer extends Phaser.GameObjects.Container {
   private background: Phaser.GameObjects.Graphics;
   private counterText: Phaser.GameObjects.Text;
+  private rewardText: Phaser.GameObjects.Text | null = null;
   private config: TimerType;
   private counter: number;
   private columnIndex: number;
@@ -20,7 +21,7 @@ export class Timer extends Phaser.GameObjects.Container {
     this.add(this.background);
 
     // Create text for counter display
-    this.counterText = new Phaser.GameObjects.Text(scene, 0, 0, this.formatCounter(), {
+    this.counterText = new Phaser.GameObjects.Text(scene, 0, -10, this.formatCounter(), {
       fontSize: `${this.config.fontSize}px`,
       color: this.config.fontColor,
       fontStyle: 'bold',
@@ -28,6 +29,26 @@ export class Timer extends Phaser.GameObjects.Container {
     });
     this.counterText.setOrigin(0.5, 0.5);
     this.add(this.counterText);
+
+    // Create reward display text if configured
+    if (this.config.rewardDisplayText) {
+      this.rewardText = new Phaser.GameObjects.Text(
+        scene,
+        0,
+        15,
+        this.config.rewardDisplayText,
+        {
+          fontSize: `${Math.floor(this.config.fontSize * 0.6)}px`,
+          color: '#FFEA00',
+          fontStyle: 'bold',
+          align: 'center',
+          stroke: '#000000',
+          strokeThickness: 2
+        }
+      );
+      this.rewardText.setOrigin(0.5, 0.5);
+      this.add(this.rewardText);
+    }
 
     // Render the timer shape
     this.renderShape();
@@ -98,8 +119,38 @@ export class Timer extends Phaser.GameObjects.Container {
    */
   incrementCounter(amount?: number): void {
     const incrementValue = amount !== undefined ? amount : this.config.increment;
+    const previousValue = this.counter;
     this.counter += incrementValue;
     this.renderShape();
+
+    // Check for instant trigger
+    if (this.config.maxValue !== undefined && this.checkInstantTrigger(previousValue)) {
+      // Emit instant completion event
+      this.scene.events.emit('timer_completed', {
+        timerId: this.getData('instanceId'),
+        timerType: this.config.id,
+        finalValue: this.counter,
+        column: this.columnIndex,
+        instant: true,
+        instantReward: this.config.instantReward,
+        instantRewardCount: this.config.instantRewardCount
+      });
+    }
+  }
+
+  /**
+   * Check if timer should trigger instantly based on maxValue
+   */
+  private checkInstantTrigger(previousValue: number): boolean {
+    if (this.config.maxValue === undefined) return false;
+
+    // For negative start values, trigger when crossing or reaching maxValue
+    if (this.config.startValue < 0) {
+      return previousValue < this.config.maxValue && this.counter >= this.config.maxValue;
+    }
+
+    // For positive start values, trigger when reaching or exceeding maxValue
+    return previousValue < this.config.maxValue && this.counter >= this.config.maxValue;
   }
 
   /**
@@ -169,6 +220,34 @@ export class Timer extends Phaser.GameObjects.Container {
     this.columnIndex = columnIndex;
     this.setActive(true);
     this.setVisible(true);
+
+    // Update or create reward text
+    if (timerConfig.rewardDisplayText) {
+      if (this.rewardText) {
+        this.rewardText.setText(timerConfig.rewardDisplayText);
+        this.rewardText.setVisible(true);
+      } else {
+        this.rewardText = new Phaser.GameObjects.Text(
+          this.scene,
+          0,
+          15,
+          timerConfig.rewardDisplayText,
+          {
+            fontSize: `${Math.floor(timerConfig.fontSize * 0.6)}px`,
+            color: '#FFEA00',
+            fontStyle: 'bold',
+            align: 'center',
+            stroke: '#000000',
+            strokeThickness: 2
+          }
+        );
+        this.rewardText.setOrigin(0.5, 0.5);
+        this.add(this.rewardText);
+      }
+    } else if (this.rewardText) {
+      this.rewardText.setVisible(false);
+    }
+
     this.renderShape();
   }
 
@@ -181,6 +260,9 @@ export class Timer extends Phaser.GameObjects.Container {
     }
     if (this.counterText) {
       this.counterText.destroy();
+    }
+    if (this.rewardText) {
+      this.rewardText.destroy();
     }
     super.destroy(fromScene);
   }
