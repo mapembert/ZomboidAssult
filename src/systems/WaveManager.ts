@@ -44,10 +44,10 @@ export class WaveManager {
     this.configLoader = ConfigLoader.getInstance();
 
     // Calculate column positions (same as HeroManager)
+    // Left column: SCREEN_WIDTH / 4
+    // Right column: (3 * SCREEN_WIDTH) / 4
     const screenWidth = this.scene.scale.width;
-    const columnCount = 2;
-    const spacing = screenWidth / (columnCount + 1);
-    this.columnPositions = [spacing, spacing * 2];
+    this.columnPositions = [screenWidth / 4, (3 * screenWidth) / 4];
 
     // Create zomboid pool (50 zomboids initially)
     this.zomboidPool = new ObjectPool<Zomboid>(
