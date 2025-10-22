@@ -44,7 +44,7 @@ Implement and integrate all sound effects (SFX) throughout the game to provide i
 - [ ] Mute works for all SFX
 
 ## Files to Create/Modify
-- `public/assets/audio/sfx/*.mp3` - All SFX audio files
+- `assets/audio/sfx/*.mp3` - All SFX audio files
 - `src/scenes/GameScene.ts` - Trigger SFX on game events
 - `src/systems/CollisionManager.ts` - SFX on collisions
 - `src/systems/WeaponSystem.ts` - Projectile fire SFX

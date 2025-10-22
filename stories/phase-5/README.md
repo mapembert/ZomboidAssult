@@ -67,7 +67,7 @@ Phase 5 focuses on adding professional audio (sound effects and music), comprehe
 - Integration with all game systems
 
 **Files Created:**
-- `public/assets/audio/sfx/*.mp3` (9 audio files)
+- `assets/audio/sfx/*.mp3` (9 audio files)
 
 **Files Modified:**
 - `src/scenes/GameScene.ts`
@@ -91,9 +91,9 @@ Phase 5 focuses on adding professional audio (sound effects and music), comprehe
 - Volume balancing with SFX
 
 **Files Created:**
-- `public/assets/audio/music/menu_music.mp3`
-- `public/assets/audio/music/game_music.mp3`
-- `public/assets/audio/music/gameover_music.mp3`
+- `assets/audio/music/menu_music.mp3`
+- `assets/audio/music/game_music.mp3`
+- `assets/audio/music/gameover_music.mp3`
 
 **Files Modified:**
 - `src/scenes/MenuScene.ts`

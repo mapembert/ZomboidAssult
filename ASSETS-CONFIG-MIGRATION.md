@@ -68,12 +68,12 @@ All `fetch()` calls updated from `/config/` to `/public/config/`:
 
 ```typescript
 // Updated 6 fetch calls:
-fetch('/public/config/game-settings.json')
-fetch('/public/config/entities/zomboids.json')
-fetch('/public/config/entities/weapons.json')
-fetch('/public/config/entities/timers.json')
-fetch('/public/config/entities/heroes.json')
-fetch(`/public/config/chapters/${chapterId}.json`)
+fetch('/config/game-settings.json')
+fetch('/config/entities/zomboids.json')
+fetch('/config/entities/weapons.json')
+fetch('/config/entities/timers.json')
+fetch('/config/entities/heroes.json')
+fetch(`/config/chapters/${chapterId}.json`)
 ```
 
 **File Modified:** `src/systems/ConfigLoader.ts`
@@ -126,7 +126,7 @@ All references to `assets/` and `config/` have been updated to `public/assets/` 
 
    // After (works automatically with Vite)
    this.load.audio('sfx', 'public/assets/audio/sfx/sound.mp3');
-   fetch('/public/config/game-settings.json');
+   fetch('/config/game-settings.json');
    ```
 
 3. **Build Output**
@@ -192,13 +192,13 @@ $ find public/config -name "*.json" | wc -l
 ```typescript
 // Sound Effects
 sfxKeys.forEach(key => {
-  this.load.audio(key, `public/assets/audio/sfx/${key}.mp3`);
+  this.load.audio(key, `assets/audio/sfx/${key}.mp3`);
   audioManager.registerSFX(key);
 });
 
 // Background Music
 musicKeys.forEach(key => {
-  this.load.audio(key, `public/assets/audio/music/${key}.mp3`);
+  this.load.audio(key, `assets/audio/music/${key}.mp3`);
   audioManager.registerMusic(key);
 });
 ```
@@ -206,16 +206,16 @@ musicKeys.forEach(key => {
 ### Config Loading (ConfigLoader.ts)
 ```typescript
 // Game Settings
-await fetch('/public/config/game-settings.json')
+await fetch('/config/game-settings.json')
 
 // Entity Configs
-await fetch('/public/config/entities/zomboids.json')
-await fetch('/public/config/entities/weapons.json')
-await fetch('/public/config/entities/timers.json')
-await fetch('/public/config/entities/heroes.json')
+await fetch('/config/entities/zomboids.json')
+await fetch('/config/entities/weapons.json')
+await fetch('/config/entities/timers.json')
+await fetch('/config/entities/heroes.json')
 
 // Chapter Configs
-await fetch(`/public/config/chapters/${chapterId}.json`)
+await fetch(`/config/chapters/${chapterId}.json`)
 ```
 
 ### Directory Structure

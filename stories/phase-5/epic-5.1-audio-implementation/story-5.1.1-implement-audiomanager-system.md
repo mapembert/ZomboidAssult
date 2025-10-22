@@ -373,7 +373,7 @@ export class BootScene extends Phaser.Scene {
 
     sfxKeys.forEach(key => {
       // Load audio file (placeholder paths, actual files in Story 5.1.2)
-      this.load.audio(key, `public/assets/audio/sfx/${key}.mp3`);
+      this.load.audio(key, `assets/audio/sfx/${key}.mp3`);
       audioManager.registerSFX(key);
     });
 
@@ -385,7 +385,7 @@ export class BootScene extends Phaser.Scene {
     ];
 
     musicKeys.forEach(key => {
-      this.load.audio(key, `public/assets/audio/music/${key}.mp3`);
+      this.load.audio(key, `assets/audio/music/${key}.mp3`);
       audioManager.registerMusic(key);
     });
 
@@ -577,7 +577,7 @@ this.input.once('pointerdown', () => {
 
 ### Directory Structure
 ```
-public/assets/audio/
+assets/audio/
 ├── sfx/
 │   ├── projectile_fire.mp3
 │   ├── zomboid_hit.mp3

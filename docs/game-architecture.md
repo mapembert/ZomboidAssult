@@ -30,7 +30,7 @@
 
 ```
 zomboid-assult/
-├── public/config/                      # JSON configuration files
+├── config/                      # JSON configuration files
 │   ├── game-settings.json       # Global game settings
 │   ├── entities/                # Entity definitions
 │   │   ├── zomboids.json        # Zomboid types
