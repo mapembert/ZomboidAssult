@@ -6,7 +6,8 @@
       "Bash(npm install:*)",
       "Bash(npm run lint)",
       "Bash(powershell:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []
