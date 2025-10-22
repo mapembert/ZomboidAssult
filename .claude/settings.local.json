@@ -8,7 +8,8 @@
       "Bash(powershell:*)",
       "Bash(npx tsc:*)",
       "Bash(taskkill:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
