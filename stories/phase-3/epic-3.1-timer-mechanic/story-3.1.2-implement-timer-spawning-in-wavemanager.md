@@ -9,25 +9,27 @@
 Extend `src/systems/WaveManager.ts` to parse timer spawn data from wave configuration, spawn timers at scheduled times during waves, assign timers to correct columns, and track active timers for collision detection and lifecycle management.
 
 ## Tasks
-- [ ] Add timer spawn data parsing to WaveManager constructor
-- [ ] Create timer object pool (similar to zomboid pool)
-- [ ] Implement spawnTimer() method
-- [ ] Add timer spawn scheduling to wave timeline
-- [ ] Assign timers to correct column (left or right)
-- [ ] Track active timers in array
-- [ ] Update all active timers in update() method
-- [ ] Remove timers that exit screen (Y > SCREEN_HEIGHT)
-- [ ] Emit timer_exited event when timer leaves screen
+- [x] Add timer spawn data parsing to WaveManager constructor
+- [x] Create timer object pool (similar to zomboid pool)
+- [x] Implement spawnTimer() method
+- [x] Add timer spawn scheduling to wave timeline
+- [x] Assign timers to correct column (left or right)
+- [x] Track active timers in array
+- [x] Update all active timers in update() method
+- [x] Remove timers that exit screen (Y > SCREEN_HEIGHT)
+- [x] Emit timer_exited event when timer leaves screen
+- [x] Fix timer pool initialization to prevent visible timers at start
 
 ## Acceptance Criteria
-- [ ] Timers spawn at correct times specified in wave config
-- [ ] Column assignment (0=left, 1=right) works correctly
-- [ ] Timer type (hero_count_timer, weapon_upgrade_timer) loads from config
-- [ ] Multiple timers can be active simultaneously
-- [ ] Active timers array updated correctly
-- [ ] Timers removed when off-screen
-- [ ] No memory leaks from timer pooling
-- [ ] TypeScript compiles without errors
+- [x] Timers spawn at correct times specified in wave config
+- [x] Column assignment (0=left, 1=right) works correctly
+- [x] Timer type (hero_add_timer, weapon_upgrade_timer) loads from config
+- [x] Multiple timers can be active simultaneously
+- [x] Active timers array updated correctly
+- [x] Timers removed when off-screen
+- [x] No memory leaks from timer pooling
+- [x] TypeScript compiles without errors
+- [x] Timers hidden during pool initialization (no red box artifacts)
 
 ## Files Created/Modified
 - `src/systems/WaveManager.ts` (modified)

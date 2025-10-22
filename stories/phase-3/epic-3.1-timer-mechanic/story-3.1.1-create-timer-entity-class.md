@@ -3,31 +3,31 @@
 **Epic:** 3.1 Countdown Timer Mechanic
 **Phase:** 3 - Timer and Upgrade Systems (Days 6-7)
 **Estimated Time:** 4 hours
-**Status:** ⏳ PENDING
+**Status:** ✅ COMPLETED
 
 ## Description
-Create `src/entities/Timer.ts` entity class that renders as a thin vertical rectangle spanning the full column height, displays a counter value as centered text, implements counter increment logic, and dynamically changes color based on value (negative=red, positive=blue).
+Create `src/entities/Timer.ts` entity class that renders as a horizontal barrier spanning the full column width, displays a counter value as centered text, implements counter increment logic, and dynamically changes color based on value (negative=red, positive=blue).
 
 ## Tasks
-- [ ] Create `src/entities/Timer.ts` class extending Phaser.GameObjects.Container
-- [ ] Implement thin vertical rectangle rendering using Phaser.GameObjects.Graphics
-- [ ] Calculate and render full column height (from top to bottom of screen)
-- [ ] Add counter value text display centered in rectangle
-- [ ] Implement incrementCounter() method
-- [ ] Add color change logic (negative values = red #CF6679, positive values = blue #03DAC6)
-- [ ] Implement downward movement at configured speed
-- [ ] Add resetForPool() method for object pooling
-- [ ] Load TimerConfig from ConfigLoader
+- [x] Create `src/entities/Timer.ts` class extending Phaser.GameObjects.Container
+- [x] Implement horizontal barrier rendering using Phaser.GameObjects.Graphics
+- [x] Render as horizontal rectangle (full column width, configurable height)
+- [x] Add counter value text display centered in rectangle
+- [x] Implement incrementCounter() method
+- [x] Add color change logic (negative values = red #FF1744, positive values = blue #00B0FF)
+- [x] Implement downward movement at configured speed
+- [x] Add resetForPool() method for object pooling
+- [x] Load TimerConfig from ConfigLoader
 
 ## Acceptance Criteria
-- [ ] Timer renders as thin vertical box (configured width, full screen height)
-- [ ] Counter text visible and centered vertically/horizontally
-- [ ] Color changes correctly at value 0 threshold
-- [ ] Descends at configured speed
-- [ ] Text remains readable against background
-- [ ] Timer config loads from timers.json
-- [ ] No TypeScript errors
-- [ ] No console errors when rendering
+- [x] Timer renders as horizontal barrier (360px width, 70-90px height)
+- [x] Counter text visible and centered vertically/horizontally
+- [x] Color changes correctly at value 0 threshold
+- [x] Descends at configured speed
+- [x] Text remains readable against background
+- [x] Timer config loads from timers.json with width and height properties
+- [x] No TypeScript errors
+- [x] No console errors when rendering
 
 ## Files Created/Modified
 - `src/entities/Timer.ts` (to be created)

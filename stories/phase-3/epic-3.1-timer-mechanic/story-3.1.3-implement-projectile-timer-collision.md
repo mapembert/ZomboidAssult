@@ -9,24 +9,24 @@
 Extend `src/systems/CollisionManager.ts` to detect collisions between projectiles and timers, increment timer counter on hit, destroy the colliding projectile, and update timer visual immediately to reflect the new counter value.
 
 ## Tasks
-- [ ] Add checkProjectileTimerCollisions() method to CollisionManager
-- [ ] Implement AABB collision detection between projectiles and timers
-- [ ] Call timer.incrementCounter() on collision
-- [ ] Destroy projectile after collision
-- [ ] Return projectile to object pool
-- [ ] Emit 'timer_hit' event with timer and increment data
-- [ ] Update timer visual immediately (color change if crosses 0)
-- [ ] Add collision check to GameScene update loop
+- [x] Add checkProjectileTimerCollisions() method to CollisionManager
+- [x] Implement AABB collision detection between projectiles and timers
+- [x] Call timer.incrementCounter() on collision
+- [x] Destroy projectile after collision
+- [x] Return projectile to object pool
+- [x] Emit 'timer_hit' event with timer and increment data
+- [x] Update timer visual immediately (color change if crosses 0)
+- [x] Add collision check to GameScene update loop
 
 ## Acceptance Criteria
-- [ ] Shooting timer increments counter correctly
-- [ ] Visual update is instant (no lag)
-- [ ] Counter increment matches timer config incrementValue
-- [ ] Projectile destroyed on hit
-- [ ] Color changes if counter crosses 0 threshold
-- [ ] Multiple projectiles can hit same timer
-- [ ] Collision detection accurate (no false positives/negatives)
-- [ ] No performance impact at 60 FPS
+- [x] Shooting timer increments counter correctly
+- [x] Visual update is instant (no lag)
+- [x] Counter increment matches timer config incrementValue
+- [x] Projectile destroyed on hit
+- [x] Color changes if counter crosses 0 threshold
+- [x] Multiple projectiles can hit same timer
+- [x] Collision detection accurate (no false positives/negatives)
+- [x] No performance impact at 60 FPS
 
 ## Files Created/Modified
 - `src/systems/CollisionManager.ts` (modified)

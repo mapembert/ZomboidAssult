@@ -9,26 +9,28 @@
 Detect when timers exit the screen bottom, call timer.onExitScreen() to retrieve final counter value, pass the value to HeroManager to add or remove heroes, ensure hero count never drops below minimum (1), and update hero count display immediately.
 
 ## Tasks
-- [ ] Add timer exit detection in WaveManager.updateTimers()
-- [ ] Call timer.onExitScreen() to get final counter value
-- [ ] Emit 'timer_exited' event with timer type and final value
-- [ ] Create GameScene event listener for 'timer_exited'
-- [ ] Route hero_count_timer exits to HeroManager
-- [ ] Implement hero addition/removal based on counter value
-- [ ] Enforce minimum hero count constraint (minHeroCount = 1)
-- [ ] Update hero positions after count change
-- [ ] Update HUD to reflect new hero count
-- [ ] Add visual feedback for hero add/remove
+- [x] Add timer exit detection in WaveManager.updateTimers()
+- [x] Call timer.onExitScreen() to get final counter value
+- [x] Emit 'timer_exited' event with timer type and final value
+- [x] Create GameScene event listener for 'timer_exited'
+- [x] Route hero_add_timer exits to HeroManager
+- [x] Implement hero addition/removal based on counter value
+- [x] Enforce minimum hero count constraint (minHeroCount = 1)
+- [x] Update hero positions after count change
+- [x] Update HUD to reflect new hero count
+- [x] Add visual feedback for hero add/remove
+- [x] Emit hero_count_changed event from HeroManager
 
 ## Acceptance Criteria
-- [ ] Timer exit detected when Y > SCREEN_HEIGHT
-- [ ] Positive timer values add heroes to HeroManager
-- [ ] Negative timer values remove heroes from HeroManager
-- [ ] Hero count never drops below 1
-- [ ] Visual update is immediate
-- [ ] Heroes repositioned evenly in current column
-- [ ] HUD displays correct hero count
-- [ ] TypeScript compiles without errors
+- [x] Timer exit detected when Y > SCREEN_HEIGHT
+- [x] Positive timer values add heroes to HeroManager
+- [x] Negative timer values remove heroes from HeroManager
+- [x] Hero count never drops below 1
+- [x] Visual update is immediate with floating text feedback
+- [x] Heroes repositioned evenly in current column
+- [x] HUD displays correct hero count
+- [x] TypeScript compiles without errors
+- [x] Visual feedback shows "+X Heroes!" or "X Heroes" with color coding
 
 ## Files Created/Modified
 - `src/systems/WaveManager.ts` (modified - timer exit detection)
