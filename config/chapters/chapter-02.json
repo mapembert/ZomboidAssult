@@ -1,0 +1,85 @@
+{
+  "chapterId": "chapter-02",
+  "chapterName": "Rising Threat",
+  "description": "More zomboids, faster pace, strategic timer decisions",
+  "unlockRequirement": "chapter-01",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Speed Increase",
+      "duration": 40,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 20,
+            "spawnRate": 0.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_small",
+            "count": 8,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          }
+        ],
+        "timers": [
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 15,
+            "column": "right"
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 25,
+            "column": "left"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Hexagon Introduction",
+      "duration": 50,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_medium",
+            "count": 12,
+            "spawnRate": 0.35,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_small",
+            "count": 10,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_small",
+            "count": 5,
+            "spawnRate": 0.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 12,
+            "column": "left"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "right"
+          }
+        ]
+      }
+    }
+  ]
+}

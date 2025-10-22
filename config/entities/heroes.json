@@ -1,0 +1,18 @@
+{
+  "heroConfig": {
+    "defaultHeroCount": 1,
+    "minHeroCount": 1,
+    "maxHeroCount": 5,
+    "movementSpeed": 300,
+    "sprite": {
+      "shape": "triangle",
+      "baseWidth": 30,
+      "height": 30,
+      "color": "#03DAC6",
+      "outlineColor": "#18FFFF",
+      "outlineWidth": 2
+    },
+    "spacing": 15,
+    "positionFromBottom": 100
+  }
+}

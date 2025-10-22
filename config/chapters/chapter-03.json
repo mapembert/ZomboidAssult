@@ -1,0 +1,109 @@
+{
+  "chapterId": "chapter-03",
+  "chapterName": "Maximum Chaos",
+  "description": "All zomboid types, intense timer pressure, survival challenge",
+  "unlockRequirement": "chapter-02",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Full Spectrum",
+      "duration": 55,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 8,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 10,
+            "spawnRate": 0.35,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "hex_medium",
+            "count": 6,
+            "spawnRate": 0.45,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "left"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 25,
+            "column": "right"
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 40,
+            "column": "left"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Endurance Test",
+      "duration": 70,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 25,
+            "spawnRate": 0.25,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "basic_circle_medium",
+            "count": 15,
+            "spawnRate": 0.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "square_medium",
+            "count": 12,
+            "spawnRate": 0.35,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          },
+          {
+            "type": "hex_large",
+            "count": 5,
+            "spawnRate": 0.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 15,
+            "column": "right"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 30,
+            "column": "left"
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 50,
+            "column": "right"
+          }
+        ]
+      }
+    }
+  ]
+}

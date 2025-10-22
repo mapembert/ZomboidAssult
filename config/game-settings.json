@@ -1,0 +1,21 @@
+{
+  "gameSettings": {
+    "screenWidth": 720,
+    "screenHeight": 1280,
+    "columnCount": 2,
+    "backgroundColor": "#121212",
+    "fps": 60,
+    "debugMode": false
+  },
+  "gameplay": {
+    "playerStartColumn": 0,
+    "safeZoneHeight": 150,
+    "spawnZoneHeight": 100,
+    "gameOverOnZomboidReachBottom": true
+  },
+  "audio": {
+    "masterVolume": 0.7,
+    "musicVolume": 0.5,
+    "sfxVolume": 0.8
+  }
+}

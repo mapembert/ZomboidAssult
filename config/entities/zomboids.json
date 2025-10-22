@@ -1,0 +1,94 @@
+{
+  "zomboidTypes": [
+    {
+      "id": "basic_circle_small",
+      "shape": "circle",
+      "size": "small",
+      "radius": 15,
+      "color": "#FF5252",
+      "outlineColor": "#FF8A80",
+      "health": 1,
+      "speed": 50,
+      "scoreValue": 10
+    },
+    {
+      "id": "basic_circle_medium",
+      "shape": "circle",
+      "size": "medium",
+      "radius": 25,
+      "color": "#FF5252",
+      "outlineColor": "#FF8A80",
+      "health": 2,
+      "speed": 50,
+      "scoreValue": 20
+    },
+    {
+      "id": "basic_circle_large",
+      "shape": "circle",
+      "size": "large",
+      "radius": 35,
+      "color": "#FF5252",
+      "outlineColor": "#FF8A80",
+      "health": 3,
+      "speed": 50,
+      "scoreValue": 30
+    },
+    {
+      "id": "square_small",
+      "shape": "square",
+      "size": "small",
+      "width": 30,
+      "height": 30,
+      "color": "#FFC107",
+      "outlineColor": "#FFD54F",
+      "health": 2,
+      "speed": 60,
+      "scoreValue": 25
+    },
+    {
+      "id": "square_medium",
+      "shape": "square",
+      "size": "medium",
+      "width": 40,
+      "height": 40,
+      "color": "#FFC107",
+      "outlineColor": "#FFD54F",
+      "health": 3,
+      "speed": 55,
+      "scoreValue": 35
+    },
+    {
+      "id": "hex_small",
+      "shape": "hexagon",
+      "size": "small",
+      "radius": 18,
+      "color": "#4CAF50",
+      "outlineColor": "#81C784",
+      "health": 3,
+      "speed": 45,
+      "scoreValue": 40
+    },
+    {
+      "id": "hex_medium",
+      "shape": "hexagon",
+      "size": "medium",
+      "radius": 25,
+      "color": "#4CAF50",
+      "outlineColor": "#81C784",
+      "health": 4,
+      "speed": 40,
+      "scoreValue": 50
+    },
+    {
+      "id": "hex_large",
+      "shape": "hexagon",
+      "size": "large",
+      "radius": 35,
+      "color": "#4CAF50",
+      "outlineColor": "#81C784",
+      "health": 6,
+      "speed": 35,
+      "scoreValue": 75
+    }
+  ]
+}

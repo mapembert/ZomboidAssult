@@ -1,0 +1,43 @@
+{
+  "timerTypes": [
+    {
+      "id": "hero_add_timer",
+      "name": "Hero Modifier Timer",
+      "startValue": -25,
+      "increment": 1,
+      "width": 100,
+      "speed": 30,
+      "negativeColor": "#FF1744",
+      "positiveColor": "#00B0FF",
+      "neutralColor": "#757575",
+      "fontSize": 24,
+      "fontColor": "#FFFFFF"
+    },
+    {
+      "id": "weapon_upgrade_timer",
+      "name": "Weapon Upgrade Timer",
+      "startValue": -50,
+      "increment": 2,
+      "width": 120,
+      "speed": 25,
+      "negativeColor": "#FF1744",
+      "positiveColor": "#76FF03",
+      "neutralColor": "#757575",
+      "fontSize": 28,
+      "fontColor": "#FFFFFF"
+    },
+    {
+      "id": "rapid_hero_timer",
+      "name": "Rapid Hero Timer",
+      "startValue": -15,
+      "increment": 1,
+      "width": 80,
+      "speed": 40,
+      "negativeColor": "#FF1744",
+      "positiveColor": "#00B0FF",
+      "neutralColor": "#757575",
+      "fontSize": 20,
+      "fontColor": "#FFFFFF"
+    }
+  ]
+}

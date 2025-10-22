@@ -1,0 +1,97 @@
+{
+  "chapterId": "chapter-01",
+  "chapterName": "First Contact",
+  "description": "Learn the basics - shoot zomboids, survive the wave",
+  "unlockRequirement": null,
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Tutorial Wave",
+      "duration": 30,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 15,
+            "spawnRate": 0.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 1
+          }
+        ],
+        "timers": []
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Introduction to Variety",
+      "duration": 45,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 10,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "basic_circle_medium",
+            "count": 5,
+            "spawnRate": 0.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          }
+        ],
+        "timers": [
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 20,
+            "column": "left"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Strategic Decisions",
+      "duration": 60,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 15,
+            "spawnRate": 0.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "basic_circle_medium",
+            "count": 8,
+            "spawnRate": 0.35,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "square_small",
+            "count": 5,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          }
+        ],
+        "timers": [
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 15,
+            "column": "right"
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 35,
+            "column": "left"
+          }
+        ]
+      }
+    }
+  ]
+}
