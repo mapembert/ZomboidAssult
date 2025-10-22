@@ -173,6 +173,10 @@ export class ConfigLoader {
     return this.weaponTypes.get(id);
   }
 
+  public getWeaponTypes(): WeaponType[] {
+    return Array.from(this.weaponTypes.values());
+  }
+
   public getTimerType(id: string): TimerType | undefined {
     return this.timerTypes.get(id);
   }
