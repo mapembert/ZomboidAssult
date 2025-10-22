@@ -1,4 +1,4 @@
-# Zomboid Assult - Project Setup Summary
+# Zomboid Assault - Project Setup Summary
 
 ## ✅ Completed Setup
 
@@ -270,7 +270,7 @@ All planning, design, and configuration work is complete. The foundation is in p
 **Recommended Starting Point:**
 Begin with `docs/implementation-roadmap.md` → Phase 1 → Epic 1.2 → Story 1.2.1
 
-Good luck, and enjoy building Zomboid Assult! 🧟‍♂️🎮
+Good luck, and enjoy building Zomboid Assault! 🧟‍♂️🎮
 
 ---
 

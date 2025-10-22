@@ -1,4 +1,4 @@
-# Zomboid Assult - Story Index
+# Zomboid Assault - Story Index
 
 This directory contains sharded implementation stories extracted from the main implementation roadmap. Each story is a standalone markdown file with detailed implementation guidance.
 

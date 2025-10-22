@@ -10,7 +10,10 @@
       "Bash(taskkill:*)",
       "Bash(cat:*)",
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run build:*)",
+      "WebFetch(domain:chatgpt.com)",
+      "Bash(identify:*)"
     ],
     "deny": [],
     "ask": []

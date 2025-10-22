@@ -1,9 +1,9 @@
-# Zomboid Assult - Prototype Design Document
+# Zomboid Assault - Prototype Design Document
 
 ## Executive Summary
 
 ### Core Concept
-Zomboid Assult is a 2D/2.5D column-based defense game where players must make strategic split-second decisions: shoot advancing zombie hordes or sacrifice firepower to shoot countdown timers that unlock powerful upgrades. The game features a minimalist dark-mode aesthetic with configurable JSON-driven waves and progressive difficulty.
+Zomboid Assault is a 2D/2.5D column-based defense game where players must make strategic split-second decisions: shoot advancing zombie hordes or sacrifice firepower to shoot countdown timers that unlock powerful upgrades. The game features a minimalist dark-mode aesthetic with configurable JSON-driven waves and progressive difficulty.
 
 ### Target Audience
 - **Primary:** Mobile gamers (16-35), casual/mid-core players who enjoy fast-paced arcade action

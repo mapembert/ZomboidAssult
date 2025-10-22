@@ -171,7 +171,7 @@ Benefits of object pooling:
 - **60 FPS Target:** Minimize garbage collection pauses ✅
 
 ### Pool Size Guidelines
-Recommended pool sizes for Zomboid Assult:
+Recommended pool sizes for Zomboid Assault:
 - **Projectiles:** 100-200 (rapid fire weapons) - Set to 100 initially ✅
 - **Zomboids:** 50-100 (wave spawning) - Future implementation
 - **Timers:** 10-20 (occasional spawns) - Future implementation

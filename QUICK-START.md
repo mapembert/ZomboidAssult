@@ -1,4 +1,4 @@
-# Zomboid Assult - Quick Start Guide
+# Zomboid Assault - Quick Start Guide
 
 ## 🚀 Get Running in 5 Minutes
 
@@ -124,7 +124,7 @@ export class TestScene extends Phaser.Scene {
 
   create() {
     // Add test text
-    this.add.text(360, 640, 'Zomboid Assult\nPrototype', {
+    this.add.text(360, 640, 'Zomboid Assault\nPrototype', {
       fontSize: '48px',
       color: '#03DAC6',
       align: 'center',
@@ -391,7 +391,7 @@ Everything is set up. The JSON configs are ready. The documentation is complete.
 
 Start with: `docs/implementation-roadmap.md` → Phase 1 → Story 1.2.1
 
-Good luck building Zomboid Assult! 🧟‍♂️⚡
+Good luck building Zomboid Assault! 🧟‍♂️⚡
 
 ---
 

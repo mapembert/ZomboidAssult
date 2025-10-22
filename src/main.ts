@@ -33,4 +33,44 @@ if (loadingEl) {
 // Create game instance
 const game = new Phaser.Game(config);
 
+// Fullscreen button handler
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+if (fullscreenBtn) {
+  fullscreenBtn.addEventListener('click', () => {
+    const container = document.getElementById('game-container');
+    if (container) {
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if ((container as any).webkitRequestFullscreen) {
+        // iOS Safari
+        (container as any).webkitRequestFullscreen();
+      } else if ((container as any).mozRequestFullScreen) {
+        // Firefox
+        (container as any).mozRequestFullScreen();
+      } else if ((container as any).msRequestFullscreen) {
+        // IE/Edge
+        (container as any).msRequestFullscreen();
+      }
+    }
+  });
+}
+
+// Detect if running in standalone mode (added to home screen)
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  document.body.classList.add('standalone');
+}
+
 export default game;
+
+// Register Service Worker for PWA offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('ServiceWorker registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('ServiceWorker registration failed:', error);
+      });
+  });
+}

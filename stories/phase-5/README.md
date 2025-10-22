@@ -431,7 +431,7 @@ stories/phase-5/
 ## Resources
 
 ### Design References
-- [Zomboid Assult Prototype Design](../../docs/zomboid-assult-prototype-design.md)
+- [Zomboid Assault Prototype Design](../../docs/zomboid-assult-prototype-design.md)
 - [Game Architecture Document](../../docs/game-architecture.md)
 - [Implementation Roadmap](../../docs/implementation-roadmap.md)
 

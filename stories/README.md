@@ -1,4 +1,4 @@
-# Zomboid Assult - Implementation Stories
+# Zomboid Assault - Implementation Stories
 
 Welcome to the implementation stories directory! This folder contains **sharded, actionable stories** extracted from the main implementation roadmap.
 
@@ -249,5 +249,5 @@ Want to add more detailed stories for later phases? Follow this template:
 ---
 
 **Created:** 2025-10-21
-**BMad Orchestrator** - Implementation stories for Zomboid Assult
+**BMad Orchestrator** - Implementation stories for Zomboid Assault
 **Total Stories:** 46 (4 created with full detail, 42 to be expanded)

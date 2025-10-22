@@ -71,7 +71,7 @@ export class BootScene extends Phaser.Scene {
   create(): void {
     // Placeholder text
     this.add
-      .text(360, 640, 'Zomboid Assult\nLoading...', {
+      .text(360, 640, 'Zomboid Assault\nLoading...', {
         fontSize: '48px',
         color: '#03DAC6',
         align: 'center',
@@ -102,7 +102,7 @@ import { BootScene } from './scenes/BootScene';
 ```bash
 npm run dev
 # Open browser at http://localhost:3000
-# Should see dark background with "Zomboid Assult Loading..." text
+# Should see dark background with "Zomboid Assault Loading..." text
 # Check console for "BootScene created successfully"
 # Check FPS in browser (should be ~60 FPS)
 ```

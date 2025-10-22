@@ -3,8 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Zomboid Assult - 2D mobile defense game" />
-    <title>Zomboid Assult</title>
+    <meta name="description" content="Zomboid Assault - 2D mobile defense game" />
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    <!-- iOS Meta Tags for Fullscreen/Standalone Mode -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Zomboid Assault" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    
+    <!-- Android/Chrome Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#121212" />
+    
+    <title>Zomboid Assault</title>
     <style>
       * {
         margin: 0;
@@ -28,6 +42,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
       }
 
       canvas {
@@ -60,13 +75,45 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+
+      /* Fullscreen button */
+      #fullscreen-btn {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(3, 218, 198, 0.2);
+        border: 2px solid #03DAC6;
+        color: #03DAC6;
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 9999;
+        font-family: inherit;
+        transition: background-color 0.2s;
+      }
+
+      #fullscreen-btn:hover {
+        background-color: rgba(3, 218, 198, 0.4);
+      }
+
+      #fullscreen-btn:active {
+        background-color: rgba(3, 218, 198, 0.6);
+      }
+
+      /* Hide fullscreen button when in fullscreen or standalone mode */
+      .standalone #fullscreen-btn,
+      :fullscreen #fullscreen-btn {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <button id="fullscreen-btn">Fullscreen</button>
     <div id="game-container">
       <div id="loading">
         <div class="loading-spinner"></div>
-        <div>Loading Zomboid Assult...</div>
+        <div>Loading Zomboid Assault...</div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

@@ -1,10 +1,10 @@
-# Zomboid Assult 🧟‍♂️
+# Zomboid Assault 🧟‍♂️
 
 A 2D/2.5D mobile defense game built with Phaser 3 and TypeScript. Defend against zombie hordes descending in columns - shoot zomboids or countdown timers to unlock powerful upgrades!
 
 ## 🎮 Game Concept
 
-Zomboid Assult features a unique strategic mechanic: players must choose between shooting zombie hordes (defense) or shooting countdown timers (upgrades). Timers start at negative values and increment when shot - reaching positive values grants hero additions or weapon upgrades.
+Zomboid Assault features a unique strategic mechanic: players must choose between shooting zombie hordes (defense) or shooting countdown timers (upgrades). Timers start at negative values and increment when shot - reaching positive values grants hero additions or weapon upgrades.
 
 ### Key Features
 - **Column-Based Gameplay:** Zomboids descend in 2 vertical lanes

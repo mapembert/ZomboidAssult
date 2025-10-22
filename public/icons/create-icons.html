@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body>
+<canvas id="canvas192" width="192" height="192"></canvas>
+<canvas id="canvas512" width="512" height="512"></canvas>
+<script>
+function createIcon(canvasId, size) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  
+  // Dark background
+  ctx.fillStyle = '#121212';
+  ctx.fillRect(0, 0, size, size);
+  
+  // Teal border
+  ctx.strokeStyle = '#03DAC6';
+  ctx.lineWidth = size * 0.05;
+  ctx.strokeRect(size * 0.1, size * 0.1, size * 0.8, size * 0.8);
+  
+  // Draw a simple zombie circle (red)
+  ctx.fillStyle = '#FF5252';
+  ctx.beginPath();
+  ctx.arc(size * 0.5, size * 0.35, size * 0.15, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#FF8A80';
+  ctx.lineWidth = size * 0.02;
+  ctx.stroke();
+  
+  // Draw hero triangle (teal)
+  ctx.fillStyle = '#03DAC6';
+  ctx.beginPath();
+  ctx.moveTo(size * 0.5, size * 0.75);
+  ctx.lineTo(size * 0.35, size * 0.55);
+  ctx.lineTo(size * 0.65, size * 0.55);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Download link
+  const link = document.createElement('a');
+  link.download = `icon-${size}.png`;
+  link.href = canvas.toDataURL();
+  link.textContent = `Download ${size}x${size} icon`;
+  link.style.display = 'block';
+  link.style.margin = '10px';
+  document.body.appendChild(link);
+}
+
+createIcon('canvas192', 192);
+createIcon('canvas512', 512);
+</script>
+</body>
+</html>

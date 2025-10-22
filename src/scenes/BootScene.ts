@@ -19,7 +19,7 @@ export class BootScene extends Phaser.Scene {
 
     // Title
     this.add
-      .text(centerX, centerY - 150, 'Zomboid Assult', {
+      .text(centerX, centerY - 150, 'Zomboid Assault', {
         fontSize: '48px',
         color: '#03DAC6',
         fontStyle: 'bold',

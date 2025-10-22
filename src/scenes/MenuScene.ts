@@ -13,7 +13,7 @@ export class MenuScene extends Phaser.Scene {
 
     // Title
     this.add
-      .text(centerX, 80, 'Zomboid Assult', {
+      .text(centerX, 80, 'Zomboid Assault', {
         fontSize: '64px',
         color: '#03DAC6',
         fontStyle: 'bold',

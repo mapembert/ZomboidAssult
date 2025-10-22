@@ -1,7 +1,7 @@
-# Zomboid Assult - Implementation Roadmap
+# Zomboid Assault - Implementation Roadmap
 
 ## Overview
-This document provides a structured development plan for implementing the Zomboid Assult prototype. The plan is organized into phases, epics, and stories that can be executed sequentially or assigned to team members.
+This document provides a structured development plan for implementing the Zomboid Assault prototype. The plan is organized into phases, epics, and stories that can be executed sequentially or assigned to team members.
 
 ---
 
@@ -100,7 +100,7 @@ This document provides a structured development plan for implementing the Zomboi
 
 #### Story 1.3.2: Implement MenuScene
 - Create `src/scenes/MenuScene.ts`
-- Display game title "Zomboid Assult"
+- Display game title "Zomboid Assault"
 - Show chapter list with names and descriptions
 - Implement "Start Chapter" button
 - Pass selected ChapterData to GameScene

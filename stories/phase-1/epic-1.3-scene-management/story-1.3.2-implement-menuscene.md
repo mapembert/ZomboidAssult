@@ -6,11 +6,11 @@
 **Status:** ✅ COMPLETED
 
 ## Description
-Create `src/scenes/MenuScene.ts` to display game title "Zomboid Assult", show chapter list with names and descriptions, implement "Start Chapter" button, and pass selected ChapterData to GameScene.
+Create `src/scenes/MenuScene.ts` to display game title "Zomboid Assault", show chapter list with names and descriptions, implement "Start Chapter" button, and pass selected ChapterData to GameScene.
 
 ## Tasks
 - [x] Create `src/scenes/MenuScene.ts`
-- [x] Display game title "Zomboid Assult"
+- [x] Display game title "Zomboid Assault"
 - [x] Show chapter list with names and descriptions
 - [x] Implement "Start Chapter" button
 - [x] Pass selected ChapterData to GameScene
@@ -37,7 +37,7 @@ MenuScene provides the main menu interface:
 5. Follows dark mode color scheme (#121212 background, #03DAC6 accents)
 
 ## UI Layout
-- **Top:** Game title "Zomboid Assult"
+- **Top:** Game title "Zomboid Assault"
 - **Center:** Chapter selection list (scrollable if needed)
 - **Each Chapter:** Name, description, and start button
 - **Theme:** Dark background with cyan accents

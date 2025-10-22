@@ -1,7 +1,7 @@
-# Zomboid Assult - Game Architecture Document
+# Zomboid Assault - Game Architecture Document
 
 ## Document Information
-- **Game:** Zomboid Assult
+- **Game:** Zomboid Assault
 - **Version:** 1.0
 - **Date:** 2025-10-21
 - **Author:** BMad Orchestrator
