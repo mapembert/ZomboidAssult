@@ -1,36 +1,3 @@
-# Story 1.2.2: Implement ConfigLoader System
-
-**Epic:** 1.2 Configuration System
-**Phase:** 1 - Foundation (Days 1-2)
-**Estimated Time:** 3 hours
-**Status:** ✅ COMPLETED
-
-## Description
-Create `src/systems/ConfigLoader.ts` with methods to load and parse all JSON configuration files. Implement error handling for missing or malformed JSON, and ensure all config data is accessible in scenes.
-
-## Tasks
-- [x] Create `src/systems/ConfigLoader.ts`
-- [x] Implement loadGameSettings() method
-- [x] Implement loadZomboidTypes() method
-- [x] Implement loadWeaponTypes() method
-- [x] Implement loadTimerTypes() method
-- [x] Implement loadHeroConfig() method
-- [x] Implement loadChapter(chapterId) method
-- [x] Implement getAllChapters() method
-- [x] Add error handling for missing/malformed JSON
-- [x] Test loading all existing config files
-
-## Acceptance Criteria
-- [x] All JSON files load successfully
-- [x] Typed data structures returned
-- [x] Error messages display for invalid JSON
-- [x] Config data accessible in scenes
-
-## Implementation Guide
-
-### Create `src/systems/ConfigLoader.ts`
-
-```typescript
 import type {
   GameSettings,
   ZomboidTypesConfig,
@@ -68,8 +35,9 @@ export class ConfigLoader {
     try {
       const response = await fetch('/config/game-settings.json');
       if (!response.ok) throw new Error('Failed to load game settings');
-      this.gameSettings = await response.json();
-      return this.gameSettings;
+      const data: GameSettings = await response.json();
+      this.gameSettings = data;
+      return data;
     } catch (error) {
       console.error('Error loading game settings:', error);
       throw error;
@@ -139,8 +107,9 @@ export class ConfigLoader {
     try {
       const response = await fetch('/config/entities/heroes.json');
       if (!response.ok) throw new Error('Failed to load hero config');
-      this.heroConfig = await response.json();
-      return this.heroConfig;
+      const data: HeroConfig = await response.json();
+      this.heroConfig = data;
+      return data;
     } catch (error) {
       console.error('Error loading hero config:', error);
       throw error;
@@ -220,48 +189,3 @@ export class ConfigLoader {
     return this.chapters.get(id);
   }
 }
-```
-
-## Files to Create
-- `src/systems/ConfigLoader.ts`
-
-## Dependencies
-- Story 1.2.1: Create TypeScript Type Definitions
-
-## Testing
-
-### Create test file `src/test-config-loader.ts` (temporary):
-```typescript
-import { ConfigLoader } from '@/systems/ConfigLoader';
-
-async function testConfigLoader() {
-  const loader = ConfigLoader.getInstance();
-
-  try {
-    // Test loading all configs
-    await loader.loadAllConfigs();
-
-    // Test getters
-    console.log('Game Settings:', loader.getGameSettings());
-    console.log('Zomboid Type (basic_circle_small):', loader.getZomboidType('basic_circle_small'));
-    console.log('Weapon Type (single_gun):', loader.getWeaponType('single_gun'));
-    console.log('Chapter (chapter-01):', loader.getChapter('chapter-01'));
-
-    console.log('✅ All config tests passed!');
-  } catch (error) {
-    console.error('❌ Config loading failed:', error);
-  }
-}
-
-testConfigLoader();
-```
-
-### Run test:
-```bash
-npm run dev
-# Open browser at http://localhost:3000
-# Should see all configs logged without errors
-```
-
-## Next Story
-Story 1.3.1: Implement BootScene
