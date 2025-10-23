@@ -6,6 +6,8 @@ import { InputManager } from '@/systems/InputManager';
 import { WeaponSystem } from '@/systems/WeaponSystem';
 import { WaveManager } from '@/systems/WaveManager';
 import { CollisionManager } from '@/systems/CollisionManager';
+import { WaveCompleteOverlay } from '@/ui/WaveCompleteOverlay';
+import { ProgressManager } from '@/systems/ProgressManager';
 
 export class GameScene extends Phaser.Scene {
   private currentChapter: ChapterData | null = null;
@@ -23,6 +25,10 @@ export class GameScene extends Phaser.Scene {
   private score: number = 0;
   private gameActive: boolean = true;
   private safeZoneHeight: number = 150;
+  private waveCompleteOverlay: WaveCompleteOverlay | null = null;
+  private isTransitioningWaves: boolean = false;
+  private chapterStartTime: number = 0;
+  private totalZomboidsKilled: number = 0;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -110,6 +116,16 @@ export class GameScene extends Phaser.Scene {
         color: '#E0E0E0',
       });
 
+      // Track chapter start time
+      this.chapterStartTime = this.time.now;
+      this.totalZomboidsKilled = 0;
+
+      // Notify ProgressManager of chapter start
+      if (this.currentChapter) {
+        const progressManager = ProgressManager.getInstance();
+        progressManager.onChapterStart(this.currentChapter.chapterId);
+      }
+
       // Start first wave
       this.waveManager.startWave(0);
       this.updateWaveDisplay();
@@ -135,6 +151,9 @@ export class GameScene extends Phaser.Scene {
 
     // Listen for weapon upgrade events
     this.events.on('weapon_upgraded', this.handleWeaponUpgrade, this);
+
+    // Listen for wave complete events
+    this.events.on('wave_complete', this.handleWaveComplete, this);
 
     const pauseButton = this.add
       .text(width - 20, 20, '⏸ MENU', {
@@ -178,8 +197,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    // Only update game logic if game is active
-    if (!this.gameActive) return;
+    // Only update game logic if game is active or transitioning
+    if (!this.gameActive && !this.isTransitioningWaves) return;
 
     if (this.heroManager && this.inputManager) {
       if (this.inputManager.isMovingLeft()) {
@@ -249,6 +268,12 @@ export class GameScene extends Phaser.Scene {
       // Zomboid was destroyed, add score
       this.score += data.score;
       this.updateScoreDisplay();
+
+      // Track zomboid kill in wave stats and chapter stats
+      if (this.waveManager) {
+        this.waveManager.onZomboidDestroyed();
+      }
+      this.totalZomboidsKilled++;
     }
   }
 
@@ -451,6 +476,77 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * Handle wave complete event from WaveManager
+   */
+  private handleWaveComplete(data: {
+    waveNumber: number;
+    stats: import('@/types/GameTypes').WaveStats;
+    hasNextWave: boolean;
+  }): void {
+    if (!this.waveManager) return;
+
+    this.isTransitioningWaves = true;
+    this.gameActive = false;
+
+    console.log(`Wave ${data.waveNumber} complete! Has next wave: ${data.hasNextWave}`);
+
+    // Display wave complete overlay
+    this.waveCompleteOverlay = new WaveCompleteOverlay(this, data.waveNumber, data.stats);
+
+    // Wait 3 seconds, then transition
+    this.time.delayedCall(3000, () => {
+      if (this.waveCompleteOverlay) {
+        this.waveCompleteOverlay.fadeOut(() => {
+          this.transitionToNextWave(data.hasNextWave);
+        });
+      } else {
+        this.transitionToNextWave(data.hasNextWave);
+      }
+    });
+  }
+
+  /**
+   * Transition to next wave or chapter complete
+   */
+  private transitionToNextWave(hasNextWave: boolean): void {
+    if (!this.waveManager) return;
+
+    if (hasNextWave) {
+      // Start next wave
+      this.waveManager.startNextWave();
+      this.updateWaveDisplay();
+
+      // Resume game
+      this.isTransitioningWaves = false;
+      this.gameActive = true;
+    } else {
+      // Chapter complete - transition to chapter complete screen (Story 4.1.2)
+      this.onChapterComplete();
+    }
+  }
+
+  /**
+   * Handle chapter completion
+   */
+  private onChapterComplete(): void {
+    if (!this.currentChapter || !this.weaponSystem) return;
+
+    const completionTime = (this.time.now - this.chapterStartTime) / 1000; // in seconds
+    const weaponTier = this.weaponSystem.getCurrentWeapon().tier;
+
+    console.log('Chapter Complete!');
+
+    // Transition to ChapterCompleteScene with statistics
+    this.scene.start('ChapterCompleteScene', {
+      chapter: this.currentChapter,
+      score: this.score,
+      completionTime,
+      zomboidsKilled: this.totalZomboidsKilled,
+      weaponTier,
+    });
+  }
+
   private returnToMenu(): void {
     console.log('Returning to MenuScene');
     this.shutdown();
@@ -463,6 +559,7 @@ export class GameScene extends Phaser.Scene {
     this.events.off('timer_exited', this.handleTimerExit, this);
     this.events.off('timer_completed', this.handleTimerCompleted, this);
     this.events.off('weapon_upgraded', this.handleWeaponUpgrade, this);
+    this.events.off('wave_complete', this.handleWaveComplete, this);
 
     if (this.heroManager) {
       this.heroManager.destroy();

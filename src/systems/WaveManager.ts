@@ -4,6 +4,7 @@ import { Timer } from '@/entities/Timer';
 import { ObjectPool } from '@/utils/ObjectPool';
 import { ConfigLoader } from '@/systems/ConfigLoader';
 import type { WaveData, ZomboidSpawnPattern, TimerSpawnPattern } from '@/types/ConfigTypes';
+import type { WaveStats } from '@/types/GameTypes';
 
 /**
  * Spawn Schedule Entry for Zomboids
@@ -52,6 +53,16 @@ export class WaveManager {
 
   // Column positions
   private columnPositions: number[] = [];
+
+  // Wave statistics tracking
+  private waveStats: WaveStats = {
+    zomboidsSpawned: 0,
+    zomboidsKilled: 0,
+    timersSpawned: 0,
+    timersCompleted: 0,
+    duration: 0,
+    timeElapsed: 0,
+  };
 
   constructor(scene: Phaser.Scene, waves: WaveData[]) {
     this.scene = scene;
@@ -115,6 +126,10 @@ export class WaveManager {
 
     // Build spawn schedules for this wave
     this.buildZomboidSpawnSchedule();
+    this.buildTimerSpawnSchedule();
+
+    // Reset wave statistics
+    this.resetWaveStats();
     this.buildTimerSpawnSchedule();
     this.nextZomboidSpawnIndex = 0;
     this.nextTimerSpawnIndex = 0;
@@ -350,22 +365,20 @@ export class WaveManager {
   }
 
   /**
-   * Complete current wave
+   * Complete current wave (called by update loop)
    */
   private completeWave(): void {
+    if (!this.currentWave) return;
+    
     console.log('Wave ' + (this.currentWaveIndex + 1) + ' completed!');
     this.isWaveActive = false;
-
-    // Check if there's a next wave
-    if (this.currentWaveIndex + 1 < this.waves.length) {
-      // Auto-start next wave after a delay
-      this.scene.time.delayedCall(2000, () => {
-        this.startWave(this.currentWaveIndex + 1);
-      });
-    } else {
-      console.log('All waves completed! Chapter complete!');
-      // TODO: Trigger chapter completion
-    }
+    
+    // Emit wave complete event for GameScene to handle UI and transitions
+    this.scene.events.emit('wave_complete', {
+      waveNumber: this.currentWaveIndex + 1,
+      stats: this.getWaveStats(),
+      hasNextWave: this.hasNextWave(),
+    });
   }
 
   /**
@@ -430,6 +443,93 @@ export class WaveManager {
    */
   getPoolStats(): { active: number; available: number; total: number } {
     return this.zomboidPool.getStats();
+  }
+
+
+  /**
+   * Check if current wave is complete
+   * @returns true if wave duration elapsed
+   */
+  isWaveComplete(): boolean {
+    if (!this.currentWave || !this.isWaveActive) return false;
+    return this.waveElapsedTime >= this.currentWave.duration;
+  }
+
+  /**
+   * Get current wave statistics
+   */
+  getWaveStats(): WaveStats {
+    this.waveStats.timeElapsed = this.waveElapsedTime;
+    return { ...this.waveStats };
+  }
+
+  /**
+   * Increment zomboid kill counter
+   */
+  onZomboidDestroyed(): void {
+    this.waveStats.zomboidsKilled++;
+  }
+
+  /**
+   * Increment timer completion counter
+   */
+  onTimerCompleted(): void {
+    this.waveStats.timersCompleted++;
+  }
+
+  /**
+   * Check if there are more waves in chapter
+   */
+  hasNextWave(): boolean {
+    return this.currentWaveIndex < this.waves.length - 1;
+  }
+
+  /**
+   * Advance to next wave
+   */
+  startNextWave(): void {
+    if (this.hasNextWave()) {
+      this.currentWaveIndex++;
+      this.startWave(this.currentWaveIndex);
+    }
+  }
+
+  /**
+   * Reset wave statistics for new wave
+   */
+  private resetWaveStats(): void {
+    this.waveStats = {
+      zomboidsSpawned: this.zomboidSpawnSchedule.length,
+      zomboidsKilled: 0,
+      timersSpawned: this.timerSpawnSchedule.length,
+      timersCompleted: 0,
+      duration: this.currentWave?.duration || 0,
+      timeElapsed: 0,
+    };
+  }
+
+  /**
+   * Disable wave completion auto-transition (for manual control)
+   */
+  disableAutoTransition(): void {
+    this.isWaveActive = false;
+  }
+
+  /**
+   * Complete current wave (emit event for GameScene to handle)
+   */
+  completeWaveManually(): void {
+    if (!this.currentWave) return;
+    
+    console.log('Wave ' + (this.currentWaveIndex + 1) + ' completed manually');
+    this.isWaveActive = false;
+    
+    // Emit wave complete event for GameScene to handle
+    this.scene.events.emit('wave_complete', {
+      waveNumber: this.currentWaveIndex + 1,
+      stats: this.getWaveStats(),
+      hasNextWave: this.hasNextWave(),
+    });
   }
 
   /**

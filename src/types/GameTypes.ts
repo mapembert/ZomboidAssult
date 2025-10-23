@@ -26,3 +26,12 @@ export interface SpawnEvent {
   entityId: string;
   column: Column;
 }
+
+export interface WaveStats {
+  zomboidsSpawned: number;
+  zomboidsKilled: number;
+  timersSpawned: number;
+  timersCompleted: number;
+  duration: number;
+  timeElapsed: number;
+}

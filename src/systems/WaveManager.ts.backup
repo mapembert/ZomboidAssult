@@ -1,16 +1,27 @@
 import Phaser from 'phaser';
 import { Zomboid } from '@/entities/Zomboid';
+import { Timer } from '@/entities/Timer';
 import { ObjectPool } from '@/utils/ObjectPool';
 import { ConfigLoader } from '@/systems/ConfigLoader';
-import type { WaveData, ZomboidSpawnPattern } from '@/types/ConfigTypes';
+import type { WaveData, ZomboidSpawnPattern, TimerSpawnPattern } from '@/types/ConfigTypes';
 
 /**
- * Spawn Schedule Entry
+ * Spawn Schedule Entry for Zomboids
  * Represents when and where to spawn a zomboid
  */
-interface SpawnScheduleEntry {
+interface ZomboidSpawnScheduleEntry {
   time: number;
   zomboidType: string;
+  columnIndex: number;
+}
+
+/**
+ * Spawn Schedule Entry for Timers
+ * Represents when and where to spawn a timer
+ */
+interface TimerSpawnScheduleEntry {
+  time: number;
+  timerType: string;
   columnIndex: number;
 }
 
@@ -24,16 +35,20 @@ export class WaveManager {
   private currentWaveIndex: number = 0;
   private currentWave: WaveData | null = null;
   private zomboidPool: ObjectPool<Zomboid>;
+  private timerPool: ObjectPool<Timer>;
   private activeZomboids: Zomboid[] = [];
+  private activeTimers: Timer[] = [];
   private configLoader: ConfigLoader;
 
   // Wave timing
   private waveElapsedTime: number = 0;
   private isWaveActive: boolean = false;
 
-  // Spawn schedule
-  private spawnSchedule: SpawnScheduleEntry[] = [];
-  private nextSpawnIndex: number = 0;
+  // Spawn schedules
+  private zomboidSpawnSchedule: ZomboidSpawnScheduleEntry[] = [];
+  private timerSpawnSchedule: TimerSpawnScheduleEntry[] = [];
+  private nextZomboidSpawnIndex: number = 0;
+  private nextTimerSpawnIndex: number = 0;
 
   // Column positions
   private columnPositions: number[] = [];
@@ -42,6 +57,9 @@ export class WaveManager {
     this.scene = scene;
     this.waves = waves;
     this.configLoader = ConfigLoader.getInstance();
+
+    // Listen for instant timer completions
+    this.scene.events.on('timer_completed', this.handleTimerCompleted, this);
 
     // Calculate column positions (same as HeroManager)
     // Left column: SCREEN_WIDTH / 4
@@ -57,6 +75,27 @@ export class WaveManager {
         zomboid.setVisible(false);
       },
       50
+    );
+
+    // Create timer pool (10 timers initially)
+    this.timerPool = new ObjectPool<Timer>(
+      () => {
+        // Create a placeholder timer with hero_add_timer config
+        const timerConfig = this.configLoader.getTimerType('hero_add_timer');
+        if (!timerConfig) {
+          throw new Error('Failed to load hero_add_timer config for timer pool');
+        }
+        const timer = new Timer(this.scene, 0, 0, timerConfig, 0);
+        // Immediately hide the timer after creation
+        timer.setActive(false);
+        timer.setVisible(false);
+        return timer;
+      },
+      (timer: Timer) => {
+        timer.setActive(false);
+        timer.setVisible(false);
+      },
+      10
     );
   }
 
@@ -74,21 +113,23 @@ export class WaveManager {
     this.waveElapsedTime = 0;
     this.isWaveActive = true;
 
-    // Build spawn schedule for this wave
-    this.buildSpawnSchedule();
-    this.nextSpawnIndex = 0;
+    // Build spawn schedules for this wave
+    this.buildZomboidSpawnSchedule();
+    this.buildTimerSpawnSchedule();
+    this.nextZomboidSpawnIndex = 0;
+    this.nextTimerSpawnIndex = 0;
 
     console.log('Wave ' + (waveIndex + 1) + ' started: ' + this.currentWave.waveName);
     return true;
   }
 
   /**
-   * Build spawn schedule from wave config
+   * Build zomboid spawn schedule from wave config
    */
-  private buildSpawnSchedule(): void {
+  private buildZomboidSpawnSchedule(): void {
     if (!this.currentWave) return;
 
-    this.spawnSchedule = [];
+    this.zomboidSpawnSchedule = [];
 
     // Process each zomboid spawn pattern
     this.currentWave.spawnPattern.zomboids.forEach((pattern: ZomboidSpawnPattern) => {
@@ -102,7 +143,7 @@ export class WaveManager {
         const columnName = pattern.columns[Math.floor(Math.random() * pattern.columns.length)];
         const columnIndex = columnName === 'left' ? 0 : 1;
 
-        this.spawnSchedule.push({
+        this.zomboidSpawnSchedule.push({
           time: spawnTime,
           zomboidType: pattern.type,
           columnIndex: columnIndex,
@@ -111,13 +152,38 @@ export class WaveManager {
     });
 
     // Sort schedule by time
-    this.spawnSchedule.sort((a, b) => a.time - b.time);
+    this.zomboidSpawnSchedule.sort((a, b) => a.time - b.time);
 
-    console.log('Spawn schedule built: ' + this.spawnSchedule.length + ' zomboids');
+    console.log('Zomboid spawn schedule built: ' + this.zomboidSpawnSchedule.length + ' zomboids');
   }
 
   /**
-   * Update wave and spawn zomboids
+   * Build timer spawn schedule from wave config
+   */
+  private buildTimerSpawnSchedule(): void {
+    if (!this.currentWave) return;
+
+    this.timerSpawnSchedule = [];
+
+    // Process each timer spawn pattern
+    this.currentWave.spawnPattern.timers.forEach((pattern: TimerSpawnPattern) => {
+      const columnIndex = pattern.column === 'left' ? 0 : 1;
+
+      this.timerSpawnSchedule.push({
+        time: pattern.spawnTime,
+        timerType: pattern.type,
+        columnIndex: columnIndex,
+      });
+    });
+
+    // Sort schedule by time
+    this.timerSpawnSchedule.sort((a, b) => a.time - b.time);
+
+    console.log('Timer spawn schedule built: ' + this.timerSpawnSchedule.length + ' timers');
+  }
+
+  /**
+   * Update wave and spawn zomboids and timers
    */
   update(_time: number, delta: number): void {
     if (!this.isWaveActive || !this.currentWave) return;
@@ -125,8 +191,9 @@ export class WaveManager {
     // Update wave elapsed time
     this.waveElapsedTime += delta / 1000;
 
-    // Process spawn schedule
-    this.processSpawnSchedule();
+    // Process spawn schedules
+    this.processZomboidSpawnSchedule();
+    this.processTimerSpawnSchedule();
 
     // Update all active zomboids
     for (let i = this.activeZomboids.length - 1; i >= 0; i--) {
@@ -141,6 +208,28 @@ export class WaveManager {
       }
     }
 
+    // Update all active timers
+    for (let i = this.activeTimers.length - 1; i >= 0; i--) {
+      const timer = this.activeTimers[i];
+      timer.update(delta);
+
+      // Check if timer exited screen
+      if (timer.y > this.scene.scale.height) {
+        const finalValue = timer.onExitScreen();
+
+        // Emit event with timer data
+        this.scene.events.emit('timer_exited', {
+          timerType: timer.getTimerType(),
+          finalValue: finalValue,
+          column: timer.getColumnIndex(),
+        });
+
+        // Remove and return to pool
+        this.activeTimers.splice(i, 1);
+        this.timerPool.release(timer);
+      }
+    }
+
     // Check if wave is complete
     if (this.waveElapsedTime >= this.currentWave.duration) {
       this.completeWave();
@@ -148,16 +237,33 @@ export class WaveManager {
   }
 
   /**
-   * Process spawn schedule and spawn zomboids at scheduled times
+   * Process zomboid spawn schedule and spawn zomboids at scheduled times
    */
-  private processSpawnSchedule(): void {
-    while (this.nextSpawnIndex < this.spawnSchedule.length) {
-      const entry = this.spawnSchedule[this.nextSpawnIndex];
+  private processZomboidSpawnSchedule(): void {
+    while (this.nextZomboidSpawnIndex < this.zomboidSpawnSchedule.length) {
+      const entry = this.zomboidSpawnSchedule[this.nextZomboidSpawnIndex];
 
       // Check if it's time to spawn this zomboid
       if (this.waveElapsedTime >= entry.time) {
         this.spawnZomboid(entry.zomboidType, entry.columnIndex);
-        this.nextSpawnIndex++;
+        this.nextZomboidSpawnIndex++;
+      } else {
+        break; // Not time yet
+      }
+    }
+  }
+
+  /**
+   * Process timer spawn schedule and spawn timers at scheduled times
+   */
+  private processTimerSpawnSchedule(): void {
+    while (this.nextTimerSpawnIndex < this.timerSpawnSchedule.length) {
+      const entry = this.timerSpawnSchedule[this.nextTimerSpawnIndex];
+
+      // Check if it's time to spawn this timer
+      if (this.waveElapsedTime >= entry.time) {
+        this.spawnTimer(entry.timerType, entry.columnIndex);
+        this.nextTimerSpawnIndex++;
       } else {
         break; // Not time yet
       }
@@ -185,6 +291,62 @@ export class WaveManager {
     // Spawn zomboid
     zomboid.spawn(x, y, zomboidConfig, columnIndex);
     this.activeZomboids.push(zomboid);
+  }
+
+  /**
+   * Spawn a timer at the specified column
+   */
+  private spawnTimer(timerTypeId: string, columnIndex: number): void {
+    // Get timer config
+    const timerConfig = this.configLoader.getTimerType(timerTypeId);
+    if (!timerConfig) {
+      console.error('Unknown timer type: ' + timerTypeId);
+      return;
+    }
+
+    // Acquire timer from pool
+    const timer = this.timerPool.acquire();
+
+    // Calculate spawn position (above screen)
+    const x = this.columnPositions[columnIndex];
+    const y = -timerConfig.height; // Spawn just above screen
+
+    // Reset timer with new config
+    timer.resetForPool(x, y, timerConfig, columnIndex);
+
+    // Add unique instance ID for tracking
+    const instanceId = `timer_${Date.now()}_${Math.random()}`;
+    timer.setData('instanceId', instanceId);
+
+    this.activeTimers.push(timer);
+
+    console.log(`Timer spawned: ${timerTypeId} in column ${columnIndex}`);
+  }
+
+  /**
+   * Handle instant timer completion
+   */
+  private handleTimerCompleted(data: {
+    timerId: string;
+    timerType: string;
+    finalValue: number;
+    column: number;
+    instant: boolean;
+  }): void {
+    // Find and remove the timer
+    const timerIndex = this.activeTimers.findIndex(t => t.getData('instanceId') === data.timerId);
+
+    if (timerIndex !== -1) {
+      const timer = this.activeTimers[timerIndex];
+
+      // Remove from active timers
+      this.activeTimers.splice(timerIndex, 1);
+
+      // Return to pool
+      this.timerPool.release(timer);
+
+      console.log(`Timer ${data.timerType} instantly completed with value ${data.finalValue}`);
+    }
   }
 
   /**
@@ -257,6 +419,13 @@ export class WaveManager {
   }
 
   /**
+   * Get all active timers
+   */
+  getActiveTimers(): Timer[] {
+    return this.activeTimers;
+  }
+
+  /**
    * Get pool statistics
    */
   getPoolStats(): { active: number; available: number; total: number } {
@@ -267,14 +436,24 @@ export class WaveManager {
    * Cleanup
    */
   destroy(): void {
+    // Remove event listeners
+    this.scene.events.off('timer_completed', this.handleTimerCompleted, this);
+
     // Clear all active zomboids
     this.activeZomboids.forEach((zomboid) => {
       zomboid.destroy();
     });
     this.activeZomboids = [];
 
-    // Clear pool
+    // Clear all active timers
+    this.activeTimers.forEach((timer) => {
+      timer.destroy();
+    });
+    this.activeTimers = [];
+
+    // Clear pools
     this.zomboidPool.clear();
+    this.timerPool.clear();
 
     this.isWaveActive = false;
   }
