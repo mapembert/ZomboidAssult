@@ -43,6 +43,14 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    // Reset all game state variables when scene initializes
+    this.score = 0;
+    this.gameActive = true;
+    this.isTransitioningWaves = false;
+    this.chapterStartTime = 0;
+    this.totalZomboidsKilled = 0;
+    this.waveCompleteOverlay = null;
+
     console.log('GameScene initialized with chapter: ' + this.currentChapter.chapterName);
   }
 

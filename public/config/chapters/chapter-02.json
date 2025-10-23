@@ -19,7 +19,7 @@
           },
           {
             "type": "square_small",
-            "count": 15,
+            "count": 13,
             "spawnRate": 1.2,
             "columns": ["left", "right"],
             "spawnDelay": 2
@@ -28,7 +28,7 @@
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 8,
+            "spawnTime": 7,
             "column": "right"
           },
           {
@@ -76,6 +76,159 @@
           {
             "type": "hero_add_timer",
             "spawnTime": 15,
+            "column": "right"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Mixed Assault",
+      "duration": 35,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 15,
+            "spawnRate": 1.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 12,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_small",
+            "count": 15,
+            "spawnRate": 1.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 8,
+            "column": "left"
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 25,
+            "column": "left"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Heavy Defense",
+      "duration": 40,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_medium",
+            "count": 25,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 18,
+            "spawnRate": 1.6,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "hex_medium",
+            "count": 12,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 6,
+            "column": "right"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 15,
+            "column": "left"
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 25,
+            "column": "right"
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 5,
+      "waveName": "Final Stand",
+      "duration": 45,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 20,
+            "spawnRate": 2.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 20,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_medium",
+            "count": 15,
+            "spawnRate": 1.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          },
+          {
+            "type": "hex_large",
+            "count": 8,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 5,
+            "column": "left"
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 12,
+            "column": "right"
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 20,
+            "column": "left"
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 30,
             "column": "right"
           }
         ]

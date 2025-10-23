@@ -131,107 +131,113 @@ export class GameOverScene extends Phaser.Scene {
     const buttonY = height - 280;
     const buttonSpacing = 100;
 
-    // Restart Button
+    // Restart Button Container
+    const restartButton = this.add.container(centerX, buttonY);
+
     const restartBg = this.add.graphics();
     restartBg.fillStyle(0x03dac6, 0.9);
-    restartBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    restartBg.setInteractive(
-      new Phaser.Geom.Rectangle(centerX - 160, buttonY - 30, 320, 70),
-      Phaser.Geom.Rectangle.Contains
-    );
+    restartBg.fillRoundedRect(-160, -30, 320, 70, 8);
 
-    restartBg.on('pointerover', () => {
-      restartBg.clear();
-      restartBg.fillStyle(0x04fbe8, 0.9);
-      restartBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    });
-
-    restartBg.on('pointerout', () => {
-      restartBg.clear();
-      restartBg.fillStyle(0x03dac6, 0.9);
-      restartBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    });
-
-    restartBg.on('pointerdown', () => {
-      this.restartGame();
-    });
-
-    this.add
-      .text(centerX, buttonY, '↻ RESTART', {
+    const restartText = this.add
+      .text(0, 0, '↻ RESTART', {
         fontSize: '28px',
         color: '#121212',
         fontStyle: 'bold',
       })
       .setOrigin(0.5);
 
-    // Menu Button
+    restartButton.add([restartBg, restartText]);
+    restartButton.setSize(320, 70);
+    restartButton.setInteractive({ useHandCursor: true });
+
+    restartButton.on('pointerover', () => {
+      restartBg.clear();
+      restartBg.fillStyle(0x04fbe8, 0.9);
+      restartBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    restartButton.on('pointerout', () => {
+      restartBg.clear();
+      restartBg.fillStyle(0x03dac6, 0.9);
+      restartBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    restartButton.on('pointerdown', () => {
+      this.restartGame();
+    });
+
+    // Menu Button Container
+    const menuButton = this.add.container(centerX, buttonY + buttonSpacing);
+
     const menuBg = this.add.graphics();
     menuBg.fillStyle(0x2e2e2e, 0.9);
-    menuBg.fillRoundedRect(centerX - 160, buttonY + buttonSpacing - 30, 320, 70, 8);
-    menuBg.setInteractive(
-      new Phaser.Geom.Rectangle(centerX - 160, buttonY + buttonSpacing - 30, 320, 70),
-      Phaser.Geom.Rectangle.Contains
-    );
+    menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
 
-    menuBg.on('pointerover', () => {
-      menuBg.clear();
-      menuBg.fillStyle(0x3e3e3e, 0.9);
-      menuBg.fillRoundedRect(centerX - 160, buttonY + buttonSpacing - 30, 320, 70, 8);
-    });
-
-    menuBg.on('pointerout', () => {
-      menuBg.clear();
-      menuBg.fillStyle(0x2e2e2e, 0.9);
-      menuBg.fillRoundedRect(centerX - 160, buttonY + buttonSpacing - 30, 320, 70, 8);
-    });
-
-    menuBg.on('pointerdown', () => {
-      this.returnToMenu();
-    });
-
-    this.add
-      .text(centerX, buttonY + buttonSpacing, '← MENU', {
+    const menuText = this.add
+      .text(0, 0, '← MENU', {
         fontSize: '28px',
         color: '#03DAC6',
         fontStyle: 'bold',
       })
       .setOrigin(0.5);
+
+    menuButton.add([menuBg, menuText]);
+    menuButton.setSize(320, 70);
+    menuButton.setInteractive({ useHandCursor: true });
+
+    menuButton.on('pointerover', () => {
+      menuBg.clear();
+      menuBg.fillStyle(0x3e3e3e, 0.9);
+      menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    menuButton.on('pointerout', () => {
+      menuBg.clear();
+      menuBg.fillStyle(0x2e2e2e, 0.9);
+      menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    menuButton.on('pointerdown', () => {
+      this.returnToMenu();
+    });
   }
 
   private createMenuButton(centerX: number, height: number): void {
     const buttonY = height - 180;
 
+    const menuButton = this.add.container(centerX, buttonY);
+
     const menuBg = this.add.graphics();
     menuBg.fillStyle(0x2e2e2e, 0.9);
-    menuBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    menuBg.setInteractive(
-      new Phaser.Geom.Rectangle(centerX - 160, buttonY - 30, 320, 70),
-      Phaser.Geom.Rectangle.Contains
-    );
+    menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
 
-    menuBg.on('pointerover', () => {
-      menuBg.clear();
-      menuBg.fillStyle(0x3e3e3e, 0.9);
-      menuBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    });
-
-    menuBg.on('pointerout', () => {
-      menuBg.clear();
-      menuBg.fillStyle(0x2e2e2e, 0.9);
-      menuBg.fillRoundedRect(centerX - 160, buttonY - 30, 320, 70, 8);
-    });
-
-    menuBg.on('pointerdown', () => {
-      this.returnToMenu();
-    });
-
-    this.add
-      .text(centerX, buttonY, '← MENU', {
+    const menuText = this.add
+      .text(0, 0, '← MENU', {
         fontSize: '28px',
         color: '#03DAC6',
         fontStyle: 'bold',
       })
       .setOrigin(0.5);
+
+    menuButton.add([menuBg, menuText]);
+    menuButton.setSize(320, 70);
+    menuButton.setInteractive({ useHandCursor: true });
+
+    menuButton.on('pointerover', () => {
+      menuBg.clear();
+      menuBg.fillStyle(0x3e3e3e, 0.9);
+      menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    menuButton.on('pointerout', () => {
+      menuBg.clear();
+      menuBg.fillStyle(0x2e2e2e, 0.9);
+      menuBg.fillRoundedRect(-160, -30, 320, 70, 8);
+    });
+
+    menuButton.on('pointerdown', () => {
+      this.returnToMenu();
+    });
   }
 
   private restartGame(): void {
