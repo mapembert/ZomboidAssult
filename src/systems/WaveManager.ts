@@ -245,8 +245,8 @@ export class WaveManager {
       }
     }
 
-    // Check if wave is complete
-    if (this.waveElapsedTime >= this.currentWave.duration) {
+    // Check if wave is complete (all zomboids spawned and destroyed)
+    if (this.isWaveComplete()) {
       this.completeWave();
     }
   }
@@ -448,11 +448,19 @@ export class WaveManager {
 
   /**
    * Check if current wave is complete
-   * @returns true if wave duration elapsed
+   * @returns true if all zomboids spawned and destroyed
    */
   isWaveComplete(): boolean {
     if (!this.currentWave || !this.isWaveActive) return false;
-    return this.waveElapsedTime >= this.currentWave.duration;
+    
+    // Wave is complete when:
+    // 1. All zomboids have been spawned
+    const allZomboidsSpawned = this.nextZomboidSpawnIndex >= this.zomboidSpawnSchedule.length;
+    
+    // 2. All spawned zomboids have been destroyed or removed
+    const allZomboidsGone = this.activeZomboids.length === 0;
+    
+    return allZomboidsSpawned && allZomboidsGone;
   }
 
   /**

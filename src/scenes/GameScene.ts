@@ -211,13 +211,13 @@ export class GameScene extends Phaser.Scene {
       this.updateHeroCountDisplay();
     }
 
-    if (this.weaponSystem && this.heroManager) {
+    if (this.weaponSystem && this.heroManager && !this.isTransitioningWaves) {
       const heroPositions = this.heroManager.getHeroPositions();
       this.weaponSystem.fire(heroPositions);
       this.weaponSystem.update(time, delta);
     }
 
-    if (this.waveManager) {
+    if (this.waveManager && !this.isTransitioningWaves) {
       this.waveManager.update(time, delta);
       this.updateWaveDisplay();
 
