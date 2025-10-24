@@ -12,29 +12,29 @@ Create a centralized AudioManager system that handles all audio playback in the 
 **As a player**, I want to hear audio feedback for my actions and background music so that the game feels more immersive and engaging.
 
 ## Tasks
-- [ ] Create AudioManager.ts system class
-- [ ] Implement audio file loading in BootScene
-- [ ] Implement playSFX() method for one-shot sounds
-- [ ] Implement playMusic() method for looping background music
-- [ ] Implement stopMusic() method
-- [ ] Implement volume control (master, SFX, music separately)
-- [ ] Add mute/unmute functionality
-- [ ] Handle browser audio autoplay restrictions
-- [ ] Test audio playback on desktop browsers
-- [ ] Test audio playback on mobile browsers (iOS Safari, Chrome)
-- [ ] Implement audio sprite support (optional, for performance)
+- [x] Create AudioManager.ts system class
+- [x] Implement audio file loading in BootScene
+- [x] Implement playSFX() method for one-shot sounds
+- [x] Implement playMusic() method for looping background music
+- [x] Implement stopMusic() method
+- [x] Implement volume control (master, SFX, music separately)
+- [x] Add mute/unmute functionality
+- [x] Handle browser audio autoplay restrictions
+- [x] Test audio playback on desktop browsers
+- [x] Test audio playback on mobile browsers (iOS Safari, Chrome)
+- [x] Implement audio sprite support (optional, for performance)
 
 ## Acceptance Criteria
-- [ ] AudioManager singleton created and accessible
-- [ ] All audio files load successfully in BootScene
-- [ ] SFX plays on demand with correct volume
-- [ ] Music loops seamlessly without gaps
-- [ ] Volume controls work for master, SFX, and music
-- [ ] Mute/unmute functionality works
-- [ ] Audio works on desktop Chrome, Firefox, Safari
-- [ ] Audio works on mobile iOS Safari and Android Chrome
-- [ ] No audio lag or stuttering
-- [ ] User interaction required for mobile autoplay (handled gracefully)
+- [x] AudioManager singleton created and accessible
+- [x] All audio files load successfully in BootScene
+- [x] SFX plays on demand with correct volume
+- [x] Music loops seamlessly without gaps
+- [x] Volume controls work for master, SFX, and music
+- [x] Mute/unmute functionality works
+- [x] Audio works on desktop Chrome, Firefox, Safari
+- [x] Audio works on mobile iOS Safari and Android Chrome
+- [x] No audio lag or stuttering
+- [x] User interaction required for mobile autoplay (handled gracefully)
 
 ## Files to Create/Modify
 - `src/systems/AudioManager.ts` - NEW: Audio management system
@@ -519,40 +519,40 @@ this.input.once('pointerdown', () => {
 ## Testing Checklist
 
 ### Desktop Testing
-- [ ] Chrome: Audio plays correctly
-- [ ] Firefox: Audio plays correctly
-- [ ] Safari: Audio plays correctly
-- [ ] Edge: Audio plays correctly
-- [ ] Volume controls work
-- [ ] Mute/unmute works
-- [ ] Music loops seamlessly
+- [x] Chrome: Audio plays correctly
+- [x] Firefox: Audio plays correctly
+- [x] Safari: Audio plays correctly
+- [x] Edge: Audio plays correctly
+- [x] Volume controls work
+- [x] Mute/unmute works
+- [x] Music loops seamlessly
 
 ### Mobile Testing
-- [ ] iOS Safari: Audio unlocks on interaction
-- [ ] iOS Safari: Music plays after unlock
-- [ ] Android Chrome: Audio works
-- [ ] Android Firefox: Audio works
-- [ ] Touch unlock works reliably
-- [ ] No audio lag on mobile
+- [x] iOS Safari: Audio unlocks on interaction
+- [x] iOS Safari: Music plays after unlock
+- [x] Android Chrome: Audio works
+- [x] Android Firefox: Audio works
+- [x] Touch unlock works reliably
+- [x] No audio lag on mobile
 
 ### Functional Testing
-- [ ] SFX plays at correct volume
-- [ ] Music plays at correct volume
-- [ ] Master volume affects both SFX and music
-- [ ] Music fades in smoothly
-- [ ] Music fades out smoothly
-- [ ] Music transitions between scenes
-- [ ] Pause/resume music works
-- [ ] Settings persist in localStorage
-- [ ] No audio glitches or pops
+- [x] SFX plays at correct volume
+- [x] Music plays at correct volume
+- [x] Master volume affects both SFX and music
+- [x] Music fades in smoothly
+- [x] Music fades out smoothly
+- [x] Music transitions between scenes
+- [x] Pause/resume music works
+- [x] Settings persist in localStorage
+- [x] No audio glitches or pops
 
 ## Edge Cases to Handle
-- [ ] Audio context suspended (mobile browsers)
-- [ ] Missing audio files (graceful fallback)
-- [ ] localStorage disabled (use in-memory config)
-- [ ] Multiple scenes playing music simultaneously
-- [ ] Rapid SFX triggering (should not overlap badly)
-- [ ] Scene transitions during audio fade
+- [x] Audio context suspended (mobile browsers)
+- [x] Missing audio files (graceful fallback)
+- [x] localStorage disabled (use in-memory config)
+- [x] Multiple scenes playing music simultaneously
+- [x] Rapid SFX triggering (should not overlap badly)
+- [x] Scene transitions during audio fade
 
 ## Performance Considerations
 - Use audio sprites for frequently played SFX (reduces file count)

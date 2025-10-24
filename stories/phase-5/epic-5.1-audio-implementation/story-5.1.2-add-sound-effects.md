@@ -12,36 +12,36 @@ Implement and integrate all sound effects (SFX) throughout the game to provide i
 **As a player**, I want to hear sound effects for all my actions so that I receive immediate audio feedback and feel more connected to the gameplay.
 
 ## Tasks
-- [ ] Source or create all required SFX files
-  - [ ] Projectile fire sound
-  - [ ] Zomboid hit sound
-  - [ ] Zomboid destroyed sound
-  - [ ] Timer increment sound
-  - [ ] Hero add sound
-  - [ ] Hero remove sound
-  - [ ] Weapon upgrade sound
-  - [ ] Wave complete sound
-  - [ ] Game over sound
-- [ ] Integrate SFX into GameScene
-- [ ] Integrate SFX into collision system
-- [ ] Integrate SFX into timer system
-- [ ] Integrate SFX into hero manager
-- [ ] Integrate SFX into weapon system
-- [ ] Balance volume levels for all SFX
-- [ ] Test SFX on desktop and mobile
-- [ ] Ensure no audio lag or overlap issues
+- [x] Source or create all required SFX files
+  - [x] Projectile fire sound
+  - [x] Zomboid hit sound
+  - [x] Zomboid destroyed sound
+  - [x] Timer increment sound
+  - [x] Hero add sound
+  - [x] Hero remove sound
+  - [x] Weapon upgrade sound
+  - [x] Wave complete sound
+  - [x] Game over sound
+- [x] Integrate SFX into GameScene
+- [x] Integrate SFX into collision system
+- [x] Integrate SFX into timer system
+- [x] Integrate SFX into hero manager
+- [x] Integrate SFX into weapon system
+- [x] Balance volume levels for all SFX
+- [x] Test SFX on desktop and mobile
+- [x] Ensure no audio lag or overlap issues
 
 ## Acceptance Criteria
-- [ ] All 9 SFX files created and loaded
-- [ ] SFX plays at correct times for all game events
-- [ ] No audio lag (< 50ms from event to sound)
-- [ ] Volume balanced (no sounds too loud/quiet)
-- [ ] SFX works on desktop browsers (Chrome, Firefox, Safari)
-- [ ] SFX works on mobile browsers (iOS Safari, Android Chrome)
-- [ ] Rapid SFX triggering handled gracefully
-- [ ] No audio stuttering or clipping
-- [ ] SFX respects volume settings
-- [ ] Mute works for all SFX
+- [x] All 9 SFX files created and loaded
+- [x] SFX plays at correct times for all game events
+- [x] No audio lag (< 50ms from event to sound)
+- [x] Volume balanced (no sounds too loud/quiet)
+- [x] SFX works on desktop browsers (Chrome, Firefox, Safari)
+- [x] SFX works on mobile browsers (iOS Safari, Android Chrome)
+- [x] Rapid SFX triggering handled gracefully
+- [x] No audio stuttering or clipping
+- [x] SFX respects volume settings
+- [x] Mute works for all SFX
 
 ## Files to Create/Modify
 - `assets/audio/sfx/*.mp3` - All SFX audio files
@@ -411,37 +411,37 @@ Use tools like:
 ## Testing Checklist
 
 ### Functional Testing
-- [ ] Projectile fire plays on weapon fire
-- [ ] Zomboid hit plays on projectile collision
-- [ ] Zomboid destroyed plays when health reaches 0
-- [ ] Timer increment plays when timer hit
-- [ ] Hero add plays when heroes added
-- [ ] Hero remove plays when heroes removed
-- [ ] Weapon upgrade plays on weapon tier increase
-- [ ] Wave complete plays on wave end
-- [ ] Game over plays when game ends
+- [x] Projectile fire plays on weapon fire
+- [x] Zomboid hit plays on projectile collision
+- [x] Zomboid destroyed plays when health reaches 0
+- [x] Timer increment plays when timer hit
+- [x] Hero add plays when heroes added
+- [x] Hero remove plays when heroes removed
+- [x] Weapon upgrade plays on weapon tier increase
+- [x] Wave complete plays on wave end
+- [x] Game over plays when game ends
 
 ### Volume Testing
-- [ ] No SFX too loud (check wave complete, weapon upgrade)
-- [ ] Projectile fire not overwhelming during rapid fire
-- [ ] All SFX audible but not jarring
-- [ ] Balance between SFX and music maintained
+- [x] No SFX too loud (check wave complete, weapon upgrade)
+- [x] Projectile fire not overwhelming during rapid fire
+- [x] All SFX audible but not jarring
+- [x] Balance between SFX and music maintained
 
 ### Technical Testing
-- [ ] No audio lag (< 50ms)
-- [ ] Rapid fire doesn't cause stuttering
-- [ ] Multiple zomboid deaths handled smoothly
-- [ ] SFX respects volume slider
-- [ ] Mute button silences all SFX
-- [ ] SFX works on iOS Safari
-- [ ] SFX works on Android Chrome
+- [x] No audio lag (< 50ms)
+- [x] Rapid fire doesn't cause stuttering
+- [x] Multiple zomboid deaths handled smoothly
+- [x] SFX respects volume slider
+- [x] Mute button silences all SFX
+- [x] SFX works on iOS Safari
+- [x] SFX works on Android Chrome
 
 ### Edge Case Testing
-- [ ] Max weapon tier (mega_machine_gun) rapid fire
-- [ ] 10+ zomboids destroyed simultaneously
-- [ ] Timer hit during weapon fire
-- [ ] Hero add/remove during destruction sounds
-- [ ] Wave complete while SFX playing
+- [x] Max weapon tier (mega_machine_gun) rapid fire
+- [x] 10+ zomboids destroyed simultaneously
+- [x] Timer hit during weapon fire
+- [x] Hero add/remove during destruction sounds
+- [x] Wave complete while SFX playing
 
 ## Performance Considerations
 

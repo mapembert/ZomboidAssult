@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { ChapterData } from '@/types/ConfigTypes';
+import { AudioManager } from '@/systems/AudioManager';
 
 interface GameOverData {
   score: number;
@@ -9,6 +10,7 @@ interface GameOverData {
 
 export class GameOverScene extends Phaser.Scene {
   private gameData: GameOverData | null = null;
+  private audioManager: AudioManager | null = null;
 
   constructor() {
     super({ key: 'GameOverScene' });
@@ -33,6 +35,19 @@ export class GameOverScene extends Phaser.Scene {
   create(): void {
     const { width, height } = this.scale;
     const centerX = width / 2;
+
+    // Initialize AudioManager and transition music
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(this);
+
+    // Stop game music, start game over music with fade transition
+    this.audioManager.stopMusic(800); // 0.8s fade out
+
+    this.time.delayedCall(900, () => {
+      if (this.audioManager) {
+        this.audioManager.playMusic('gameover_music', 1200); // 1.2s fade in
+      }
+    });
 
     // Dark background
     this.cameras.main.setBackgroundColor('#121212');
@@ -249,6 +264,11 @@ export class GameOverScene extends Phaser.Scene {
 
     console.log(`Restarting chapter: ${this.gameData.chapter.chapterName}`);
 
+    // Stop game over music before transitioning
+    if (this.audioManager) {
+      this.audioManager.stopMusic(500);
+    }
+
     // Restart the GameScene with the same chapter
     this.scene.start('GameScene', { chapter: this.gameData.chapter });
   }
@@ -259,7 +279,12 @@ export class GameOverScene extends Phaser.Scene {
     // Clean up game data
     this.gameData = null;
 
-    // Transition back to MenuScene
+    // Stop game over music before transitioning
+    if (this.audioManager) {
+      this.audioManager.stopMusic(500);
+    }
+
+    // Transition back to MenuScene (MenuScene will start its own music)
     this.scene.start('MenuScene');
   }
 }

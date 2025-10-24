@@ -89,7 +89,19 @@
           },
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 20,
+            "spawnTime": 2,
+            "column": "left",
+            "startValue": -40
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 3,
+            "column": "right",
+            "startValue": -40
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 4,
             "column": "left",
             "startValue": -40
           }

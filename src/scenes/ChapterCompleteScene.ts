@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { ChapterData } from '@/types/ConfigTypes';
 import { ProgressManager } from '@/systems/ProgressManager';
 import { ConfigLoader } from '@/systems/ConfigLoader';
+import { AudioManager } from '@/systems/AudioManager';
 
 /**
  * ChapterCompleteScene
@@ -14,6 +15,7 @@ export class ChapterCompleteScene extends Phaser.Scene {
   private completionTime: number = 0;
   private zomboidsKilled: number = 0;
   private weaponTier: number = 0;
+  private audioManager: AudioManager | null = null;
 
   constructor() {
     super({ key: 'ChapterCompleteScene' });
@@ -48,6 +50,21 @@ export class ChapterCompleteScene extends Phaser.Scene {
   create(): void {
     const { width, height } = this.scale;
     const centerX = width / 2;
+
+    // Initialize AudioManager
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(this);
+
+    // Play wave complete SFX
+    this.audioManager.playSFX('wave_complete', { volume: 0.8 });
+
+    // Stop any game music, then transition to menu music
+    this.audioManager.stopMusic(500);
+    this.time.delayedCall(600, () => {
+      if (this.audioManager) {
+        this.audioManager.playMusic('menu_music', 1000);
+      }
+    });
 
     // Background
     this.cameras.main.setBackgroundColor('#121212');

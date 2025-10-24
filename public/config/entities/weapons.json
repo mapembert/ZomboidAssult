@@ -69,6 +69,20 @@
       "projectileSize": 6,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.1
+    },
+    {
+      "id": "santi_gun",
+      "name": "Ultimate Gun",
+      "tier": 6,
+      "fireRate": 0.1,
+      "projectileCount": 1,
+      "damage": 20,
+      "spread": 5,
+      "projectileSpeed": 60,
+      "projectileColor": "#FFEA00",
+      "projectileSize": 60,
+      "fireSound": "assets/audio/sfx/projectile_fire.mp3",
+      "fireSoundVolume": 0.1
     }
   ]
 }
