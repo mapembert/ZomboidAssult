@@ -8,6 +8,8 @@ import { WaveManager } from '@/systems/WaveManager';
 import { CollisionManager } from '@/systems/CollisionManager';
 import { WaveCompleteOverlay } from '@/ui/WaveCompleteOverlay';
 import { ProgressManager } from '@/systems/ProgressManager';
+import { HUD, HUDData } from '@/ui/HUD';
+import { PauseMenu, PauseMenuData } from '@/ui/PauseMenu';
 
 export class GameScene extends Phaser.Scene {
   private currentChapter: ChapterData | null = null;
@@ -16,19 +18,24 @@ export class GameScene extends Phaser.Scene {
   private weaponSystem: WeaponSystem | null = null;
   private waveManager: WaveManager | null = null;
   private collisionManager: CollisionManager | null = null;
-  private heroCountText: Phaser.GameObjects.Text | null = null;
-  private weaponText: Phaser.GameObjects.Text | null = null;
-  private waveInfoText: Phaser.GameObjects.Text | null = null;
-  private scoreText: Phaser.GameObjects.Text | null = null;
+  private hud: HUD | null = null;
+  private pauseMenu: PauseMenu | null = null;
 
   // Game state
   private score: number = 0;
   private gameActive: boolean = true;
+  private isPaused: boolean = false;
   private safeZoneHeight: number = 150;
   private waveCompleteOverlay: WaveCompleteOverlay | null = null;
   private isTransitioningWaves: boolean = false;
   private chapterStartTime: number = 0;
   private totalZomboidsKilled: number = 0;
+  private hudUpdateInterval: number = 100; // Update every 100ms
+  private lastHudUpdate: number = 0;
+
+  // Input keys
+  private pauseKey: Phaser.Input.Keyboard.Key | undefined;
+  private escKey: Phaser.Input.Keyboard.Key | undefined;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -64,23 +71,6 @@ export class GameScene extends Phaser.Scene {
     gameArea.fillStyle(0x1a1a1a, 1);
     gameArea.fillRect(0, 0, width, height);
 
-    if (this.currentChapter) {
-      this.add
-        .text(centerX, 40, this.currentChapter.chapterName, {
-          fontSize: '32px',
-          color: '#03DAC6',
-          fontStyle: 'bold',
-        })
-        .setOrigin(0.5);
-
-      this.add
-        .text(centerX, 80, this.currentChapter.waves.length + ' Waves', {
-          fontSize: '18px',
-          color: '#B0B0B0',
-        })
-        .setOrigin(0.5);
-    }
-
     const loader = ConfigLoader.getInstance();
     const heroConfig = loader.getHeroConfig();
     const gameSettings = loader.getGameSettings();
@@ -94,35 +84,15 @@ export class GameScene extends Phaser.Scene {
     if (heroConfig && gameSettings) {
       this.heroManager = new HeroManager(this, heroConfig, gameSettings);
       this.inputManager = new InputManager(this);
-
-      this.heroCountText = this.add.text(20, 120, '', {
-        fontSize: '18px',
-        color: '#E0E0E0',
-      });
-
-      this.updateHeroCountDisplay();
     }
 
     if (weaponTypes && weaponTypes.length > 0) {
       this.weaponSystem = new WeaponSystem(this, weaponTypes);
-
-      this.weaponText = this.add.text(20, 150, '', {
-        fontSize: '18px',
-        color: '#E0E0E0',
-      });
-
-      this.updateWeaponDisplay();
     }
 
     // Initialize WaveManager
     if (this.currentChapter && this.currentChapter.waves.length > 0) {
       this.waveManager = new WaveManager(this, this.currentChapter.waves);
-
-      // Create wave info text
-      this.waveInfoText = this.add.text(20, 180, '', {
-        fontSize: '18px',
-        color: '#E0E0E0',
-      });
 
       // Track chapter start time
       this.chapterStartTime = this.time.now;
@@ -136,17 +106,30 @@ export class GameScene extends Phaser.Scene {
 
       // Start first wave
       this.waveManager.startWave(0);
-      this.updateWaveDisplay();
     }
 
     // Initialize CollisionManager
     this.collisionManager = new CollisionManager(this);
 
-    // Create score display
-    this.scoreText = this.add.text(20, 210, 'Score: 0', {
-      fontSize: '18px',
-      color: '#E0E0E0',
-    });
+    // Create HUD
+    if (this.currentChapter && this.waveManager && this.heroManager && this.weaponSystem) {
+      const chapterNumber = parseInt(this.currentChapter.chapterId.split('-')[1]);
+      const weapon = this.weaponSystem.getCurrentWeapon();
+
+      const initialData: HUDData = {
+        score: this.score,
+        chapterName: this.currentChapter.chapterName,
+        chapterNumber: chapterNumber,
+        waveNumber: 1,
+        totalWaves: this.currentChapter.waves.length,
+        timeRemaining: this.waveManager.getWaveTimeRemaining(),
+        heroCount: this.heroManager.getHeroCount(),
+        weaponName: weapon.name,
+        weaponTier: weapon.tier,
+      };
+
+      this.hud = new HUD(this, initialData);
+    }
 
     // Listen for collision events
     this.events.on('collision', this.handleCollision, this);
@@ -163,26 +146,42 @@ export class GameScene extends Phaser.Scene {
     // Listen for wave complete events
     this.events.on('wave_complete', this.handleWaveComplete, this);
 
+    // Set up pause keys
+    if (this.input.keyboard) {
+      this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+      this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+      this.pauseKey.on('down', () => this.togglePause());
+      this.escKey.on('down', () => {
+        if (this.isPaused) {
+          this.unpause();
+        } else {
+          this.togglePause();
+        }
+      });
+    }
+
+    // Create pause button
     const pauseButton = this.add
-      .text(width - 20, 20, '⏸ MENU', {
-        fontSize: '20px',
-        color: '#03DAC6',
-        backgroundColor: '#2e2e2e',
-        padding: { x: 15, y: 8 },
+      .text(width - 20, 20, '⏸', {
+        fontSize: '32px',
+        color: '#E0E0E0',
       })
       .setOrigin(1, 0)
       .setInteractive({ useHandCursor: true });
 
+    pauseButton.setDepth(1000);
+
     pauseButton.on('pointerover', () => {
-      pauseButton.setBackgroundColor('#3e3e3e');
+      pauseButton.setColor('#03DAC6');
     });
 
     pauseButton.on('pointerout', () => {
-      pauseButton.setBackgroundColor('#2e2e2e');
+      pauseButton.setColor('#E0E0E0');
     });
 
     pauseButton.on('pointerdown', () => {
-      this.returnToMenu();
+      this.togglePause();
     });
 
     this.add
@@ -205,6 +204,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    // Skip all updates if paused
+    if (this.isPaused) return;
+
     // Only update game logic if game is active or transitioning
     if (!this.gameActive && !this.isTransitioningWaves) return;
 
@@ -216,7 +218,6 @@ export class GameScene extends Phaser.Scene {
       }
 
       this.heroManager.update(delta);
-      this.updateHeroCountDisplay();
     }
 
     if (this.weaponSystem && this.heroManager && !this.isTransitioningWaves) {
@@ -227,7 +228,6 @@ export class GameScene extends Phaser.Scene {
 
     if (this.waveManager && !this.isTransitioningWaves) {
       this.waveManager.update(time, delta);
-      this.updateWaveDisplay();
 
       // Check if any zomboid reached the bottom immediately after wave update
       // WaveManager only removes zomboids that are off-screen (past screenHeight + maxSize)
@@ -244,28 +244,133 @@ export class GameScene extends Phaser.Scene {
       this.collisionManager.processCollisions(projectiles, zomboids);
       this.collisionManager.processTimerCollisions(projectiles, timers);
     }
-  }
 
-  private updateHeroCountDisplay(): void {
-    if (this.heroCountText && this.heroManager) {
-      this.heroCountText.setText('Heroes: ' + this.heroManager.getHeroCount());
+    // Update HUD periodically (throttled to 10 FPS for performance)
+    if (time - this.lastHudUpdate >= this.hudUpdateInterval) {
+      this.updateHUD();
+      this.lastHudUpdate = time;
     }
   }
 
-  private updateWeaponDisplay(): void {
-    if (this.weaponText && this.weaponSystem) {
-      const weapon = this.weaponSystem.getCurrentWeapon();
-      this.weaponText.setText('Weapon: ' + weapon.name + ' (Tier ' + weapon.tier + ')');
+  /**
+   * Update HUD with latest game data
+   */
+  private updateHUD(): void {
+    if (!this.hud || !this.waveManager || !this.heroManager || !this.weaponSystem) return;
+
+    const timeRemaining = this.waveManager.getWaveTimeRemaining();
+    const weapon = this.weaponSystem.getCurrentWeapon();
+
+    this.hud.updateData({
+      score: this.score,
+      timeRemaining: timeRemaining,
+      heroCount: this.heroManager.getHeroCount(),
+      weaponName: weapon.name,
+      weaponTier: weapon.tier,
+      waveNumber: this.waveManager.getCurrentWaveNumber(),
+    });
+
+    // Show low time warning
+    if (timeRemaining < 10) {
+      this.hud.showLowTimeWarning();
     }
   }
 
-  private updateWaveDisplay(): void {
-    if (this.waveInfoText && this.waveManager) {
-      const waveNum = this.waveManager.getCurrentWaveNumber();
-      const totalWaves = this.waveManager.getTotalWaveCount();
-      const timeRemaining = Math.ceil(this.waveManager.getWaveTimeRemaining());
-      this.waveInfoText.setText('Wave ' + waveNum + '/' + totalWaves + ' - Time: ' + timeRemaining + 's');
+  /**
+   * Toggle pause state
+   */
+  private togglePause(): void {
+    if (this.isTransitioningWaves) {
+      // Don't allow pause during wave transitions
+      return;
     }
+
+    if (this.isPaused) {
+      this.unpause();
+    } else {
+      this.pause();
+    }
+  }
+
+  /**
+   * Pause the game
+   */
+  private pause(): void {
+    if (this.isPaused) return;
+
+    this.isPaused = true;
+    this.gameActive = false;
+
+    // Pause physics
+    this.physics.pause();
+
+    // Pause all tweens
+    this.tweens.pauseAll();
+
+    // Pause all timers
+    this.time.paused = true;
+
+    // Create pause menu
+    const weapon = this.weaponSystem?.getCurrentWeapon();
+    const menuData: PauseMenuData = {
+      score: this.score,
+      chapterName: this.currentChapter?.chapterName || '',
+      waveNumber: this.waveManager?.getCurrentWaveNumber() || 1,
+      totalWaves: this.currentChapter?.waves.length || 1,
+      heroCount: this.heroManager?.getHeroCount() || 1,
+      weaponTier: weapon?.tier || 0,
+    };
+
+    this.pauseMenu = new PauseMenu(this, menuData, {
+      onResume: () => this.unpause(),
+      onRestart: () => this.restartChapter(),
+      onMenu: () => this.returnToMenu(),
+    });
+
+    console.log('Game paused');
+  }
+
+  /**
+   * Unpause the game
+   */
+  private unpause(): void {
+    if (!this.isPaused) return;
+
+    // Resume physics
+    this.physics.resume();
+
+    // Resume tweens
+    this.tweens.resumeAll();
+
+    // Resume timers
+    this.time.paused = false;
+
+    // Destroy pause menu
+    if (this.pauseMenu) {
+      this.pauseMenu.destroy();
+      this.pauseMenu = null;
+    }
+
+    this.isPaused = false;
+    this.gameActive = true;
+
+    console.log('Game resumed');
+  }
+
+  /**
+   * Restart the current chapter
+   */
+  private restartChapter(): void {
+    console.log('Restarting chapter...');
+
+    // Unpause before restarting
+    if (this.time.paused) {
+      this.time.paused = false;
+    }
+    this.physics.resume();
+    this.tweens.resumeAll();
+
+    this.scene.restart({ chapter: this.currentChapter });
   }
 
   /**
@@ -275,7 +380,11 @@ export class GameScene extends Phaser.Scene {
     if (data.destroyed) {
       // Zomboid was destroyed, add score
       this.score += data.score;
-      this.updateScoreDisplay();
+
+      // Update HUD immediately on score change
+      if (this.hud) {
+        this.hud.updateData({ score: this.score });
+      }
 
       // Track zomboid kill in wave stats and chapter stats
       if (this.waveManager) {
@@ -325,12 +434,25 @@ export class GameScene extends Phaser.Scene {
       this.heroManager?.addHero(rewardCount);
       const heroText = rewardCount === 1 ? 'Hero' : 'Heroes';
       this.showFeedback(`⚡ +${rewardCount} ${heroText}!`, 0x00B0FF);
+
+      // Update HUD and flash hero count
+      if (this.hud && this.heroManager) {
+        this.hud.updateData({ heroCount: this.heroManager.getHeroCount() });
+        this.hud.flashHeroCount();
+      }
     } else if (rewardType === 'weapon_upgrade') {
       // Upgrade weapon
       const upgraded = this.weaponSystem?.upgradeWeapon();
 
       if (upgraded) {
         this.showFeedback('⚡ Weapon Upgraded!', 0xFFEA00);
+
+        // Update HUD and flash weapon display
+        if (this.hud && this.weaponSystem) {
+          const weapon = this.weaponSystem.getCurrentWeapon();
+          this.hud.updateData({ weaponName: weapon.name, weaponTier: weapon.tier });
+          this.hud.flashWeaponUpgrade();
+        }
       } else {
         this.showFeedback('⚡ Max Weapon Tier!', 0xFF5252);
       }
@@ -349,10 +471,22 @@ export class GameScene extends Phaser.Scene {
         // Positive value: add heroes
         this.heroManager?.addHero(finalValue);
         this.showFeedback(`${prefix}+${finalValue} Heroes!`, 0x00B0FF);
+
+        // Update HUD and flash hero count
+        if (this.hud && this.heroManager) {
+          this.hud.updateData({ heroCount: this.heroManager.getHeroCount() });
+          this.hud.flashHeroCount();
+        }
       } else if (finalValue < 0) {
         // Negative value: remove heroes
         this.heroManager?.removeHero(Math.abs(finalValue));
         this.showFeedback(`${prefix}${finalValue} Heroes`, 0xFF1744);
+
+        // Update HUD and flash hero count
+        if (this.hud && this.heroManager) {
+          this.hud.updateData({ heroCount: this.heroManager.getHeroCount() });
+          this.hud.flashHeroCount();
+        }
       } else {
         // Zero value: timer was neutralized, no effect
         // This happens when player successfully shoots a negative timer to 0
@@ -367,6 +501,13 @@ export class GameScene extends Phaser.Scene {
 
         if (upgraded) {
           this.showFeedback(`${prefix}Weapon Upgraded!`, 0xFFEA00);
+
+          // Update HUD and flash weapon display
+          if (this.hud && this.weaponSystem) {
+            const weapon = this.weaponSystem.getCurrentWeapon();
+            this.hud.updateData({ weaponName: weapon.name, weaponTier: weapon.tier });
+            this.hud.flashWeaponUpgrade();
+          }
         } else {
           // Already at max tier
           this.showFeedback(`${prefix}Max Weapon Tier!`, 0xFF5252);
@@ -384,8 +525,12 @@ export class GameScene extends Phaser.Scene {
   private handleWeaponUpgrade(data: { tier: number; weaponName: string; weaponId: string }): void {
     console.log(`Weapon upgraded to tier ${data.tier}: ${data.weaponName}`);
 
-    // Update weapon display
-    this.updateWeaponDisplay();
+    // Update HUD and flash weapon display
+    if (this.hud && this.weaponSystem) {
+      const weapon = this.weaponSystem.getCurrentWeapon();
+      this.hud.updateData({ weaponName: weapon.name, weaponTier: weapon.tier });
+      this.hud.flashWeaponUpgrade();
+    }
 
     // Show weapon name notification below the main upgrade message
     const { width, height } = this.scale;
@@ -440,15 +585,6 @@ export class GameScene extends Phaser.Scene {
       ease: 'Power2',
       onComplete: () => feedback.destroy()
     });
-  }
-
-  /**
-   * Update score display
-   */
-  private updateScoreDisplay(): void {
-    if (this.scoreText) {
-      this.scoreText.setText('Score: ' + this.score);
-    }
   }
 
   /**
@@ -523,7 +659,14 @@ export class GameScene extends Phaser.Scene {
     if (hasNextWave) {
       // Start next wave
       this.waveManager.startNextWave();
-      this.updateWaveDisplay();
+
+      // Update HUD with new wave number
+      if (this.hud) {
+        this.hud.updateData({
+          waveNumber: this.waveManager.getCurrentWaveNumber(),
+          timeRemaining: this.waveManager.getWaveTimeRemaining(),
+        });
+      }
 
       // Resume game
       this.isTransitioningWaves = false;
@@ -594,9 +737,9 @@ export class GameScene extends Phaser.Scene {
       this.collisionManager = null;
     }
 
-    this.heroCountText = null;
-    this.weaponText = null;
-    this.waveInfoText = null;
-    this.scoreText = null;
+    if (this.hud) {
+      this.hud.destroy();
+      this.hud = null;
+    }
   }
 }

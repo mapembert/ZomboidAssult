@@ -13,7 +13,8 @@
       "Bash(grep:*)",
       "Bash(npm run build:*)",
       "WebFetch(domain:chatgpt.com)",
-      "Bash(identify:*)"
+      "Bash(identify:*)",
+      "Bash(node -e:*)"
     ],
     "deny": [],
     "ask": []

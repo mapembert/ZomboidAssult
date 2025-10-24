@@ -25,7 +25,7 @@ export interface GameSettings {
 export interface ZomboidType {
   id: string;
   shape: 'circle' | 'square' | 'hexagon';
-  size: 'small' | 'medium' | 'large';
+  size: 'small' | 'medium' | 'large' | 'boss';
   radius?: number;
   width?: number;
   height?: number;
