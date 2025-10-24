@@ -71,7 +71,7 @@ export default game;
 // Register Service Worker for PWA offline support
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then((registration) => {
         console.log('ServiceWorker registered:', registration.scope);
       })
