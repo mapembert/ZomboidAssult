@@ -25,6 +25,8 @@ interface TimerSpawnScheduleEntry {
   timerType: string;
   columnIndex: number;
   startValue: number;
+  resetHeroCount?: boolean; // Whether to reset hero count when timer exits
+  weaponTier?: number; // Specific weapon tier to upgrade to
 }
 
 /**
@@ -190,6 +192,8 @@ export class WaveManager {
         timerType: pattern.type,
         columnIndex: columnIndex,
         startValue: pattern.startValue,
+        resetHeroCount: pattern.resetHeroCount,
+        weaponTier: pattern.weaponTier,
       });
     });
 
@@ -239,6 +243,8 @@ export class WaveManager {
           timerType: timer.getTimerType(),
           finalValue: finalValue,
           column: timer.getColumnIndex(),
+          resetHeroCount: timer.shouldResetHeroCount(),
+          weaponTier: timer.getWeaponTier(),
         });
 
         // Remove and return to pool
@@ -279,7 +285,7 @@ export class WaveManager {
 
       // Check if it's time to spawn this timer
       if (this.waveElapsedTime >= entry.time) {
-        this.spawnTimer(entry.timerType, entry.columnIndex, entry.startValue);
+        this.spawnTimer(entry.timerType, entry.columnIndex, entry.startValue, entry.resetHeroCount, entry.weaponTier);
         this.nextTimerSpawnIndex++;
       } else {
         break; // Not time yet
@@ -313,7 +319,7 @@ export class WaveManager {
   /**
    * Spawn a timer at the specified column
    */
-  private spawnTimer(timerTypeId: string, columnIndex: number, startValue: number): void {
+  private spawnTimer(timerTypeId: string, columnIndex: number, startValue: number, resetHeroCount?: boolean, weaponTier?: number): void {
     // Get timer config
     const timerConfig = this.configLoader.getTimerType(timerTypeId);
     if (!timerConfig) {
@@ -329,7 +335,7 @@ export class WaveManager {
     const y = -timerConfig.height; // Spawn just above screen
 
     // Reset timer with new config and custom start value
-    timer.resetForPool(x, y, timerConfig, columnIndex, startValue);
+    timer.resetForPool(x, y, timerConfig, columnIndex, startValue, resetHeroCount, weaponTier);
 
     // Add unique instance ID for tracking
     const instanceId = `timer_${Date.now()}_${Math.random()}`;
@@ -337,7 +343,7 @@ export class WaveManager {
 
     this.activeTimers.push(timer);
 
-    console.log(`Timer spawned: ${timerTypeId} in column ${columnIndex}`);
+    console.log(`Timer spawned: ${timerTypeId} in column ${columnIndex}, resetHeroCount: ${resetHeroCount}, weaponTier: ${weaponTier}`);
   }
 
   /**

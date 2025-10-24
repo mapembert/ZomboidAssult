@@ -4,6 +4,7 @@ import { MenuScene } from './scenes/MenuScene';
 import { GameScene } from './scenes/GameScene';
 import { GameOverScene } from './scenes/GameOverScene';
 import { ChapterCompleteScene } from './scenes/ChapterCompleteScene';
+import Logger from './utils/Logger';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -30,6 +31,10 @@ const loadingEl = document.getElementById('loading');
 if (loadingEl) {
   loadingEl.style.display = 'none';
 }
+
+// Initialize logger and expose to window for easy access
+Logger.getInstance(); // Initialize the logger
+(window as any).Logger = Logger;
 
 // Create game instance
 const game = new Phaser.Game(config);

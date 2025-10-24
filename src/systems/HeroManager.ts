@@ -145,6 +145,27 @@ export class HeroManager {
   }
 
   /**
+   * Set hero count to a specific value
+   */
+  setHeroCount(targetCount: number): void {
+    const minCount = this.config.heroConfig.minHeroCount;
+    const maxCount = this.config.heroConfig.maxHeroCount;
+    const clampedCount = Math.max(minCount, Math.min(targetCount, maxCount));
+
+    const currentCount = this.heroes.length;
+    const diff = clampedCount - currentCount;
+
+    if (diff > 0) {
+      // Add heroes
+      this.addHero(diff);
+    } else if (diff < 0) {
+      // Remove heroes
+      this.removeHero(-diff);
+    }
+    // If diff === 0, no change needed
+  }
+
+  /**
    * Get current hero count
    */
   getHeroCount(): number {

@@ -104,6 +104,8 @@ export interface TimerSpawnPattern {
   spawnTime: number;
   column: 'left' | 'right';
   startValue: number; // Override for timer difficulty per wave
+  resetHeroCount?: boolean; // If true, reset hero count to 1 when timer exits (weapon upgrades)
+  weaponTier?: number; // Specific weapon tier to upgrade to (0-5), if not specified uses current+1
 }
 
 // Wave Data

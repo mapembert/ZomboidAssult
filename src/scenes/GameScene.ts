@@ -11,6 +11,7 @@ import { ProgressManager } from '@/systems/ProgressManager';
 import { HUD, HUDData } from '@/ui/HUD';
 import { PauseMenu, PauseMenuData } from '@/ui/PauseMenu';
 import { AudioManager } from '@/systems/AudioManager';
+import Logger from '@/utils/Logger';
 
 export class GameScene extends Phaser.Scene {
   private currentChapter: ChapterData | null = null;
@@ -52,6 +53,10 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    // Clear logs at the start of each chapter
+    const logger = Logger.getInstance();
+    logger.clear();
+
     // Reset all game state variables when scene initializes
     this.score = 0;
     this.gameActive = true;
@@ -61,6 +66,7 @@ export class GameScene extends Phaser.Scene {
     this.waveCompleteOverlay = null;
 
     console.log('GameScene initialized with chapter: ' + this.currentChapter.chapterName);
+    console.log('Logs cleared for new chapter');
   }
 
   create(): void {
@@ -410,9 +416,9 @@ export class GameScene extends Phaser.Scene {
   /**
    * Handle timer exit events from WaveManager
    */
-  private handleTimerExit(data: { timerType: string; finalValue: number; column: number }): void {
-    console.log(`Timer exited: ${data.timerType} with value ${data.finalValue}`);
-    this.processTimerEffect(data.timerType, data.finalValue, false);
+  private handleTimerExit(data: { timerType: string; finalValue: number; column: number; resetHeroCount?: boolean; weaponTier?: number }): void {
+    console.log(`Timer exited: ${data.timerType} with value ${data.finalValue}, resetHeroCount: ${data.resetHeroCount}, weaponTier: ${data.weaponTier}`);
+    this.processTimerEffect(data.timerType, data.finalValue, false, data.resetHeroCount, data.weaponTier);
   }
 
   /**
@@ -426,22 +432,24 @@ export class GameScene extends Phaser.Scene {
     instant: boolean;
     instantReward?: string;
     instantRewardCount?: number;
+    resetHeroCount?: boolean;
+    weaponTier?: number;
   }): void {
-    console.log(`Timer completed instantly: ${data.timerType} with value ${data.finalValue}`);
+    console.log(`Timer completed instantly: ${data.timerType} with value ${data.finalValue}, resetHeroCount: ${data.resetHeroCount}, weaponTier: ${data.weaponTier}`);
 
     // Process instant reward if configured
     if (data.instantReward && data.instantRewardCount !== undefined) {
-      this.processInstantReward(data.instantReward, data.instantRewardCount);
+      this.processInstantReward(data.instantReward, data.instantRewardCount, data.resetHeroCount, data.weaponTier);
     } else {
-      // Fallback to old behavior
-      this.processTimerEffect(data.timerType, data.finalValue, true);
+      // Fallback to old behavior with new parameters
+      this.processTimerEffect(data.timerType, data.finalValue, true, data.resetHeroCount, data.weaponTier);
     }
   }
 
   /**
    * Process instant reward from timer completion
    */
-  private processInstantReward(rewardType: string, rewardCount: number): void {
+  private processInstantReward(rewardType: string, rewardCount: number, resetHeroCount?: boolean, weaponTier?: number): void {
     if (rewardType === 'hero') {
       // Add heroes
       this.heroManager?.addHero(rewardCount);
@@ -454,8 +462,25 @@ export class GameScene extends Phaser.Scene {
         this.hud.flashHeroCount();
       }
     } else if (rewardType === 'weapon_upgrade') {
+      // Reset hero count if configured
+      console.log(`DEBUG (InstantReward): resetHeroCount=${resetHeroCount}, type=${typeof resetHeroCount}, heroManager=${!!this.heroManager}`);
+      if (resetHeroCount && this.heroManager) {
+        const previousCount = this.heroManager.getHeroCount();
+        this.heroManager.setHeroCount(1);
+        console.log(`Hero count reset from ${previousCount} to 1 for weapon upgrade`);
+      } else {
+        console.log(`DEBUG (InstantReward): Hero reset SKIPPED - resetHeroCount: ${resetHeroCount}, heroManager exists: ${!!this.heroManager}`);
+      }
+
       // Upgrade weapon
-      const upgraded = this.weaponSystem?.upgradeWeapon();
+      let upgraded: boolean;
+      if (weaponTier !== undefined) {
+        // Upgrade to specific tier
+        upgraded = this.weaponSystem?.upgradeToTier(weaponTier) || false;
+      } else {
+        // Normal upgrade (tier + 1)
+        upgraded = this.weaponSystem?.upgradeWeapon() || false;
+      }
 
       if (upgraded) {
         this.showFeedback('⚡ Weapon Upgraded!', 0xFFEA00);
@@ -463,8 +488,16 @@ export class GameScene extends Phaser.Scene {
         // Update HUD and flash weapon display
         if (this.hud && this.weaponSystem) {
           const weapon = this.weaponSystem.getCurrentWeapon();
-          this.hud.updateData({ weaponName: weapon.name, weaponTier: weapon.tier });
+          this.hud.updateData({
+            weaponName: weapon.name,
+            weaponTier: weapon.tier,
+            heroCount: this.heroManager?.getHeroCount() || 1
+          });
           this.hud.flashWeaponUpgrade();
+
+          if (resetHeroCount) {
+            this.hud.flashHeroCount();
+          }
         }
       } else {
         this.showFeedback('⚡ Max Weapon Tier!', 0xFF5252);
@@ -475,7 +508,7 @@ export class GameScene extends Phaser.Scene {
   /**
    * Process timer effect (shared logic for exit and instant completion)
    */
-  private processTimerEffect(timerType: string, finalValue: number, isInstant: boolean): void {
+  private processTimerEffect(timerType: string, finalValue: number, isInstant: boolean, resetHeroCount?: boolean, weaponTier?: number): void {
     const prefix = isInstant ? '⚡ ' : '';
 
     // Handle hero_add_timer (hero count modification)
@@ -509,8 +542,26 @@ export class GameScene extends Phaser.Scene {
     // Handle weapon_upgrade_timer
     else if (timerType === 'weapon_upgrade_timer') {
       if (finalValue >= 0) {
+        // Reset hero count if configured
+        console.log(`DEBUG: resetHeroCount=${resetHeroCount}, type=${typeof resetHeroCount}, heroManager=${!!this.heroManager}`);
+        if (resetHeroCount && this.heroManager) {
+          const previousCount = this.heroManager.getHeroCount();
+          this.heroManager.setHeroCount(1);
+          console.log(`Hero count reset from ${previousCount} to 1 for weapon upgrade`);
+        } else {
+          console.log(`DEBUG: Hero reset SKIPPED - resetHeroCount: ${resetHeroCount}, heroManager exists: ${!!this.heroManager}`);
+        }
+
         // Zero or positive: attempt to upgrade weapon
-        const upgraded = this.weaponSystem?.upgradeWeapon();
+        let upgraded: boolean;
+
+        if (weaponTier !== undefined) {
+          // Upgrade to specific tier
+          upgraded = this.weaponSystem?.upgradeToTier(weaponTier) || false;
+        } else {
+          // Normal upgrade (tier + 1)
+          upgraded = this.weaponSystem?.upgradeWeapon() || false;
+        }
 
         if (upgraded) {
           this.showFeedback(`${prefix}Weapon Upgraded!`, 0xFFEA00);
@@ -518,8 +569,16 @@ export class GameScene extends Phaser.Scene {
           // Update HUD and flash weapon display
           if (this.hud && this.weaponSystem) {
             const weapon = this.weaponSystem.getCurrentWeapon();
-            this.hud.updateData({ weaponName: weapon.name, weaponTier: weapon.tier });
+            this.hud.updateData({
+              weaponName: weapon.name,
+              weaponTier: weapon.tier,
+              heroCount: this.heroManager?.getHeroCount() || 1
+            });
             this.hud.flashWeaponUpgrade();
+
+            if (resetHeroCount) {
+              this.hud.flashHeroCount();
+            }
           }
         } else {
           // Already at max tier

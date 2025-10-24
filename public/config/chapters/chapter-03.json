@@ -52,7 +52,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 6,
             "column": "right",
-            "startValue": -5
+            "startValue": -5,
+            "resetHeroCount": true,
+            "weaponTier": 2
           }
         ]
       }
@@ -105,7 +107,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 16,
             "column": "left",
-            "startValue": -60
+            "startValue": -60,
+            "resetHeroCount": true,
+            "weaponTier": 3
           },
           {
             "type": "hero_add_timer",
@@ -168,7 +172,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 8,
             "column": "left",
-            "startValue": -65
+            "startValue": -65,
+            "resetHeroCount": true,
+            "weaponTier": 4
           },
           {
             "type": "rapid_hero_timer",
@@ -253,7 +259,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 14,
             "column": "left",
-            "startValue": -70
+            "startValue": -70,
+            "resetHeroCount": true,
+            "weaponTier": 4
           },
           {
             "type": "hero_add_timer",
@@ -342,7 +350,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 6,
             "column": "left",
-            "startValue": -75
+            "startValue": -75,
+            "resetHeroCount": true,
+            "weaponTier": 5
           },
           {
             "type": "rapid_hero_timer",
@@ -360,7 +370,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 28,
             "column": "right",
-            "startValue": -80
+            "startValue": -80,
+            "resetHeroCount": true,
+            "weaponTier": 5
           },
           {
             "type": "rapid_hero_timer",

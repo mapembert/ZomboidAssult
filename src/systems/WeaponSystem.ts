@@ -157,6 +157,36 @@ export class WeaponSystem {
   }
 
   /**
+   * Upgrade weapon to a specific tier
+   */
+  upgradeToTier(targetTier: number): boolean {
+    const targetWeapon = this.weaponTiers.find((w) => w.tier === targetTier + 1); // tier is 1-based, targetTier is 0-based
+
+    if (targetWeapon && targetWeapon.tier > this.currentWeapon.tier) {
+      this.currentWeapon = targetWeapon;
+      console.log(`Weapon upgraded to ${targetWeapon.name} (Tier ${targetWeapon.tier})`);
+
+      // Emit weapon upgraded event
+      this.scene.events.emit('weapon_upgraded', {
+        tier: targetWeapon.tier,
+        weaponName: targetWeapon.name,
+        weaponId: targetWeapon.id,
+        config: targetWeapon
+      });
+
+      return true;
+    }
+
+    if (targetWeapon && targetWeapon.tier <= this.currentWeapon.tier) {
+      console.log(`Cannot downgrade weapon from tier ${this.currentWeapon.tier} to tier ${targetWeapon.tier}`);
+    } else {
+      console.log(`Target weapon tier ${targetTier + 1} not found`);
+    }
+
+    return false;
+  }
+
+  /**
    * Downgrade weapon to previous tier
    */
   downgradeWeapon(): boolean {

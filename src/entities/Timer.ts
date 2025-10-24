@@ -8,13 +8,17 @@ export class Timer extends Phaser.GameObjects.Container {
   private config: TimerType;
   private counter: number;
   private columnIndex: number;
+  private resetHeroCount: boolean = false; // Whether to reset hero count on exit
+  private weaponTier: number | undefined; // Specific weapon tier to upgrade to
 
-  constructor(scene: Phaser.Scene, x: number, y: number, timerConfig: TimerType, columnIndex: number = 0, startValueOverride?: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, timerConfig: TimerType, columnIndex: number = 0, startValueOverride?: number, resetHeroCount?: boolean, weaponTier?: number) {
     super(scene, x, y);
 
     this.config = timerConfig;
     this.counter = startValueOverride !== undefined ? startValueOverride : timerConfig.startValue;
     this.columnIndex = columnIndex;
+    this.resetHeroCount = resetHeroCount || false;
+    this.weaponTier = weaponTier;
 
     // Create graphics object for rectangle rendering
     this.background = new Phaser.GameObjects.Graphics(scene);
@@ -133,7 +137,9 @@ export class Timer extends Phaser.GameObjects.Container {
         column: this.columnIndex,
         instant: true,
         instantReward: this.config.instantReward,
-        instantRewardCount: this.config.instantRewardCount
+        instantRewardCount: this.config.instantRewardCount,
+        resetHeroCount: this.resetHeroCount,
+        weaponTier: this.weaponTier
       });
     }
   }
@@ -189,6 +195,20 @@ export class Timer extends Phaser.GameObjects.Container {
   }
 
   /**
+   * Get whether this timer should reset hero count
+   */
+  shouldResetHeroCount(): boolean {
+    return this.resetHeroCount;
+  }
+
+  /**
+   * Get specific weapon tier to upgrade to (if specified)
+   */
+  getWeaponTier(): number | undefined {
+    return this.weaponTier;
+  }
+
+  /**
    * Get bounds for collision detection
    */
   getBounds(): Phaser.Geom.Rectangle {
@@ -212,12 +232,14 @@ export class Timer extends Phaser.GameObjects.Container {
   /**
    * Reset timer for object pooling
    */
-  resetForPool(x: number, y: number, timerConfig: TimerType, columnIndex: number, startValueOverride?: number): void {
+  resetForPool(x: number, y: number, timerConfig: TimerType, columnIndex: number, startValueOverride?: number, resetHeroCount?: boolean, weaponTier?: number): void {
     this.x = x;
     this.y = y;
     this.config = timerConfig;
     this.counter = startValueOverride !== undefined ? startValueOverride : timerConfig.startValue;
     this.columnIndex = columnIndex;
+    this.resetHeroCount = resetHeroCount || false;
+    this.weaponTier = weaponTier;
     this.setActive(true);
     this.setVisible(true);
 

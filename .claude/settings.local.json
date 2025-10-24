@@ -15,7 +15,9 @@
       "WebFetch(domain:chatgpt.com)",
       "Bash(identify:*)",
       "Bash(node -e:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node server/logger.js:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

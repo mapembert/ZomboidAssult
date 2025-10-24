@@ -21,6 +21,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "express": "^5.1.0",
     "phaser": "^3.60.0"
   },
   "devDependencies": {

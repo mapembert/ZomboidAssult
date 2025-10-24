@@ -36,7 +36,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 15,
             "column": "left",
-            "startValue": -45
+            "startValue": -45,
+            "resetHeroCount": true,
+            "weaponTier": 2
           }
         ]
       }
@@ -112,7 +114,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 8,
             "column": "left",
-            "startValue": -200
+            "startValue": -200,
+            "resetHeroCount": true,
+            "weaponTier": 3
           },
           {
             "type": "rapid_hero_timer",
@@ -174,7 +178,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 25,
             "column": "right",
-            "startValue": -60
+            "startValue": -60,
+            "resetHeroCount": true,
+            "weaponTier": 4
           }
         ]
       }
@@ -225,7 +231,9 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 12,
             "column": "right",
-            "startValue": -65
+            "startValue": -65,
+            "resetHeroCount": true,
+            "weaponTier": 5
           },
           {
             "type": "hero_add_timer",
