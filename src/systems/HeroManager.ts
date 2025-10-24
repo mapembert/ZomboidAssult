@@ -7,24 +7,33 @@ export class HeroManager {
   private heroes: Hero[];
   private config: HeroConfig;
   private gameSettings: GameSettings;
-  private currentColumn: number;
-  private columnPositions: number[];
+  
+  // Continuous movement properties
+  private targetX: number; // Target X position for hero squad
+  private currentX: number; // Current actual X position
+  private velocityX: number; // Current movement velocity (pixels per second)
+  private minX: number; // Minimum allowed X position (left boundary)
+  private maxX: number; // Maximum allowed X position (right boundary)
 
   constructor(scene: Phaser.Scene, config: HeroConfig, gameSettings: GameSettings) {
     this.scene = scene;
     this.config = config;
     this.gameSettings = gameSettings;
     this.heroes = [];
-    this.currentColumn = gameSettings.gameplay.playerStartColumn;
-
-    // Calculate column positions
-    // Left column: SCREEN_WIDTH / 4
-    // Right column: (3 * SCREEN_WIDTH) / 4
+    
+    // Initialize continuous movement system
     const screenWidth = gameSettings.gameSettings.screenWidth;
-    this.columnPositions = [
-      screenWidth / 4,      // Left column (180px)
-      (3 * screenWidth) / 4 // Right column (540px)
-    ];
+    const padding = gameSettings.gameplay.movementBoundaryPadding || 60;
+    
+    // Calculate movement boundaries
+    this.minX = padding;
+    this.maxX = screenWidth - padding;
+    
+    // Initialize position (center of screen or configured start position)
+    const startX = gameSettings.gameplay.playerStartX || screenWidth / 2;
+    this.currentX = startX;
+    this.targetX = startX;
+    this.velocityX = 0;
 
     // Create initial heroes
     const initialCount = config.heroConfig.defaultHeroCount;
@@ -40,27 +49,23 @@ export class HeroManager {
    * Create a new hero and add to the heroes array
    */
   private createHero(): Hero {
-    const hero = new Hero(this.scene, 0, 0, this.config, this.currentColumn);
+    const hero = new Hero(this.scene, 0, 0, this.config);
     this.heroes.push(hero);
     return hero;
   }
 
   /**
-   * Move all heroes to the left column
+   * Set target X position for hero squad (with boundary clamping)
    */
-  moveLeft(): void {
-    this.currentColumn = 0;
-    this.heroes.forEach(hero => hero.moveToColumn(0));
-    this.repositionHeroes();
+  setTargetX(x: number): void {
+    this.targetX = Phaser.Math.Clamp(x, this.minX, this.maxX);
   }
 
   /**
-   * Move all heroes to the right column
+   * Get current X position of hero squad
    */
-  moveRight(): void {
-    this.currentColumn = 1;
-    this.heroes.forEach(hero => hero.moveToColumn(1));
-    this.repositionHeroes();
+  getCurrentX(): number {
+    return this.currentX;
   }
 
   /**
@@ -123,24 +128,24 @@ export class HeroManager {
   }
 
   /**
-   * Reposition all heroes in current column with even spacing
+   * Reposition all heroes at current X position with vertical spacing
    */
-  repositionHeroes(): void {
+  private repositionHeroes(): void {
     if (this.heroes.length === 0) return;
 
     const screenHeight = this.gameSettings.gameSettings.screenHeight;
     const spacing = this.config.heroConfig.spacing;
     const positionFromBottom = this.config.heroConfig.positionFromBottom;
-    const columnX = this.columnPositions[this.currentColumn];
 
     // Calculate vertical positions
     const totalHeight = (this.heroes.length - 1) * spacing;
     const startY = screenHeight - positionFromBottom - totalHeight / 2;
 
-    // Position each hero
+    // Position each hero at current X with vertical spacing
     this.heroes.forEach((hero, index) => {
       const y = startY + index * spacing;
-      hero.setPosition(columnX, y);
+      hero.setPosition(this.currentX, y);
+      hero.setTargetX(this.currentX);
     });
   }
 
@@ -183,16 +188,66 @@ export class HeroManager {
   }
 
   /**
-   * Get current column index
-   */
-  getCurrentColumn(): number {
-    return this.currentColumn;
-  }
-
-  /**
-   * Update all heroes
+   * Update hero positions with smooth velocity-based movement
    */
   update(delta: number): void {
+    // Convert delta from milliseconds to seconds
+    const deltaSeconds = delta / 1000;
+
+    // Calculate distance to target
+    const distance = this.targetX - this.currentX;
+    const absDistance = Math.abs(distance);
+
+    // Dead zone - stop if very close to target
+    if (absDistance < 2) {
+      this.velocityX = 0;
+      this.currentX = this.targetX;
+    } else {
+      // Get movement parameters from config
+      const maxSpeed = this.config.heroConfig.movementSpeed || 800;
+      const acceleration = this.config.heroConfig.acceleration || 2400;
+      const deceleration = this.config.heroConfig.deceleration || 3200;
+
+      // Determine if we should accelerate or decelerate
+      const direction = distance > 0 ? 1 : -1;
+      const absVelocity = Math.abs(this.velocityX);
+
+      // Calculate stopping distance at current velocity
+      const stoppingDistance = (absVelocity * absVelocity) / (2 * deceleration);
+
+      if (absDistance <= stoppingDistance) {
+        // Start decelerating
+        const decelerationAmount = deceleration * deltaSeconds;
+        if (absVelocity > decelerationAmount) {
+          this.velocityX -= direction * decelerationAmount;
+        } else {
+          this.velocityX = 0;
+        }
+      } else {
+        // Accelerate towards target
+        const accelerationAmount = acceleration * deltaSeconds * direction;
+        this.velocityX += accelerationAmount;
+
+        // Clamp to max speed
+        this.velocityX = Phaser.Math.Clamp(this.velocityX, -maxSpeed, maxSpeed);
+      }
+
+      // Update position based on velocity
+      this.currentX += this.velocityX * deltaSeconds;
+
+      // Clamp to boundaries
+      this.currentX = Phaser.Math.Clamp(this.currentX, this.minX, this.maxX);
+
+      // If we hit a boundary, stop
+      if (this.currentX === this.minX || this.currentX === this.maxX) {
+        this.velocityX = 0;
+      }
+
+      // Reposition all heroes to current X
+      this.repositionHeroes();
+    }
+
+    // Update individual heroes (for any per-hero animations/state)
     this.heroes.forEach(hero => hero.update(delta));
   }
 

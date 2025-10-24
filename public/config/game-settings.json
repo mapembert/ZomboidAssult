@@ -9,9 +9,11 @@
   },
   "gameplay": {
     "playerStartColumn": 0,
+    "playerStartX": 360,
     "safeZoneHeight": 150,
     "spawnZoneHeight": 100,
-    "gameOverOnZomboidReachBottom": true
+    "gameOverOnZomboidReachBottom": true,
+    "movementBoundaryPadding": 60
   },
   "audio": {
     "masterVolume": 0.7,

@@ -231,9 +231,9 @@ export class GameScene extends Phaser.Scene {
 
     if (this.heroManager && this.inputManager) {
       if (this.inputManager.isMovingLeft()) {
-        this.heroManager.moveLeft();
+        this.heroManager.setTargetX(180);
       } else if (this.inputManager.isMovingRight()) {
-        this.heroManager.moveRight();
+        this.heroManager.setTargetX(540);
       }
 
       this.heroManager.update(delta);

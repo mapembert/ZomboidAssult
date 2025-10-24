@@ -13,10 +13,12 @@ export interface GameSettings {
     unlockAllChapters: boolean;
   };
   gameplay: {
-    playerStartColumn: number;
+    playerStartColumn: number; // Deprecated - use playerStartX
+    playerStartX?: number; // Starting X position for continuous movement
     safeZoneHeight: number;
     spawnZoneHeight: number;
     gameOverOnZomboidReachBottom: boolean;
+    movementBoundaryPadding: number; // Padding from screen edges for continuous movement
   };
   audio: {
     masterVolume: number;
@@ -80,7 +82,9 @@ export interface HeroConfig {
     defaultHeroCount: number;
     minHeroCount: number;
     maxHeroCount: number;
-    movementSpeed: number;
+    movementSpeed: number; // Pixels per second at max velocity
+    acceleration: number; // Pixels per second squared
+    deceleration: number; // Pixels per second squared
     sprite: {
       shape: string;
       baseWidth: number;
