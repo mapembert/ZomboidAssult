@@ -83,6 +83,11 @@ export class HeroManager {
       change: heroesAdded
     });
 
+    // Emit hero added event (for audio)
+    if (heroesAdded > 0) {
+      this.scene.events.emit('hero_added', { count: heroesAdded });
+    }
+
     console.log(`Heroes added: ${heroesAdded}. Total count: ${this.heroes.length}`);
   }
 
@@ -108,6 +113,11 @@ export class HeroManager {
       count: this.heroes.length,
       change: -heroesRemoved
     });
+
+    // Emit hero removed event (for audio)
+    if (heroesRemoved > 0) {
+      this.scene.events.emit('hero_removed', { count: heroesRemoved });
+    }
 
     console.log(`Heroes removed: ${heroesRemoved}. Total count: ${this.heroes.length}`);
   }

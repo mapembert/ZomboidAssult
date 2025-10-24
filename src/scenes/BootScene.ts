@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { ConfigLoader } from '@/systems/ConfigLoader';
+import { AudioManager } from '@/systems/AudioManager';
 
 export class BootScene extends Phaser.Scene {
   private loadingText!: Phaser.GameObjects.Text;
@@ -10,6 +11,11 @@ export class BootScene extends Phaser.Scene {
 
   constructor() {
     super({ key: 'BootScene' });
+  }
+
+  preload(): void {
+    // Load audio assets in preload phase
+    this.loadAudioAssets();
   }
 
   create(): void {
@@ -64,8 +70,12 @@ export class BootScene extends Phaser.Scene {
 
   private async loadGameConfigs(): Promise<void> {
     const loader = ConfigLoader.getInstance();
+    const audioManager = AudioManager.getInstance();
 
     try {
+      // Initialize AudioManager
+      audioManager.initialize(this);
+
       // Define loading steps with messages
       const loadingSteps = [
         { fn: () => loader.loadGameSettings(), message: 'Loading game settings...' },
@@ -182,5 +192,38 @@ export class BootScene extends Phaser.Scene {
 
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private loadAudioAssets(): void {
+    const audioManager = AudioManager.getInstance();
+
+    // Sound Effects (will be implemented in Story 5.1.2)
+    const sfxKeys = [
+      'projectile_fire',
+      'zomboid_hit',
+      'zomboid_destroyed',
+      'timer_increment',
+      'hero_add',
+      'hero_remove',
+      'weapon_upgrade',
+      'wave_complete',
+      'game_over',
+    ];
+
+    sfxKeys.forEach((key) => {
+      // Load audio file
+      this.load.audio(key, `assets/audio/sfx/${key}.mp3`);
+      audioManager.registerSFX(key);
+    });
+
+    // Background Music (will be implemented in Story 5.1.3)
+    const musicKeys = ['menu_music', 'game_music', 'gameover_music'];
+
+    musicKeys.forEach((key) => {
+      this.load.audio(key, `assets/audio/music/${key}.mp3`);
+      audioManager.registerMusic(key);
+    });
+
+    console.log('Audio assets queued for loading');
   }
 }

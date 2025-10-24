@@ -1,9 +1,12 @@
 import Phaser from 'phaser';
 import { ConfigLoader } from '@/systems/ConfigLoader';
 import { ProgressManager, ChapterProgress } from '@/systems/ProgressManager';
+import { AudioManager } from '@/systems/AudioManager';
 import type { ChapterData } from '@/types/ConfigTypes';
 
 export class MenuScene extends Phaser.Scene {
+  private audioManager: AudioManager | null = null;
+
   constructor() {
     super({ key: 'MenuScene' });
   }
@@ -11,6 +14,18 @@ export class MenuScene extends Phaser.Scene {
   create(): void {
     const { width, height } = this.scale;
     const centerX = width / 2;
+
+    // Initialize AudioManager
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(this);
+
+    // Play menu music
+    this.audioManager.playMusic('menu_music', 1500);
+
+    // Unlock audio on first user interaction (mobile browsers)
+    this.input.once('pointerdown', () => {
+      this.audioManager?.unlockAudio();
+    });
 
     // Title
     this.add
@@ -40,6 +55,9 @@ export class MenuScene extends Phaser.Scene {
 
     // Display chapter selection buttons
     this.displayChapterList(chapters, centerX);
+
+    // Add mute button
+    this.createMuteButton();
 
     console.log('MenuScene created successfully');
   }
@@ -190,5 +208,29 @@ export class MenuScene extends Phaser.Scene {
         align: 'center',
       })
       .setOrigin(0.5);
+  }
+
+  private createMuteButton(): void {
+    const { width } = this.scale;
+    const audioManager = AudioManager.getInstance();
+    const config = audioManager.getConfig();
+
+    const muteText = this.add
+      .text(width - 60, 30, config.muted ? '🔇' : '🔊', { fontSize: '32px' })
+      .setInteractive({ useHandCursor: true });
+
+    muteText.on('pointerdown', () => {
+      audioManager.toggleMute();
+      const newConfig = audioManager.getConfig();
+      muteText.setText(newConfig.muted ? '🔇' : '🔊');
+    });
+
+    muteText.on('pointerover', () => {
+      muteText.setScale(1.1);
+    });
+
+    muteText.on('pointerout', () => {
+      muteText.setScale(1);
+    });
   }
 }

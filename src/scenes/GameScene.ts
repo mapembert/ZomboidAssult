@@ -10,6 +10,7 @@ import { WaveCompleteOverlay } from '@/ui/WaveCompleteOverlay';
 import { ProgressManager } from '@/systems/ProgressManager';
 import { HUD, HUDData } from '@/ui/HUD';
 import { PauseMenu, PauseMenuData } from '@/ui/PauseMenu';
+import { AudioManager } from '@/systems/AudioManager';
 
 export class GameScene extends Phaser.Scene {
   private currentChapter: ChapterData | null = null;
@@ -20,6 +21,7 @@ export class GameScene extends Phaser.Scene {
   private collisionManager: CollisionManager | null = null;
   private hud: HUD | null = null;
   private pauseMenu: PauseMenu | null = null;
+  private audioManager: AudioManager | null = null;
 
   // Game state
   private score: number = 0;
@@ -70,6 +72,13 @@ export class GameScene extends Phaser.Scene {
     const gameArea = this.add.graphics();
     gameArea.fillStyle(0x1a1a1a, 1);
     gameArea.fillRect(0, 0, width, height);
+
+    // Initialize AudioManager
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(this);
+
+    // Stop menu music (no game music - only ambient SFX during gameplay)
+    this.audioManager.stopMusic(500);
 
     const loader = ConfigLoader.getInstance();
     const heroConfig = loader.getHeroConfig();
@@ -145,6 +154,10 @@ export class GameScene extends Phaser.Scene {
 
     // Listen for wave complete events
     this.events.on('wave_complete', this.handleWaveComplete, this);
+
+    // Listen for hero add/remove events (for audio)
+    this.events.on('hero_added', this.handleHeroAdded, this);
+    this.events.on('hero_removed', this.handleHeroRemoved, this);
 
     // Set up pause keys
     if (this.input.keyboard) {
@@ -525,6 +538,9 @@ export class GameScene extends Phaser.Scene {
   private handleWeaponUpgrade(data: { tier: number; weaponName: string; weaponId: string }): void {
     console.log(`Weapon upgraded to tier ${data.tier}: ${data.weaponName}`);
 
+    // Play weapon upgrade sound
+    this.audioManager?.playSFX('weapon_upgrade', { volume: 0.7 });
+
     // Update HUD and flash weapon display
     if (this.hud && this.weaponSystem) {
       const weapon = this.weaponSystem.getCurrentWeapon();
@@ -588,6 +604,20 @@ export class GameScene extends Phaser.Scene {
   }
 
   /**
+   * Handle hero added events (for audio)
+   */
+  private handleHeroAdded(_data: { count: number }): void {
+    this.audioManager?.playSFX('hero_add', { volume: 0.6 });
+  }
+
+  /**
+   * Handle hero removed events (for audio)
+   */
+  private handleHeroRemoved(_data: { count: number }): void {
+    this.audioManager?.playSFX('hero_remove', { volume: 0.6 });
+  }
+
+  /**
    * Check if any zomboid reached the bottom (game over condition)
    */
   private checkGameOver(): void {
@@ -612,6 +642,9 @@ export class GameScene extends Phaser.Scene {
 
     console.log('Game Over! Zomboid reached the bottom.');
 
+    // Play game over sound
+    this.audioManager?.playSFX('game_over', { volume: 0.7 });
+
     // Transition to GameOverScene with score and wave data
     this.scene.start('GameOverScene', {
       score: this.score,
@@ -634,6 +667,9 @@ export class GameScene extends Phaser.Scene {
     this.gameActive = false;
 
     console.log(`Wave ${data.waveNumber} complete! Has next wave: ${data.hasNextWave}`);
+
+    // Play wave complete sound
+    this.audioManager?.playSFX('wave_complete', { volume: 0.8 });
 
     // Display wave complete overlay
     this.waveCompleteOverlay = new WaveCompleteOverlay(this, data.waveNumber, data.stats);

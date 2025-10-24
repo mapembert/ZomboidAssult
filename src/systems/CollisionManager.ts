@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Projectile } from '@/entities/Projectile';
 import { Zomboid } from '@/entities/Zomboid';
 import { Timer } from '@/entities/Timer';
+import { AudioManager } from '@/systems/AudioManager';
 
 /**
  * CollisionManager System
@@ -10,9 +11,12 @@ import { Timer } from '@/entities/Timer';
 export class CollisionManager {
   private scene: Phaser.Scene;
   private collisionCount: number = 0;
+  private audioManager: AudioManager;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(scene);
   }
 
   /**
@@ -70,6 +74,14 @@ export class CollisionManager {
       // Apply damage to zomboid
       const damage = projectile.getDamage();
       const destroyed = zomboid.takeDamage(damage);
+
+      // Play hit sound
+      this.audioManager.playSFX('zomboid_hit', { volume: 0.3 });
+
+      // Play destruction sound if zomboid destroyed
+      if (destroyed) {
+        this.audioManager.playSFX('zomboid_destroyed', { volume: 0.5 });
+      }
 
       // Destroy projectile
       projectile.setActive(false);
@@ -131,6 +143,9 @@ export class CollisionManager {
       // Increment timer counter
       const incrementValue = timer.getIncrementValue();
       timer.incrementCounter(incrementValue);
+
+      // Play timer increment sound
+      this.audioManager.playSFX('timer_increment', { volume: 0.4 });
 
       // Destroy projectile
       projectile.setActive(false);

@@ -16,6 +16,20 @@
   "audio": {
     "masterVolume": 0.7,
     "musicVolume": 0.5,
-    "sfxVolume": 0.8
+    "sfxVolume": 0.8,
+    "muted": false,
+    "music": {
+      "menu": "assets/audio/music/menu_music.mp3",
+      "game": null,
+      "gameOver": "assets/audio/music/menu_music2.mp3"
+    },
+    "sfx": {
+      "timerIncrement": "assets/audio/sfx/timer_increment.mp3",
+      "heroAdd": "assets/audio/sfx/hero_add.mp3",
+      "heroRemove": "assets/audio/sfx/hero_remove.mp3",
+      "weaponUpgrade": "assets/audio/sfx/weapon_upgrade.mp3",
+      "waveComplete": "assets/audio/sfx/wave_complete.mp3",
+      "gameOver": "assets/audio/sfx/game_over.mp3"
+    }
   }
 }

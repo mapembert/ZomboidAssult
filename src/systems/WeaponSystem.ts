@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Projectile } from '@/entities/Projectile';
 import { ObjectPool } from '@/utils/ObjectPool';
+import { AudioManager } from '@/systems/AudioManager';
 import type { WeaponType } from '@/types/ConfigTypes';
 
 export class WeaponSystem {
@@ -10,6 +11,9 @@ export class WeaponSystem {
   private projectilePool: ObjectPool<Projectile>;
   private activeProjectiles: Projectile[];
   private lastFireTime: number;
+  private audioManager: AudioManager;
+  private lastFireSoundTime: number = 0;
+  private fireSoundThrottle: number = 50; // ms, prevent overlap
 
   constructor(scene: Phaser.Scene, weaponTiers: WeaponType[]) {
     this.scene = scene;
@@ -17,6 +21,10 @@ export class WeaponSystem {
     this.currentWeapon = this.weaponTiers[0]; // Start with tier 1
     this.activeProjectiles = [];
     this.lastFireTime = 0;
+
+    // Initialize AudioManager
+    this.audioManager = AudioManager.getInstance();
+    this.audioManager.initialize(scene);
 
     // Create projectile pool (100 projectiles initially)
     this.projectilePool = new ObjectPool<Projectile>(
@@ -59,6 +67,16 @@ export class WeaponSystem {
     positions.forEach((pos) => {
       this.fireFromPosition(pos.x, pos.y);
     });
+
+    // Play projectile fire sound (throttled to prevent overlap)
+    const now = this.scene.time.now;
+    if (now - this.lastFireSoundTime >= this.fireSoundThrottle) {
+      this.audioManager.playSFX('projectile_fire', {
+        volume: 0.2,
+        detune: Phaser.Math.Between(-100, 100), // Pitch variation
+      });
+      this.lastFireSoundTime = now;
+    }
 
     // Update last fire time
     this.lastFireTime = this.scene.time.now;
