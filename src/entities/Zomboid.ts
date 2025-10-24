@@ -8,6 +8,7 @@ import type { ZomboidType } from '@/types/ConfigTypes';
  */
 export class Zomboid extends Phaser.GameObjects.Container {
   private sprite: Phaser.GameObjects.Graphics;
+  private healthText: Phaser.GameObjects.Text;
   private config: ZomboidType;
   private currentHealth: number;
   private speed: number;
@@ -20,6 +21,17 @@ export class Zomboid extends Phaser.GameObjects.Container {
     // Create graphics object for rendering shape
     this.sprite = new Phaser.GameObjects.Graphics(scene);
     this.add(this.sprite);
+
+    // Create health text
+    this.healthText = new Phaser.GameObjects.Text(scene, 0, 0, '', {
+      fontSize: '16px',
+      color: '#FFFFFF',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 3
+    });
+    this.healthText.setOrigin(0.5, 0.5);
+    this.add(this.healthText);
 
     // Add to scene
     scene.add.existing(this);
@@ -63,6 +75,9 @@ export class Zomboid extends Phaser.GameObjects.Container {
 
     // Render shape
     this.renderShape();
+
+    // Update health text
+    this.updateHealthDisplay();
 
     // Activate
     this.setActive(true);
@@ -121,6 +136,31 @@ export class Zomboid extends Phaser.GameObjects.Container {
   }
 
   /**
+   * Update health text display
+   */
+  private updateHealthDisplay(): void {
+    // Only show health for zomboids with more than 1 HP
+    if (this.config.health <= 1) {
+      this.healthText.setVisible(false);
+      return;
+    }
+
+    this.healthText.setVisible(true);
+    this.healthText.setText(this.currentHealth.toString());
+
+    // Scale font size based on zomboid size
+    let fontSize = '16px';
+    if (this.config.size === 'boss') {
+      fontSize = '32px';
+    } else if (this.config.size === 'large') {
+      fontSize = '24px';
+    } else if (this.config.size === 'medium') {
+      fontSize = '20px';
+    }
+    this.healthText.setFontSize(fontSize);
+  }
+
+  /**
    * Update zomboid position (move downward)
    */
   update(delta: number): void {
@@ -149,6 +189,9 @@ export class Zomboid extends Phaser.GameObjects.Container {
       this.playDestructionEffect();
       return true; // Zomboid destroyed
     }
+
+    // Update health display when damaged
+    this.updateHealthDisplay();
 
     return false; // Zomboid still alive
   }
