@@ -24,6 +24,7 @@ interface TimerSpawnScheduleEntry {
   time: number;
   timerType: string;
   columnIndex: number;
+  startValue: number;
 }
 
 /**
@@ -188,6 +189,7 @@ export class WaveManager {
         time: pattern.spawnTime,
         timerType: pattern.type,
         columnIndex: columnIndex,
+        startValue: pattern.startValue,
       });
     });
 
@@ -277,7 +279,7 @@ export class WaveManager {
 
       // Check if it's time to spawn this timer
       if (this.waveElapsedTime >= entry.time) {
-        this.spawnTimer(entry.timerType, entry.columnIndex);
+        this.spawnTimer(entry.timerType, entry.columnIndex, entry.startValue);
         this.nextTimerSpawnIndex++;
       } else {
         break; // Not time yet
@@ -311,7 +313,7 @@ export class WaveManager {
   /**
    * Spawn a timer at the specified column
    */
-  private spawnTimer(timerTypeId: string, columnIndex: number): void {
+  private spawnTimer(timerTypeId: string, columnIndex: number, startValue: number): void {
     // Get timer config
     const timerConfig = this.configLoader.getTimerType(timerTypeId);
     if (!timerConfig) {
@@ -326,8 +328,8 @@ export class WaveManager {
     const x = this.columnPositions[columnIndex];
     const y = -timerConfig.height; // Spawn just above screen
 
-    // Reset timer with new config
-    timer.resetForPool(x, y, timerConfig, columnIndex);
+    // Reset timer with new config and custom start value
+    timer.resetForPool(x, y, timerConfig, columnIndex, startValue);
 
     // Add unique instance ID for tracking
     const instanceId = `timer_${Date.now()}_${Math.random()}`;

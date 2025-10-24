@@ -89,6 +89,40 @@
       "health": 6,
       "speed": 55,
       "scoreValue": 75
+    },
+    {
+      "id": "boss_circle_tank",
+      "shape": "circle",
+      "size": "boss",
+      "radius": 50,
+      "color": "#B71C1C",
+      "outlineColor": "#FF5252",
+      "health": 150,
+      "speed": 35,
+      "scoreValue": 200
+    },
+    {
+      "id": "boss_square_fortress",
+      "shape": "square",
+      "size": "boss",
+      "width": 90,
+      "height": 90,
+      "color": "#F57F17",
+      "outlineColor": "#FBC02D",
+      "health": 200,
+      "speed": 30,
+      "scoreValue": 250
+    },
+    {
+      "id": "boss_hex_juggernaut",
+      "shape": "hexagon",
+      "size": "boss",
+      "radius": 55,
+      "color": "#1B5E20",
+      "outlineColor": "#4CAF50",
+      "health": 400,
+      "speed": 25,
+      "scoreValue": 300
     }
   ]
 }

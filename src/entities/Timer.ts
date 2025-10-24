@@ -9,11 +9,11 @@ export class Timer extends Phaser.GameObjects.Container {
   private counter: number;
   private columnIndex: number;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, timerConfig: TimerType, columnIndex: number = 0) {
+  constructor(scene: Phaser.Scene, x: number, y: number, timerConfig: TimerType, columnIndex: number = 0, startValueOverride?: number) {
     super(scene, x, y);
 
     this.config = timerConfig;
-    this.counter = timerConfig.startValue;
+    this.counter = startValueOverride !== undefined ? startValueOverride : timerConfig.startValue;
     this.columnIndex = columnIndex;
 
     // Create graphics object for rectangle rendering
@@ -212,11 +212,11 @@ export class Timer extends Phaser.GameObjects.Container {
   /**
    * Reset timer for object pooling
    */
-  resetForPool(x: number, y: number, timerConfig: TimerType, columnIndex: number): void {
+  resetForPool(x: number, y: number, timerConfig: TimerType, columnIndex: number, startValueOverride?: number): void {
     this.x = x;
     this.y = y;
     this.config = timerConfig;
-    this.counter = timerConfig.startValue;
+    this.counter = startValueOverride !== undefined ? startValueOverride : timerConfig.startValue;
     this.columnIndex = columnIndex;
     this.setActive(true);
     this.setVisible(true);

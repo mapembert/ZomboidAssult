@@ -103,6 +103,7 @@ export interface TimerSpawnPattern {
   type: string;
   spawnTime: number;
   column: 'left' | 'right';
+  startValue: number; // Override for timer difficulty per wave
 }
 
 // Wave Data

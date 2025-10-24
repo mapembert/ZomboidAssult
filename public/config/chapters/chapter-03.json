@@ -1,106 +1,372 @@
 {
   "chapterId": "chapter-03",
   "chapterName": "Maximum Chaos",
-  "description": "All zomboid types, intense timer pressure, survival challenge",
+  "description": "Face powerful boss zomboids and intense spawns",
   "unlockRequirement": "chapter-02",
   "waves": [
     {
       "waveId": 1,
-      "waveName": "Full Spectrum",
-      "duration": 35,
+      "waveName": "Warm Up",
+      "duration": 28,
       "spawnPattern": {
         "zomboids": [
           {
-            "type": "basic_circle_large",
-            "count": 15,
-            "spawnRate": 1.5,
-            "columns": ["left", "right"],
+            "type": "basic_circle_small",
+            "count": 30,
+            "spawnRate": 2.5,
+            "columns": [
+              "left",
+              "right"
+            ],
             "spawnDelay": 0
           },
           {
-            "type": "square_medium",
-            "count": 18,
-            "spawnRate": 1.8,
-            "columns": ["left", "right"],
+            "type": "square_small",
+            "count": 8,
+            "spawnRate": 1.6,
+            "columns": [
+              "left",
+              "right"
+            ],
             "spawnDelay": 2
           },
           {
-            "type": "hex_medium",
-            "count": 12,
+            "type": "basic_circle_medium",
+            "count": 10,
             "spawnRate": 1.3,
-            "columns": ["left", "right"],
+            "columns": [
+              "left",
+              "right"
+            ],
             "spawnDelay": 5
           }
         ],
         "timers": [
           {
-            "type": "weapon_upgrade_timer",
-            "spawnTime": 5,
-            "column": "left"
-          },
-          {
             "type": "hero_add_timer",
-            "spawnTime": 12,
-            "column": "right"
+            "spawnTime": 15,
+            "column": "left",
+            "startValue": -35
           },
           {
-            "type": "rapid_hero_timer",
-            "spawnTime": 22,
-            "column": "left"
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 6,
+            "column": "right",
+            "startValue": -5
           }
         ]
       }
     },
     {
       "waveId": 2,
-      "waveName": "Endurance Test",
-      "duration": 45,
+      "waveName": "Rising Intensity",
+      "duration": 32,
       "spawnPattern": {
         "zomboids": [
           {
-            "type": "basic_circle_small",
-            "count": 40,
-            "spawnRate": 2.0,
-            "columns": ["left", "right"],
-            "spawnDelay": 0
-          },
-          {
             "type": "basic_circle_medium",
-            "count": 25,
-            "spawnRate": 1.8,
-            "columns": ["left", "right"],
-            "spawnDelay": 2
+            "count": 30,
+            "spawnRate": 2.2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 6
           },
           {
             "type": "square_medium",
-            "count": 20,
-            "spawnRate": 1.5,
-            "columns": ["left", "right"],
-            "spawnDelay": 4
+            "count": 10,
+            "spawnRate": 1.8,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 10
           },
           {
-            "type": "hex_large",
-            "count": 10,
-            "spawnRate": 1.0,
-            "columns": ["left", "right"],
-            "spawnDelay": 8
+            "type": "hex_small",
+            "count": 5,
+            "spawnRate": 1.2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 15
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 6,
+            "column": "right",
+            "startValue": -22
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 16,
+            "column": "left",
+            "startValue": -60
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 24,
+            "column": "right",
+            "startValue": -50
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "First Contact",
+      "duration": 38,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 200,
+            "spawnRate": 2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 22,
+            "spawnRate": 1.8,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_medium",
+            "count": 15,
+            "spawnRate": 1.4,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 6
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 2,
+            "spawnRate": 0.4,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 15
           }
         ],
         "timers": [
           {
             "type": "weapon_upgrade_timer",
             "spawnTime": 8,
-            "column": "right"
+            "column": "left",
+            "startValue": -65
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -25
           },
           {
             "type": "hero_add_timer",
-            "spawnTime": 18,
-            "column": "left"
+            "spawnTime": 26,
+            "column": "left",
+            "startValue": -55
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Heavy Assault",
+      "duration": 42,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 25,
+            "spawnRate": 2.3,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 20,
+            "spawnRate": 2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 2
+          },
+          {
+            "type": "hex_large",
+            "count": 15,
+            "spawnRate": 1.5,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 5
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 2,
+            "spawnRate": 0.4,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 12
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 2,
+            "spawnRate": 0.3,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 18
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 6,
+            "column": "right",
+            "startValue": -28
           },
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 30,
-            "column": "right"
+            "spawnTime": 14,
+            "column": "left",
+            "startValue": -70
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 22,
+            "column": "right",
+            "startValue": -60
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 32,
+            "column": "left",
+            "startValue": -30
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 5,
+      "waveName": "Final Onslaught",
+      "duration": 48,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 30,
+            "spawnRate": 2.5,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 25,
+            "spawnRate": 2.2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 2
+          },
+          {
+            "type": "hex_large",
+            "count": 20,
+            "spawnRate": 1.8,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 5
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 3,
+            "spawnRate": 0.5,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 10
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 2,
+            "spawnRate": 0.3,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 18
+          },
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 2,
+            "spawnRate": 0.2,
+            "columns": [
+              "left",
+              "right"
+            ],
+            "spawnDelay": 28
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 6,
+            "column": "left",
+            "startValue": -75
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 12,
+            "column": "right",
+            "startValue": -32
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 20,
+            "column": "left",
+            "startValue": -65
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 28,
+            "column": "right",
+            "startValue": -80
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 36,
+            "column": "left",
+            "startValue": -35
           }
         ]
       }
