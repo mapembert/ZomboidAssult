@@ -64,7 +64,12 @@ export class MenuScene extends Phaser.Scene {
 
   private getAvailableChapters(loader: ConfigLoader): ChapterData[] {
     const chapters: ChapterData[] = [];
-    const chapterIds = ['chapter-01', 'chapter-02', 'chapter-03'];
+    const baseChapterIds = ['chapter-01', 'chapter-02', 'chapter-03'];
+
+    // Include test chapter if unlockAllChapters is enabled
+    const chapterIds = loader.isUnlockAllChaptersEnabled()
+      ? [...baseChapterIds, 'chapter-test-upgrades']
+      : baseChapterIds;
 
     for (const id of chapterIds) {
       const chapter = loader.getChapter(id);
@@ -84,9 +89,9 @@ export class MenuScene extends Phaser.Scene {
     chapters.forEach((chapter, index) => {
       const yPos = startY + index * spacing;
       const progress = progressManager.getChapterProgress(chapter.chapterId);
-      const isLocked = !progress.unlocked;
+      const isUnlocked = progressManager.isChapterUnlocked(chapter.chapterId);
 
-      if (isLocked) {
+      if (!isUnlocked) {
         this.createLockedChapter(centerX, yPos, chapter);
       } else {
         this.createUnlockedChapter(centerX, yPos, chapter, progress);

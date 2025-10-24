@@ -31,5 +31,9 @@
       "waveComplete": "assets/audio/sfx/wave_complete.mp3",
       "gameOver": "assets/audio/sfx/game_over.mp3"
     }
+  },
+  "debug": {
+    "enableLogging": false,
+    "unlockAllChapters": true
   }
 }

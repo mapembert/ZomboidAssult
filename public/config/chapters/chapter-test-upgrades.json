@@ -1,0 +1,196 @@
+{
+  "chapterId": "chapter-test-upgrades",
+  "chapterName": "TEST: Upgrade System",
+  "description": "Testing chapter for weapon upgrades and timer mechanics",
+  "unlockRequirement": null,
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Upgrade Test - Tier 1 to 2",
+      "duration": 30,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 15,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 5,
+            "column": "left",
+            "startValue": -30,
+            "weaponTier": 2
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 8,
+            "column": "right",
+            "startValue": -20
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Upgrade Test - Tier 2 to 3",
+      "duration": 35,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_medium",
+            "count": 20,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 3,
+            "column": "left",
+            "startValue": -35,
+            "resetHeroCount": true,
+            "weaponTier": 3
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 5,
+            "column": "right",
+            "startValue": -35,
+            "weaponTier": 3
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 12,
+            "column": "left",
+            "startValue": -15
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Upgrade Test - Tier 3 to 4",
+      "duration": 40,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "square_small",
+            "count": 25,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_small",
+            "count": 10,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 2,
+            "column": "left",
+            "startValue": -40,
+            "resetHeroCount": true,
+            "weaponTier": 4
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 4,
+            "column": "right",
+            "startValue": -40,
+            "weaponTier": 4
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 15,
+            "column": "left",
+            "startValue": -25
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 20,
+            "column": "right",
+            "startValue": -12
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Upgrade Test - Tier 4 to 5",
+      "duration": 45,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 15,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 12,
+            "spawnRate": 1.1,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_medium",
+            "count": 8,
+            "spawnRate": 0.9,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 2,
+            "column": "left",
+            "startValue": -45,
+            "resetHeroCount": true,
+            "weaponTier": 5
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 5,
+            "column": "right",
+            "startValue": -45,
+            "resetHeroCount": false,
+            "weaponTier": 5
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 15,
+            "column": "left",
+            "startValue": -10
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 25,
+            "column": "right",
+            "startValue": -30
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 35,
+            "column": "left",
+            "startValue": -8
+          }
+        ]
+      }
+    }
+  ]
+}

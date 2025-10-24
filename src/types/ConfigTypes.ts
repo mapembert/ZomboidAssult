@@ -8,6 +8,10 @@ export interface GameSettings {
     fps: number;
     debugMode: boolean;
   };
+  debug: {
+    enableLogging: boolean;
+    unlockAllChapters: boolean;
+  };
   gameplay: {
     playerStartColumn: number;
     safeZoneHeight: number;

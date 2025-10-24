@@ -1,6 +1,7 @@
 /**
  * Logger utility for writing console logs to a file
  * Sends logs to a Node.js server that writes to logs/game.log
+ * Controlled by debug.enableLogging setting in game-settings.json
  */
 
 class Logger {
@@ -10,10 +11,43 @@ class Logger {
   private logServerUrl: string = 'http://localhost:3100/api/logs';
   private batchQueue: Array<{ level: string; message: string; timestamp: string }> = [];
   private batchInterval: number = 1000; // Send batch every 1 second
+  private isEnabled: boolean = false;
+  private originalConsole: {
+    log: typeof console.log;
+    error: typeof console.error;
+    warn: typeof console.warn;
+  } | null = null;
 
   private constructor() {
+    // Don't start immediately - wait for config to load
+  }
+
+  /**
+   * Enable logging (called after config is loaded)
+   */
+  enable(): void {
+    if (this.isEnabled) return;
+    this.isEnabled = true;
     this.interceptConsole();
     this.startBatchTimer();
+    console.log('[Logger] Logging enabled - sending to server');
+  }
+
+  /**
+   * Disable logging
+   */
+  disable(): void {
+    if (!this.isEnabled) return;
+    this.isEnabled = false;
+    this.restoreConsole();
+    console.log('[Logger] Logging disabled');
+  }
+
+  /**
+   * Check if logging is enabled
+   */
+  getEnabled(): boolean {
+    return this.isEnabled;
   }
 
   static getInstance(): Logger {
@@ -27,24 +61,40 @@ class Logger {
    * Intercept console.log, console.error, console.warn
    */
   private interceptConsole(): void {
-    const originalLog = console.log;
-    const originalError = console.error;
-    const originalWarn = console.warn;
+    if (this.originalConsole) return; // Already intercepted
+
+    this.originalConsole = {
+      log: console.log,
+      error: console.error,
+      warn: console.warn
+    };
 
     console.log = (...args: any[]) => {
       this.addLog('LOG', args);
-      originalLog.apply(console, args);
+      this.originalConsole!.log.apply(console, args);
     };
 
     console.error = (...args: any[]) => {
       this.addLog('ERROR', args);
-      originalError.apply(console, args);
+      this.originalConsole!.error.apply(console, args);
     };
 
     console.warn = (...args: any[]) => {
       this.addLog('WARN', args);
-      originalWarn.apply(console, args);
+      this.originalConsole!.warn.apply(console, args);
     };
+  }
+
+  /**
+   * Restore original console methods
+   */
+  private restoreConsole(): void {
+    if (!this.originalConsole) return;
+
+    console.log = this.originalConsole.log;
+    console.error = this.originalConsole.error;
+    console.warn = this.originalConsole.warn;
+    this.originalConsole = null;
   }
 
   /**

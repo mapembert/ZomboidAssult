@@ -37,11 +37,34 @@ export class ConfigLoader {
       if (!response.ok) throw new Error('Failed to load game settings');
       const data: GameSettings = await response.json();
       this.gameSettings = data;
+
+      // Initialize logger based on debug settings
+      this.initializeLogger();
+
       return data;
     } catch (error) {
       console.error('Error loading game settings:', error);
       throw error;
     }
+  }
+
+  /**
+   * Initialize logger based on debug.enableLogging setting
+   */
+  private initializeLogger(): void {
+    if (!this.gameSettings) return;
+
+    // Dynamically import Logger to avoid circular dependency
+    import('@/utils/Logger').then((module) => {
+      const logger = module.default.getInstance();
+      if (this.gameSettings?.debug?.enableLogging) {
+        logger.enable();
+      } else {
+        logger.disable();
+      }
+    }).catch((error) => {
+      console.warn('Could not initialize logger:', error);
+    });
   }
 
   public async loadZomboidTypes(): Promise<Map<string, ZomboidType>> {
@@ -134,7 +157,13 @@ export class ConfigLoader {
   }
 
   public async getAllChapters(): Promise<ChapterData[]> {
-    const chapterIds = ['chapter-01', 'chapter-02', 'chapter-03'];
+    const baseChapterIds = ['chapter-01', 'chapter-02', 'chapter-03'];
+
+    // Include test chapter if unlockAllChapters is enabled
+    const chapterIds = this.gameSettings?.debug?.unlockAllChapters
+      ? [...baseChapterIds, 'chapter-test-upgrades']
+      : baseChapterIds;
+
     const chapters: ChapterData[] = [];
 
     for (const id of chapterIds) {
@@ -191,5 +220,19 @@ export class ConfigLoader {
 
   public getChapter(id: string): ChapterData | undefined {
     return this.chapters.get(id);
+  }
+
+  /**
+   * Check if debug logging is enabled
+   */
+  public isLoggingEnabled(): boolean {
+    return this.gameSettings?.debug?.enableLogging ?? false;
+  }
+
+  /**
+   * Check if all chapters should be unlocked (debug mode)
+   */
+  public isUnlockAllChaptersEnabled(): boolean {
+    return this.gameSettings?.debug?.unlockAllChapters ?? false;
   }
 }

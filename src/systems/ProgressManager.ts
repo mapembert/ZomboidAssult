@@ -1,4 +1,5 @@
 import type { ChapterData } from '@/types/ConfigTypes';
+import { ConfigLoader } from '@/systems/ConfigLoader';
 
 export interface ChapterProgress {
   chapterId: string;
@@ -102,6 +103,12 @@ export class ProgressManager {
    * Check if a chapter is unlocked
    */
   isChapterUnlocked(chapterId: string): boolean {
+    // Check debug setting - unlock all chapters if enabled
+    const configLoader = ConfigLoader.getInstance();
+    if (configLoader.isUnlockAllChaptersEnabled()) {
+      return true;
+    }
+
     // First chapter is always unlocked
     if (chapterId === 'chapter-01') {
       return true;
