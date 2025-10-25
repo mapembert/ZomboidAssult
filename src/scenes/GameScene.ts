@@ -230,11 +230,25 @@ export class GameScene extends Phaser.Scene {
     if (!this.gameActive && !this.isTransitioningWaves) return;
 
     if (this.heroManager && this.inputManager) {
+      // Continuous movement: adjust target position based on input
+      const deltaSeconds = delta / 1000;
+      const loader = ConfigLoader.getInstance();
+      const heroConfig = loader.getHeroConfig();
+      const movementSpeed = heroConfig?.heroConfig.movementSpeed || 800;
+
+      // Calculate movement delta for this frame
+      const movementDelta = movementSpeed * deltaSeconds;
+
+      // Get current target position
+      const currentTarget = this.heroManager.getTargetX();
+
+      // Apply continuous movement based on input
       if (this.inputManager.isMovingLeft()) {
-        this.heroManager.setTargetX(180);
+        this.heroManager.setTargetX(currentTarget - movementDelta);
       } else if (this.inputManager.isMovingRight()) {
-        this.heroManager.setTargetX(540);
+        this.heroManager.setTargetX(currentTarget + movementDelta);
       }
+      // If no input, target stays at current position (Centipede-like behavior)
 
       this.heroManager.update(delta);
     }

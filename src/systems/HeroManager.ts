@@ -62,6 +62,13 @@ export class HeroManager {
   }
 
   /**
+   * Get target X position of hero squad
+   */
+  getTargetX(): number {
+    return this.targetX;
+  }
+
+  /**
    * Get current X position of hero squad
    */
   getCurrentX(): number {
