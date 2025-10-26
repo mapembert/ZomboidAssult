@@ -19,6 +19,7 @@ export interface GameSettings {
     spawnZoneHeight: number;
     gameOverOnZomboidReachBottom: boolean;
     movementBoundaryPadding: number; // Padding from screen edges for continuous movement
+    spawnZonePadding: number; // Padding from edges for zomboid spawning (pixels)
   };
   audio: {
     masterVolume: number;
@@ -103,7 +104,6 @@ export interface ZomboidSpawnPattern {
   type: string;
   count: number;
   spawnRate: number;
-  columns: ('left' | 'right')[];
   spawnDelay: number;
 }
 

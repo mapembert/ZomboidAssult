@@ -13,7 +13,8 @@
     "safeZoneHeight": 150,
     "spawnZoneHeight": 100,
     "gameOverOnZomboidReachBottom": true,
-    "movementBoundaryPadding": 60
+    "movementBoundaryPadding": 60,
+    "spawnZonePadding": 80
   },
   "audio": {
     "masterVolume": 0.7,

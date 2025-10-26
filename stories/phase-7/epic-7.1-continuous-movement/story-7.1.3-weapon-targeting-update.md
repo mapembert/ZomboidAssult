@@ -4,7 +4,7 @@
 **Story ID:** 7.1.3
 **Priority:** High
 **Points:** 3
-**Status:** Draft
+**Status:** COMPLETED
 
 ## Description
 

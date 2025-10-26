@@ -36,6 +36,11 @@ export class GameScene extends Phaser.Scene {
   private hudUpdateInterval: number = 100; // Update every 100ms
   private lastHudUpdate: number = 0;
 
+  // Movement cooldown for snap positions
+  private movementCooldown: number = 150; // milliseconds between position changes
+  private lastMovementTime: number = 0;
+  private lastInputDirection: 'left' | 'right' | null = null;
+
   // Input keys
   private pauseKey: Phaser.Input.Keyboard.Key | undefined;
   private escKey: Phaser.Input.Keyboard.Key | undefined;
@@ -105,9 +110,9 @@ export class GameScene extends Phaser.Scene {
       this.weaponSystem = new WeaponSystem(this, weaponTypes);
     }
 
-    // Initialize WaveManager
-    if (this.currentChapter && this.currentChapter.waves.length > 0) {
-      this.waveManager = new WaveManager(this, this.currentChapter.waves);
+    // Initialize WaveManager (requires heroManager for snap positions)
+    if (this.currentChapter && this.currentChapter.waves.length > 0 && this.heroManager) {
+      this.waveManager = new WaveManager(this, this.currentChapter.waves, this.heroManager);
 
       // Track chapter start time
       this.chapterStartTime = this.time.now;
@@ -230,25 +235,30 @@ export class GameScene extends Phaser.Scene {
     if (!this.gameActive && !this.isTransitioningWaves) return;
 
     if (this.heroManager && this.inputManager) {
-      // Continuous movement: adjust target position based on input
-      const deltaSeconds = delta / 1000;
-      const loader = ConfigLoader.getInstance();
-      const heroConfig = loader.getHeroConfig();
-      const movementSpeed = heroConfig?.heroConfig.movementSpeed || 800;
+      // Discrete snap position movement with cooldown
+      const currentTime = time;
+      const canMove = currentTime - this.lastMovementTime >= this.movementCooldown;
 
-      // Calculate movement delta for this frame
-      const movementDelta = movementSpeed * deltaSeconds;
+      const isMovingLeft = this.inputManager.isMovingLeft();
+      const isMovingRight = this.inputManager.isMovingRight();
 
-      // Get current target position
-      const currentTarget = this.heroManager.getTargetX();
-
-      // Apply continuous movement based on input
-      if (this.inputManager.isMovingLeft()) {
-        this.heroManager.setTargetX(currentTarget - movementDelta);
-      } else if (this.inputManager.isMovingRight()) {
-        this.heroManager.setTargetX(currentTarget + movementDelta);
+      // Detect input direction changes or new input after cooldown
+      if (canMove) {
+        if (isMovingLeft && this.lastInputDirection !== 'left') {
+          this.heroManager.moveToPreviousPosition();
+          this.lastMovementTime = currentTime;
+          this.lastInputDirection = 'left';
+        } else if (isMovingRight && this.lastInputDirection !== 'right') {
+          this.heroManager.moveToNextPosition();
+          this.lastMovementTime = currentTime;
+          this.lastInputDirection = 'right';
+        }
       }
-      // If no input, target stays at current position (Centipede-like behavior)
+
+      // Reset direction when no input
+      if (!isMovingLeft && !isMovingRight) {
+        this.lastInputDirection = null;
+      }
 
       this.heroManager.update(delta);
     }

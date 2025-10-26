@@ -15,6 +15,10 @@ export class HeroManager {
   private minX: number; // Minimum allowed X position (left boundary)
   private maxX: number; // Maximum allowed X position (right boundary)
 
+  // Snap positions (12 positions total across the bottom)
+  private snapPositions: number[] = []; // Calculated snap positions
+  private currentSnapIndex: number = 0; // Current snap position index (0-11)
+
   constructor(scene: Phaser.Scene, config: HeroConfig, gameSettings: GameSettings) {
     this.scene = scene;
     this.config = config;
@@ -29,10 +33,15 @@ export class HeroManager {
     this.minX = padding;
     this.maxX = screenWidth - padding;
     
+    // Calculate 12 snap positions evenly distributed across the screen
+    this.calculateSnapPositions(screenWidth, padding);
+
     // Initialize position (center of screen or configured start position)
     const startX = gameSettings.gameplay.playerStartX || screenWidth / 2;
-    this.currentX = startX;
-    this.targetX = startX;
+    // Find nearest snap position and set as initial position
+    this.currentSnapIndex = this.findNearestSnapIndex(startX);
+    this.currentX = this.snapPositions[this.currentSnapIndex];
+    this.targetX = this.currentX;
     this.velocityX = 0;
 
     // Create initial heroes
@@ -55,10 +64,89 @@ export class HeroManager {
   }
 
   /**
-   * Set target X position for hero squad (with boundary clamping)
+   * Calculate 12 snap positions evenly distributed across the screen
+   */
+  private calculateSnapPositions(screenWidth: number, padding: number): void {
+    const snapCount = 12;
+    const playableWidth = screenWidth - (2 * padding);
+    const spacing = playableWidth / (snapCount - 1);
+
+    this.snapPositions = [];
+    for (let i = 0; i < snapCount; i++) {
+      this.snapPositions.push(padding + i * spacing);
+    }
+  }
+
+  /**
+   * Find the nearest snap position index to a given X coordinate
+   */
+  private findNearestSnapIndex(x: number): number {
+    if (this.snapPositions.length === 0) return 0;
+
+    let nearestIndex = 0;
+    let minDistance = Math.abs(x - this.snapPositions[0]);
+
+    for (let i = 0; i < this.snapPositions.length; i++) {
+      const distance = Math.abs(x - this.snapPositions[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestIndex = i;
+      }
+    }
+
+    return nearestIndex;
+  }
+
+  /**
+   * Move to the next snap position (right)
+   */
+  moveToNextPosition(): void {
+    if (this.currentSnapIndex < this.snapPositions.length - 1) {
+      this.currentSnapIndex++;
+      this.targetX = this.snapPositions[this.currentSnapIndex];
+    }
+  }
+
+  /**
+   * Move to the previous snap position (left)
+   */
+  moveToPreviousPosition(): void {
+    if (this.currentSnapIndex > 0) {
+      this.currentSnapIndex--;
+      this.targetX = this.snapPositions[this.currentSnapIndex];
+    }
+  }
+
+  /**
+   * Get all snap positions (for zomboid spawning)
+   */
+  getSnapPositions(): number[] {
+    return [...this.snapPositions];
+  }
+
+  /**
+   * Get left snap positions (first 6 positions)
+   */
+  getLeftSnapPositions(): number[] {
+    return this.snapPositions.slice(0, 6);
+  }
+
+  /**
+   * Get right snap positions (last 6 positions)
+   */
+  getRightSnapPositions(): number[] {
+    return this.snapPositions.slice(6, 12);
+  }
+
+  /**
+   * Set target X position for hero squad (snaps to nearest position)
    */
   setTargetX(x: number): void {
-    this.targetX = Phaser.Math.Clamp(x, this.minX, this.maxX);
+    // Clamp to boundaries first
+    const clampedX = Phaser.Math.Clamp(x, this.minX, this.maxX);
+    // Find nearest snap position and update index
+    this.currentSnapIndex = this.findNearestSnapIndex(clampedX);
+    this.targetX = this.snapPositions[this.currentSnapIndex];
   }
 
   /**

@@ -3,6 +3,7 @@ import { Zomboid } from '@/entities/Zomboid';
 import { Timer } from '@/entities/Timer';
 import { ObjectPool } from '@/utils/ObjectPool';
 import { ConfigLoader } from '@/systems/ConfigLoader';
+import type { HeroManager } from '@/systems/HeroManager';
 import type { WaveData, ZomboidSpawnPattern, TimerSpawnPattern } from '@/types/ConfigTypes';
 import type { WaveStats } from '@/types/GameTypes';
 
@@ -13,7 +14,6 @@ import type { WaveStats } from '@/types/GameTypes';
 interface ZomboidSpawnScheduleEntry {
   time: number;
   zomboidType: string;
-  columnIndex: number;
 }
 
 /**
@@ -35,6 +35,7 @@ interface TimerSpawnScheduleEntry {
  */
 export class WaveManager {
   private scene: Phaser.Scene;
+  private heroManager: HeroManager;
   private waves: WaveData[];
   private currentWaveIndex: number = 0;
   private currentWave: WaveData | null = null;
@@ -54,7 +55,7 @@ export class WaveManager {
   private nextZomboidSpawnIndex: number = 0;
   private nextTimerSpawnIndex: number = 0;
 
-  // Column positions
+  // Column positions (for timers)
   private columnPositions: number[] = [];
 
   // Wave statistics tracking
@@ -67,19 +68,18 @@ export class WaveManager {
     timeElapsed: 0,
   };
 
-  constructor(scene: Phaser.Scene, waves: WaveData[]) {
+  constructor(scene: Phaser.Scene, waves: WaveData[], heroManager: HeroManager) {
     this.scene = scene;
+    this.heroManager = heroManager;
     this.waves = waves;
     this.configLoader = ConfigLoader.getInstance();
 
+    // Calculate column positions for timers (same as HeroManager)
+    const screenWidth = this.scene.scale.width;
+    this.columnPositions = [screenWidth / 4, (3 * screenWidth) / 4];
     // Listen for instant timer completions
     this.scene.events.on('timer_completed', this.handleTimerCompleted, this);
 
-    // Calculate column positions (same as HeroManager)
-    // Left column: SCREEN_WIDTH / 4
-    // Right column: (3 * SCREEN_WIDTH) / 4
-    const screenWidth = this.scene.scale.width;
-    this.columnPositions = [screenWidth / 4, (3 * screenWidth) / 4];
 
     // Create zomboid pool (50 zomboids initially)
     this.zomboidPool = new ObjectPool<Zomboid>(
@@ -157,14 +157,10 @@ export class WaveManager {
       for (let i = 0; i < pattern.count; i++) {
         const spawnTime = pattern.spawnDelay + i * spawnInterval;
 
-        // Randomly select column from available columns
-        const columnName = pattern.columns[Math.floor(Math.random() * pattern.columns.length)];
-        const columnIndex = columnName === 'left' ? 0 : 1;
 
         this.zomboidSpawnSchedule.push({
           time: spawnTime,
           zomboidType: pattern.type,
-          columnIndex: columnIndex,
         });
       }
     });
@@ -268,7 +264,7 @@ export class WaveManager {
 
       // Check if it's time to spawn this zomboid
       if (this.waveElapsedTime >= entry.time) {
-        this.spawnZomboid(entry.zomboidType, entry.columnIndex);
+        this.spawnZomboid(entry.zomboidType);
         this.nextZomboidSpawnIndex++;
       } else {
         break; // Not time yet
@@ -294,9 +290,29 @@ export class WaveManager {
   }
 
   /**
-   * Spawn a zomboid at the specified column
+   * Generate random snap position (6 left or 6 right positions)
    */
-  private spawnZomboid(zomboidTypeId: string, columnIndex: number): void {
+  private getSnapSpawnX(): number {
+    const snapPositions = this.heroManager.getSnapPositions();
+    if (snapPositions.length === 0) {
+      return this.scene.scale.width / 2; // Fallback to center
+    }
+
+    // Randomly choose between left (0-5) and right (6-11) positions
+    const useLeft = Phaser.Math.Between(0, 1) === 0;
+    const leftPositions = snapPositions.slice(0, 6);
+    const rightPositions = snapPositions.slice(6, 12);
+
+    const positions = useLeft ? leftPositions : rightPositions;
+    const randomIndex = Phaser.Math.Between(0, positions.length - 1);
+
+    return positions[randomIndex];
+  }
+
+  /**
+   * Spawn a zomboid at a random X position
+   */
+  private spawnZomboid(zomboidTypeId: string): void {
     // Get zomboid config
     const zomboidConfig = this.configLoader.getZomboidType(zomboidTypeId);
     if (!zomboidConfig) {
@@ -307,12 +323,13 @@ export class WaveManager {
     // Acquire zomboid from pool
     const zomboid = this.zomboidPool.acquire();
 
-    // Calculate spawn position
-    const x = this.columnPositions[columnIndex];
-    const y = -50; // Spawn above screen
+    // Generate snap spawn position (6 left or 6 right)
+    const gameSettings = this.configLoader.getGameSettings();
+    const x = this.getSnapSpawnX();
+    const y = gameSettings ? -gameSettings.gameplay.spawnZoneHeight : -100;
 
     // Spawn zomboid
-    zomboid.spawn(x, y, zomboidConfig, columnIndex);
+    zomboid.spawn(x, y, zomboidConfig, 0);
     this.activeZomboids.push(zomboid);
   }
 
