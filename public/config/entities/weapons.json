@@ -11,6 +11,7 @@
       "projectileSpeed": 400,
       "projectileColor": "#FFFFFF",
       "projectileSize": 8,
+      "penetrationDamage": 0,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.2
     },
@@ -25,6 +26,7 @@
       "projectileSpeed": 400,
       "projectileColor": "#FFFFFF",
       "projectileSize": 8,
+      "penetrationDamage": 0,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.2
     },
@@ -39,6 +41,7 @@
       "projectileSpeed": 400,
       "projectileColor": "#FFFFFF",
       "projectileSize": 8,
+      "penetrationDamage": 0,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.2
     },
@@ -48,11 +51,12 @@
       "tier": 4,
       "fireRate": 0.1,
       "projectileCount": 5,
-      "damage": 2,
+      "damage": 1,
       "spread": 50,
       "projectileSpeed": 500,
       "projectileColor": "#00E5FF",
-      "projectileSize": 12,
+      "projectileSize": 10,
+      "penetrationDamage": 0,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.15
     },
@@ -67,22 +71,39 @@
       "projectileSpeed": 600,
       "projectileColor": "#FFEA00",
       "projectileSize": 6,
+      "penetrationDamage": 0,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
       "fireSoundVolume": 0.1
     },
     {
+      "id": "sniper_rifle",
+      "name": "Sniper Rifle",
+      "tier": 6,
+      "fireRate": 0.15,
+      "projectileCount": 1,
+      "damage": 2,
+      "spread": 0,
+      "projectileSpeed": 900,
+      "projectileColor": "#FF6B35",
+      "projectileSize": 12,
+      "penetrationDamage": 15,
+      "fireSound": "assets/audio/sfx/projectile_fire.mp3",
+      "fireSoundVolume": 0.3
+    },
+    {
       "id": "santi_gun",
       "name": "Ultimate Gun",
-      "tier": 6,
-      "fireRate": 3,
+      "tier": 7,
+      "fireRate": 2.5,
       "projectileCount": 1,
-      "damage": 20,
-      "spread": 5,
-      "projectileSpeed": 300,
-      "projectileColor": "#FFEA00",
-      "projectileSize": 60,
+      "damage": 50,
+      "spread": 0,
+      "projectileSpeed": 200,
+      "projectileColor": "#FF00FF",
+      "projectileSize": 80,
+      "penetrationDamage": 99999,
       "fireSound": "assets/audio/sfx/projectile_fire.mp3",
-      "fireSoundVolume": 0.1
+      "fireSoundVolume": 0.15
     }
   ]
 }

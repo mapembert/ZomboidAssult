@@ -13,10 +13,13 @@ export interface GameSettings {
     unlockAllChapters: boolean;
   };
   gameplay: {
-    playerStartColumn: number;
+    playerStartColumn: number; // Deprecated - use playerStartX
+    playerStartX?: number; // Starting X position for continuous movement
     safeZoneHeight: number;
     spawnZoneHeight: number;
     gameOverOnZomboidReachBottom: boolean;
+    movementBoundaryPadding: number; // Padding from screen edges for continuous movement
+    spawnZonePadding: number; // Padding from edges for zomboid spawning (pixels)
   };
   audio: {
     masterVolume: number;
@@ -52,6 +55,7 @@ export interface WeaponType {
   projectileSpeed: number;
   projectileColor: string;
   projectileSize: number;
+  penetrationDamage: number; // Amount of damage that can penetrate through enemies (0 = no penetration)
 }
 
 // Timer Type
@@ -80,7 +84,9 @@ export interface HeroConfig {
     defaultHeroCount: number;
     minHeroCount: number;
     maxHeroCount: number;
-    movementSpeed: number;
+    movementSpeed: number; // Pixels per second at max velocity
+    acceleration: number; // Pixels per second squared
+    deceleration: number; // Pixels per second squared
     sprite: {
       shape: string;
       baseWidth: number;
@@ -99,8 +105,8 @@ export interface ZomboidSpawnPattern {
   type: string;
   count: number;
   spawnRate: number;
-  columns: ('left' | 'right')[];
   spawnDelay: number;
+  columns: ('left' | 'right')[]; // Which columns to spawn in (left, right, or both)
 }
 
 export interface TimerSpawnPattern {

@@ -1,0 +1,297 @@
+{
+  "chapterId": "chapter-07",
+  "chapterName": "Ultimate Challenge",
+  "description": "All bosses unite - the ultimate test of skill!",
+  "unlockRequirement": "chapter-06",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Fortress Introduction",
+      "duration": 42,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_square_fortress",
+            "count": 2,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 2,
+            "spawnRate": 0.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 15
+          },
+          {
+            "type": "square_small",
+            "count": 45,
+            "spawnRate": 2.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_large",
+            "count": 25,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 8,
+            "column": "right",
+            "startValue": -60,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "left",
+            "startValue": -40
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "right",
+            "startValue": -70
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Juggernaut Arrival",
+      "duration": 48,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 2,
+            "spawnRate": 0.3,
+            "columns": ["left"],
+            "spawnDelay": 12
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 3,
+            "spawnRate": 0.5,
+            "columns": ["left"],
+            "spawnDelay": 8
+          },
+          {
+            "type": "basic_circle_small",
+            "count": 60,
+            "spawnRate": 3.0,
+            "columns": ["left"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_medium",
+            "count": 35,
+            "spawnRate": 2.2,
+            "columns": ["left"],
+            "spawnDelay": 4
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "right",
+            "startValue": -75,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -42
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "right",
+            "startValue": -75
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 38,
+            "column": "right",
+            "startValue": -45
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "All Bosses",
+      "duration": 52,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_circle_tank",
+            "count": 3,
+            "spawnRate": 0.6,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 2,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 2,
+            "spawnRate": 0.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 18
+          },
+          {
+            "type": "square_small",
+            "count": 50,
+            "spawnRate": 3.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_large",
+            "count": 30,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 8,
+            "column": "left",
+            "startValue": -42
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 16,
+            "column": "right",
+            "startValue": -80,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 26,
+            "column": "left",
+            "startValue": -80
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 36,
+            "column": "right",
+            "startValue": -45
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 44,
+            "column": "left",
+            "startValue": -85
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Final Gauntlet",
+      "duration": 58,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 3,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 15
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 3,
+            "spawnRate": 0.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 4,
+            "spawnRate": 0.7,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "basic_circle_small",
+            "count": 60,
+            "spawnRate": 3.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 40,
+            "spawnRate": 2.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_large",
+            "count": 30,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "left",
+            "startValue": -75,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -45
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "left",
+            "startValue": -85
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 38,
+            "column": "right",
+            "startValue": -48
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 46,
+            "column": "left",
+            "startValue": -90,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          }
+        ]
+      }
+    }
+  ]
+}

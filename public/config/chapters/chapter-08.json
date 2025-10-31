@@ -1,0 +1,317 @@
+{
+  "chapterId": "chapter-08",
+  "chapterName": "Test Playground",
+  "description": "Ultimate chaos with the ultimate weapon - pure mayhem!",
+  "unlockRequirement": "chapter-07",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Warm Up Mayhem",
+      "duration": 45,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_small",
+            "count": 80,
+            "spawnRate": 3.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_small",
+            "count": 60,
+            "spawnRate": 3.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 2
+          },
+          {
+            "type": "hex_medium",
+            "count": 45,
+            "spawnRate": 2.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "basic_circle_large",
+            "count": 35,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 7
+          },
+          {
+            "type": "hex_large",
+            "count": 30,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 12,
+            "column": "right",
+            "startValue": -70,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 20,
+            "column": "left",
+            "startValue": -45
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 32,
+            "column": "right",
+            "startValue": -80
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Ultimate Power",
+      "duration": 50,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_circle_tank",
+            "count": 5,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 4,
+            "spawnRate": 0.6,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "basic_circle_small",
+            "count": 100,
+            "spawnRate": 4.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 60,
+            "spawnRate": 3.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 3
+          },
+          {
+            "type": "hex_large",
+            "count": 40,
+            "spawnRate": 2.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "left",
+            "startValue": -60,
+            "resetHeroCount": true,
+            "weaponTier": 7
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -48
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "left",
+            "startValue": -85
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 38,
+            "column": "right",
+            "startValue": -50
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Boss Rush",
+      "duration": 55,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 5,
+            "spawnRate": 0.6,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 6,
+            "spawnRate": 0.7,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 8,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "square_small",
+            "count": 80,
+            "spawnRate": 3.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_medium",
+            "count": 50,
+            "spawnRate": 2.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 8,
+            "column": "right",
+            "startValue": -70,
+            "resetHeroCount": true,
+            "weaponTier": 7
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 16,
+            "column": "left",
+            "startValue": -50
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 26,
+            "column": "right",
+            "startValue": -90
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 36,
+            "column": "left",
+            "startValue": -52
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 46,
+            "column": "right",
+            "startValue": -95
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Absolute Chaos",
+      "duration": 60,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_hex_juggernaut",
+            "count": 8,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "boss_square_fortress",
+            "count": 8,
+            "spawnRate": 0.9,
+            "columns": ["left", "right"],
+            "spawnDelay": 7
+          },
+          {
+            "type": "boss_circle_tank",
+            "count": 10,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "basic_circle_small",
+            "count": 120,
+            "spawnRate": 4.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_small",
+            "count": 100,
+            "spawnRate": 4.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 2
+          },
+          {
+            "type": "hex_large",
+            "count": 60,
+            "spawnRate": 3.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "left",
+            "startValue": -65,
+            "resetHeroCount": true,
+            "weaponTier": 7
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -50
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 26,
+            "column": "left",
+            "startValue": -95
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 34,
+            "column": "right",
+            "startValue": -52
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 42,
+            "column": "left",
+            "startValue": -85,
+            "resetHeroCount": true,
+            "weaponTier": 7
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 50,
+            "column": "right",
+            "startValue": -100
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -6,6 +6,8 @@ export class Projectile extends Phaser.GameObjects.Graphics {
   private damage: number = 0;
   private size: number = 0;
   private angleRadians: number = 0;
+  private penetrationDamage: number = 0; // Remaining penetration damage
+  private initialPenetrationDamage: number = 0; // Original penetration damage (for reference)
 
   constructor(scene: Phaser.Scene) {
     super(scene);
@@ -32,6 +34,8 @@ export class Projectile extends Phaser.GameObjects.Graphics {
     this.speed = weaponConfig.projectileSpeed;
     this.damage = weaponConfig.damage;
     this.size = weaponConfig.projectileSize;
+    this.penetrationDamage = weaponConfig.penetrationDamage;
+    this.initialPenetrationDamage = weaponConfig.penetrationDamage;
 
     // Render the projectile
     this.renderCircle(weaponConfig);
@@ -96,6 +100,36 @@ export class Projectile extends Phaser.GameObjects.Graphics {
    */
   getDamage(): number {
     return this.damage;
+  }
+
+  /**
+   * Get remaining penetration damage
+   */
+  getPenetrationDamage(): number {
+    return this.penetrationDamage;
+  }
+
+  /**
+   * Reduce penetration damage after hitting a target
+   * @param amount - Amount of damage to reduce
+   * @returns true if projectile should be destroyed (no penetration left)
+   */
+  reducePenetrationDamage(amount: number): boolean {
+    this.penetrationDamage -= amount;
+
+    // If no penetration damage left, projectile is destroyed
+    if (this.penetrationDamage <= 0) {
+      return true; // Destroy projectile
+    }
+
+    return false; // Keep projectile alive
+  }
+
+  /**
+   * Check if projectile can penetrate
+   */
+  canPenetrate(): boolean {
+    return this.initialPenetrationDamage > 0;
   }
 
   /**

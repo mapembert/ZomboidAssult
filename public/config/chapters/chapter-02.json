@@ -1,28 +1,28 @@
 {
   "chapterId": "chapter-02",
-  "chapterName": "Rising Threat",
-  "description": "More zomboids, faster pace, strategic timer decisions",
+  "chapterName": "One-Side Pressure",
+  "description": "All zomboids attack from one side - focus your defense!",
   "unlockRequirement": "chapter-01",
   "waves": [
     {
       "waveId": 1,
-      "waveName": "Speed Increase",
+      "waveName": "Left Side Only",
       "duration": 25,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 30,
-            "spawnRate": 1.5,
-            "columns": ["left", "right"],
+            "count": 35,
+            "spawnRate": 1.8,
+            "columns": ["left"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 10,
-            "spawnRate": 1.1,
-            "columns": ["left", "right"],
-            "spawnDelay": 2
+            "count": 8,
+            "spawnRate": 1.2,
+            "columns": ["left"],
+            "spawnDelay": 5
           }
         ],
         "timers": [
@@ -30,12 +30,12 @@
             "type": "hero_add_timer",
             "spawnTime": 7,
             "column": "right",
-            "startValue": -30
+            "startValue": -25
           },
           {
             "type": "weapon_upgrade_timer",
             "spawnTime": 15,
-            "column": "left",
+            "column": "right",
             "startValue": -45,
             "resetHeroCount": true,
             "weaponTier": 2
@@ -45,30 +45,30 @@
     },
     {
       "waveId": 2,
-      "waveName": "Hexagon Introduction",
+      "waveName": "Right Side Only",
       "duration": 30,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_medium",
-            "count": 20,
-            "spawnRate": 1.8,
-            "columns": ["left", "right"],
+            "count": 25,
+            "spawnRate": 1.5,
+            "columns": ["right"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 18,
-            "spawnRate": 1.5,
-            "columns": ["left", "right"],
-            "spawnDelay": 2
+            "count": 15,
+            "spawnRate": 1.3,
+            "columns": ["right"],
+            "spawnDelay": 3
           },
           {
             "type": "hex_small",
-            "count": 10,
+            "count": 8,
             "spawnRate": 1.0,
-            "columns": ["left", "right"],
-            "spawnDelay": 5
+            "columns": ["right"],
+            "spawnDelay": 7
           }
         ],
         "timers": [
@@ -83,7 +83,7 @@
     },
     {
       "waveId": 3,
-      "waveName": "Mixed Assault",
+      "waveName": "Alternating Sides",
       "duration": 35,
       "spawnPattern": {
         "zomboids": [
@@ -114,21 +114,15 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 8,
             "column": "left",
-            "startValue": -200,
+            "startValue": -40,
             "resetHeroCount": true,
             "weaponTier": 3
           },
           {
-            "type": "rapid_hero_timer",
-            "spawnTime": 18,
-            "column": "right",
-            "startValue": -200
-          },
-          {
             "type": "hero_add_timer",
-            "spawnTime": 25,
-            "column": "left",
-            "startValue": -400
+            "spawnTime": 20,
+            "column": "right",
+            "startValue": -35
           }
         ]
       }

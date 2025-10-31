@@ -4,13 +4,13 @@ import type { HeroConfig } from '@/types/ConfigTypes';
 export class Hero extends Phaser.GameObjects.Container {
   private sprite: Phaser.GameObjects.Graphics;
   private config: HeroConfig['heroConfig'];
-  private columnIndex: number;
+  private targetX: number; // Target X position for continuous movement
 
-  constructor(scene: Phaser.Scene, x: number, y: number, config: HeroConfig, columnIndex: number = 0) {
+  constructor(scene: Phaser.Scene, x: number, y: number, config: HeroConfig) {
     super(scene, x, y);
 
     this.config = config.heroConfig;
-    this.columnIndex = columnIndex;
+    this.targetX = x; // Initialize to starting position
 
     // Create graphics object for triangle rendering
     this.sprite = new Phaser.GameObjects.Graphics(scene);
@@ -54,17 +54,17 @@ export class Hero extends Phaser.GameObjects.Container {
   }
 
   /**
-   * Move hero to a specific column index
+   * Set the target X position for this hero
    */
-  moveToColumn(columnIndex: number): void {
-    this.columnIndex = columnIndex;
+  setTargetX(x: number): void {
+    this.targetX = x;
   }
 
   /**
-   * Get current column index
+   * Get current target X position
    */
-  getColumnIndex(): number {
-    return this.columnIndex;
+  getTargetX(): number {
+    return this.targetX;
   }
 
   /**

@@ -3,7 +3,9 @@
     "defaultHeroCount": 1,
     "minHeroCount": 1,
     "maxHeroCount": 5,
-    "movementSpeed": 300,
+    "movementSpeed": 800,
+    "acceleration": 2400,
+    "deceleration": 3200,
     "sprite": {
       "shape": "triangle",
       "baseWidth": 30,
