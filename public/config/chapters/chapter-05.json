@@ -12,47 +12,47 @@
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 30,
-            "spawnRate": 2.0,
+            "count": 20,
+            "spawnRate": 1.3,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 25,
-            "spawnRate": 2.2,
-            "columns": ["left", "right"],
-            "spawnDelay": 3
-          },
-          {
-            "type": "hex_medium",
-            "count": 18,
-            "spawnRate": 1.6,
+            "count": 15,
+            "spawnRate": 1.1,
             "columns": ["left", "right"],
             "spawnDelay": 6
           },
           {
-            "type": "basic_circle_large",
+            "type": "basic_circle_medium",
             "count": 12,
-            "spawnRate": 1.3,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
-            "spawnDelay": 10
+            "spawnDelay": 12
+          },
+          {
+            "type": "hex_medium",
+            "count": 8,
+            "spawnRate": 0.9,
+            "columns": ["left", "right"],
+            "spawnDelay": 18
           }
         ],
         "timers": [
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 12,
+            "spawnTime": 8,
             "column": "right",
-            "startValue": -45,
+            "startValue": -30,
             "resetHeroCount": true,
-            "weaponTier": 5
+            "weaponTier": 3
           },
           {
-            "type": "rapid_hero_timer",
-            "spawnTime": 22,
+            "type": "hero_add_timer",
+            "spawnTime": 20,
             "column": "left",
-            "startValue": -32
+            "startValue": -35
           }
         ]
       }
@@ -64,25 +64,32 @@
       "spawnPattern": {
         "zomboids": [
           {
-            "type": "hex_large",
-            "count": 20,
-            "spawnRate": 1.4,
+            "type": "basic_circle_medium",
+            "count": 18,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "basic_circle_large",
-            "count": 22,
-            "spawnRate": 1.6,
+            "count": 14,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
-            "spawnDelay": 4
+            "spawnDelay": 6
+          },
+          {
+            "type": "hex_medium",
+            "count": 12,
+            "spawnRate": 1.1,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
           },
           {
             "type": "square_medium",
-            "count": 18,
-            "spawnRate": 1.8,
+            "count": 10,
+            "spawnRate": 0.9,
             "columns": ["left", "right"],
-            "spawnDelay": 8
+            "spawnDelay": 18
           }
         ],
         "timers": [
@@ -90,21 +97,21 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 10,
             "column": "left",
-            "startValue": -55,
+            "startValue": -45,
             "resetHeroCount": true,
-            "weaponTier": 6
+            "weaponTier": 4
           },
           {
             "type": "hero_add_timer",
-            "spawnTime": 20,
+            "spawnTime": 22,
             "column": "right",
-            "startValue": -50
+            "startValue": -40
           },
           {
             "type": "rapid_hero_timer",
             "spawnTime": 30,
             "column": "left",
-            "startValue": -35
+            "startValue": -30
           }
         ]
       }
@@ -117,53 +124,53 @@
         "zomboids": [
           {
             "type": "square_small",
-            "count": 35,
-            "spawnRate": 2.5,
+            "count": 22,
+            "spawnRate": 1.4,
             "columns": ["right"],
             "spawnDelay": 0
           },
           {
-            "type": "hex_medium",
-            "count": 25,
-            "spawnRate": 1.8,
+            "type": "basic_circle_large",
+            "count": 16,
+            "spawnRate": 1.2,
             "columns": ["right"],
-            "spawnDelay": 3
+            "spawnDelay": 6
           },
           {
-            "type": "basic_circle_large",
-            "count": 20,
-            "spawnRate": 1.5,
+            "type": "hex_medium",
+            "count": 14,
+            "spawnRate": 1.1,
             "columns": ["right"],
-            "spawnDelay": 7
+            "spawnDelay": 12
           },
           {
             "type": "hex_large",
-            "count": 15,
-            "spawnRate": 1.2,
+            "count": 10,
+            "spawnRate": 0.9,
             "columns": ["right"],
-            "spawnDelay": 12
+            "spawnDelay": 18
           }
         ],
         "timers": [
           {
             "type": "rapid_hero_timer",
-            "spawnTime": 8,
+            "spawnTime": 6,
             "column": "left",
-            "startValue": -38
+            "startValue": -28
           },
           {
             "type": "weapon_upgrade_timer",
-            "spawnTime": 18,
+            "spawnTime": 16,
             "column": "left",
-            "startValue": -70,
+            "startValue": -50,
             "resetHeroCount": true,
-            "weaponTier": 6
+            "weaponTier": 5
           },
           {
             "type": "hero_add_timer",
             "spawnTime": 28,
             "column": "left",
-            "startValue": -60
+            "startValue": -45
           }
         ]
       }
@@ -176,38 +183,38 @@
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 35,
-            "spawnRate": 2.3,
+            "count": 25,
+            "spawnRate": 1.5,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "square_small",
-            "count": 30,
-            "spawnRate": 2.5,
+            "count": 20,
+            "spawnRate": 1.4,
             "columns": ["left", "right"],
-            "spawnDelay": 2
+            "spawnDelay": 4
           },
           {
             "type": "hex_medium",
-            "count": 25,
-            "spawnRate": 1.8,
-            "columns": ["left", "right"],
-            "spawnDelay": 5
-          },
-          {
-            "type": "basic_circle_large",
-            "count": 22,
-            "spawnRate": 1.6,
+            "count": 18,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
             "spawnDelay": 8
           },
           {
-            "type": "hex_large",
-            "count": 18,
-            "spawnRate": 1.4,
+            "type": "basic_circle_large",
+            "count": 16,
+            "spawnRate": 1.1,
             "columns": ["left", "right"],
             "spawnDelay": 12
+          },
+          {
+            "type": "hex_large",
+            "count": 12,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 18
           }
         ],
         "timers": [
@@ -215,27 +222,27 @@
             "type": "weapon_upgrade_timer",
             "spawnTime": 10,
             "column": "right",
-            "startValue": -60,
+            "startValue": -50,
             "resetHeroCount": true,
-            "weaponTier": 6
+            "weaponTier": 5
           },
           {
             "type": "rapid_hero_timer",
             "spawnTime": 18,
             "column": "left",
-            "startValue": -35
+            "startValue": -30
           },
           {
             "type": "hero_add_timer",
             "spawnTime": 28,
             "column": "right",
-            "startValue": -65
+            "startValue": -50
           },
           {
             "type": "rapid_hero_timer",
             "spawnTime": 38,
             "column": "left",
-            "startValue": -38
+            "startValue": -32
           }
         ]
       }
