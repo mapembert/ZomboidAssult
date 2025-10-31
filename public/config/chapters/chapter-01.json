@@ -30,13 +30,13 @@
           {
             "type": "basic_circle_small",
             "count": 20,
-            "spawnRate": 1.0,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "basic_circle_medium",
-            "count": 10,
+            "count": 5,
             "spawnRate": 0.8,
             "columns": ["left", "right"],
             "spawnDelay": 2
@@ -45,7 +45,7 @@
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 10,
+            "spawnTime": 8,
             "column": "left",
             "startValue": -20
           }

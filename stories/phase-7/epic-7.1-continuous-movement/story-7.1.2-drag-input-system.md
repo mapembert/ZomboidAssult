@@ -1,6 +1,6 @@
-# Story: Implement Drag-to-Move Input System
+# Story: Implement Drag-to-Column Input System
 
-**Epic:** Epic 7.1 - Continuous Hero Movement System
+**Epic:** Epic 7.1 - Smooth Hero Movement System
 **Story ID:** 7.1.2
 **Priority:** High
 **Points:** 4
@@ -8,45 +8,51 @@
 
 ## Description
 
-Replace the discrete left/right input system with continuous drag-to-move controls for mobile and smooth keyboard movement for desktop. Instead of binary left/right toggle inputs, the InputManager should provide continuous X-position targets that map directly to screen coordinates. This enables precise hero positioning and creates intuitive touch controls for mobile players while maintaining responsive keyboard controls for desktop.
+Replace the discrete left/right input system with column-snapping drag controls for mobile and smooth keyboard movement for desktop. Instead of binary left/right toggle inputs, the InputManager should map drag positions and keyboard input to the nearest of 12 discrete column positions (0-11). This enables intuitive touch controls while maintaining the alignment benefits of discrete positioning for better zomboid targeting.
 
-Currently, InputManager returns boolean values for `isMovingLeft()` and `isMovingRight()`. This story refactors InputManager to provide continuous target X positions based on:
-- **Touch/Mouse Drag**: Direct position mapping (drag finger/mouse to move heroes to that X position)
-- **Keyboard**: Smooth continuous movement (hold A/D or arrow keys for continuous slide)
+Currently, InputManager returns boolean values for `isMovingLeft()` and `isMovingRight()`. This story refactors InputManager to provide target column indices based on:
+- **Touch/Mouse Drag**: Drag position snaps to nearest column (drag finger/mouse to move heroes to that column)
+- **Keyboard**: Column-by-column movement (hold A/D or arrow keys to move between columns)
 
 ## Acceptance Criteria
 
 ### Functional Requirements
 
-- [ ] Pointer/touch drag moves heroes to the dragged X position on screen
+- [ ] Pointer/touch drag snaps heroes to nearest column position (0-11)
+- [ ] Drag position is mapped to closest column based on X coordinate
 - [ ] Drag starts when pointer is pressed and held (pointerdown)
-- [ ] Drag updates continuously while pointer is held and moved (pointermove)
+- [ ] Drag updates to new column while pointer is held and moved (pointermove)
 - [ ] Drag ends when pointer is released (pointerup)
-- [ ] Keyboard (A/D, Arrow keys) provides continuous movement velocity instead of discrete toggles
-- [ ] Holding left key moves heroes continuously left at constant velocity
-- [ ] Holding right key moves heroes continuously right at constant velocity
-- [ ] Releasing movement key smoothly decelerates heroes to stop
-- [ ] InputManager provides `getTargetX(): number | null` method for HeroManager
-- [ ] InputManager provides `getMovementVelocity(): number` method as alternative input
+- [ ] Keyboard (A/D, Arrow keys) increments/decrements target column
+- [ ] Holding left key moves heroes left one column at a time with key repeat
+- [ ] Holding right key moves heroes right one column at a time with key repeat
+- [ ] Heroes smoothly animate between column positions (handled by HeroManager)
+- [ ] InputManager provides `getTargetColumn(): number | null` method for HeroManager
+- [ ] InputManager provides column index (0-11) based on current input state
 - [ ] Input system is responsive (< 50ms input-to-feedback delay)
+- [ ] Column snapping improves alignment with zomboid positions
 
 ### Technical Requirements
 
 - [ ] Code follows TypeScript strict mode standards
-- [ ] Maintains 60 FPS during continuous input updates
+- [ ] Maintains 60 FPS during input updates
 - [ ] No memory leaks or performance degradation
-- [ ] Input coordinates correctly map to game world coordinates
+- [ ] Drag X coordinates correctly map to nearest column index (0-11)
+- [ ] Column calculation uses same logic as HeroManager (consistent positioning)
 - [ ] Touch zones removed (replaced with full-screen drag area)
-- [ ] Input smoothing prevents jitter on low-precision touch devices
-- [ ] Keyboard input uses configurable velocity multiplier
+- [ ] Input snapping provides stable column selection (no flickering between columns)
+- [ ] Keyboard input increments/decrements column with proper boundary clamping (0-11)
 
 ### Game Design Requirements
 
 - [ ] Drag controls feel natural and intuitive on mobile
-- [ ] Keyboard movement feels responsive but controllable
-- [ ] Input deadzone prevents accidental micro-adjustments
-- [ ] Visual feedback clearly indicates active drag state (Story 7.3.2 will add visuals)
-- [ ] Input system works seamlessly with hero movement physics from Story 7.1.1
+- [ ] Column snapping provides clear, predictable positioning
+- [ ] Keyboard movement feels responsive (column-by-column stepping)
+- [ ] Input deadzone prevents accidental column switches during small drags
+- [ ] 12 columns provide sufficient granularity for intuitive drag control
+- [ ] Column alignment aids in targeting zomboids effectively
+- [ ] Visual feedback clearly indicates target column (Story 7.3.2 will add visuals)
+- [ ] Input system works seamlessly with 12-column movement from Story 7.1.1
 
 ## Technical Specifications
 
@@ -72,34 +78,36 @@ class InputManager {
   private leftKey: Phaser.Input.Keyboard.Key | null;
   private rightKey: Phaser.Input.Keyboard.Key | null;
 
-  // New drag input properties
+  // Column-based input properties
+  private readonly COLUMN_COUNT = 12;
   private isDragging: boolean;
   private dragStartX: number | null;
-  private currentDragX: number | null;
+  private currentDragColumn: number | null; // Column index (0-11) from drag
   private dragZone: Phaser.GameObjects.Zone | null;
 
-  // Configuration
-  private keyboardVelocity: number; // Pixels per second when key held
-  private inputDeadzone: number; // Minimum drag distance to register (pixels)
-  private smoothingFactor: number; // Input smoothing (0-1, higher = more smoothing)
+  // Column calculation (shared with HeroManager)
+  private columnPositions: number[]; // X positions of each column
+  private screenWidth: number;
+  private boundaryPadding: number;
 
-  // Smoothed values
-  private smoothedDragX: number | null;
+  // Configuration
+  private inputDeadzone: number; // Minimum drag distance to register column change
+  private keyRepeatDelay: number; // Delay before key repeat starts (ms)
+  private keyRepeatRate: number; // Key repeat rate (ms between repeats)
 
   constructor(scene: Phaser.Scene);
 
   /**
-   * Get target X position from drag input (null if not dragging)
-   * Used for direct position control
+   * Get target column from current input (drag or keyboard)
+   * Returns column index 0-11, or null if no active input
    */
-  getTargetX(): number | null;
+  getTargetColumn(): number | null;
 
   /**
-   * Get movement velocity from keyboard input
-   * Returns: negative (moving left), positive (moving right), 0 (no input)
-   * Used for velocity-based control
+   * Map screen X position to nearest column index
+   * Used for drag input and column snapping
    */
-  getMovementVelocity(): number;
+  private xPositionToColumn(x: number): number;
 
   /**
    * Check if user is currently dragging
@@ -110,6 +118,11 @@ class InputManager {
    * Setup pointer/touch drag input
    */
   private setupDragInput(): void;
+
+  /**
+   * Calculate column positions (same algorithm as HeroManager)
+   */
+  private calculateColumnPositions(): void;
 
   /**
    * Handle pointer down event
@@ -127,9 +140,9 @@ class InputManager {
   private onPointerUp(pointer: Phaser.Input.Pointer): void;
 
   /**
-   * Apply input smoothing to reduce jitter
+   * Handle keyboard input for column-by-column movement
    */
-  private smoothInput(targetX: number): number;
+  private handleKeyboardInput(): number | null;
 
   /**
    * Update method called each frame
@@ -141,9 +154,9 @@ class InputManager {
 interface GameSettings {
   // ... existing fields ...
   input: {
-    keyboardVelocity: number; // Pixels per second for keyboard movement
-    dragDeadzone: number; // Minimum drag distance in pixels
-    inputSmoothing: number; // Smoothing factor 0-1 (0 = no smoothing, 1 = max smoothing)
+    dragDeadzone: number; // Minimum drag distance in pixels to register column change
+    keyRepeatDelay: number; // Delay before key repeat (milliseconds)
+    keyRepeatRate: number; // Time between key repeats (milliseconds)
   };
 }
 ```
@@ -152,14 +165,15 @@ interface GameSettings {
 
 **Scene Integration:**
 
-- `GameScene.ts`: Update `update()` loop to get continuous input from InputManager
-- `GameScene.ts`: Call `heroManager.setTargetX(inputManager.getTargetX())` when dragging
-- `GameScene.ts`: Alternative: Use velocity-based input with `heroManager.setVelocity(inputManager.getMovementVelocity())`
+- `GameScene.ts`: Update `update()` loop to get column input from InputManager
+- `GameScene.ts`: Call `heroManager.setTargetColumn(inputManager.getTargetColumn())` when input is active
+- `GameScene.ts`: Input system provides discrete column indices (0-11)
 
 **System Dependencies:**
 
-- `HeroManager`: Receives target X position or velocity from InputManager
-- `Hero`: No direct dependency (HeroManager handles position updates)
+- `HeroManager`: Receives target column index from InputManager
+- `Hero`: No direct dependency (HeroManager handles column-to-position conversion and interpolation)
+- Column calculation must be consistent between InputManager and HeroManager
 
 **Event Communication:**
 
@@ -215,13 +229,13 @@ interface GameSettings {
 
 **Game Mechanic:** Drag-to-Move Input System
 
-**Player Experience Goal:** Players should feel direct, 1:1 control over hero positioning. Touch input should feel like directly "grabbing" and moving the heroes. Keyboard input should provide smooth, consistent movement without discrete snapping. The input system should be immediately intuitive without tutorial for mobile players.
+**Player Experience Goal:** Players should feel direct, intuitive control over hero positioning through column selection. Touch input should snap to clear, predictable column positions that align with zomboid lanes. Keyboard input should provide responsive column-by-column stepping. The 12-column system balances granular control with automatic alignment for better targeting, without requiring tutorial.
 
 **Balance Parameters:**
 
-- `keyboardVelocity`: 600 pixels/second (slower than max hero speed of 800, allows for acceleration feel)
-- `dragDeadzone`: 5 pixels (prevents tiny accidental movements)
-- `inputSmoothing`: 0.2 (20% smoothing, balances responsiveness vs jitter reduction)
+- `dragDeadzone`: 5 pixels (prevents accidental column switches during small movements)
+- `keyRepeatDelay`: 150 milliseconds (delay before key repeat kicks in)
+- `keyRepeatRate`: 100 milliseconds (time between column steps when holding key)
 
 ## Testing Requirements
 
@@ -233,38 +247,38 @@ interface GameSettings {
 
 **Test Scenarios:**
 
-- `getTargetX()` returns null when not dragging
-- `getTargetX()` returns pointer X position when dragging
+- `getTargetColumn()` returns null when not dragging and no keyboard input
+- `getTargetColumn()` returns correct column index (0-11) when dragging
+- `xPositionToColumn()` correctly maps X coordinates to nearest column
 - Drag starts only after moving beyond deadzone threshold
-- `getMovementVelocity()` returns negative value when left key pressed
-- `getMovementVelocity()` returns positive value when right key pressed
-- `getMovementVelocity()` returns 0 when no keys pressed
-- Input smoothing reduces jitter in rapid position changes
+- Column index increments when right key pressed (clamped to 11)
+- Column index decrements when left key pressed (clamped to 0)
 - Pointer up event clears drag state
+- Column positions match HeroManager's column positions exactly
 
 ### Game Testing
 
 **Manual Test Cases:**
 
-1. **Touch Drag Test (Mobile)**
-   - Expected: Dragging finger moves heroes to finger position smoothly
-   - Performance: No lag between finger position and hero movement
-   - Verification: Drag across full screen width, heroes follow continuously
+1. **Touch Drag Column Snap Test (Mobile)**
+   - Expected: Dragging finger snaps heroes to nearest column position
+   - Performance: Column selection is responsive and predictable
+   - Verification: Drag across screen, heroes snap to each of 12 columns
 
-2. **Keyboard Continuous Movement Test (Desktop)**
-   - Expected: Holding A/D moves heroes continuously at constant speed
-   - Performance: Movement speed is consistent (600 px/s)
-   - Verification: Hold A key for 1 second, measure distance traveled (~600px)
+2. **Keyboard Column Stepping Test (Desktop)**
+   - Expected: Holding A/D moves heroes column-by-column with key repeat
+   - Performance: Column steps are consistent and responsive
+   - Verification: Hold right key, verify heroes step through columns 0→1→2...→11
 
-3. **Input Smoothing Test**
-   - Expected: Rapid jerky finger movements result in smooth hero movement
-   - Edge Case: Quick back-and-forth drag doesn't cause jitter
-   - Verification: Drag finger in zigzag pattern, heroes move smoothly
+3. **Column Alignment Test**
+   - Expected: Drag and keyboard input result in identical column positions
+   - Edge Case: InputManager and HeroManager column calculations match
+   - Verification: Drag to column 5, then use keyboard, verify same X position
 
 4. **Deadzone Test**
-   - Expected: Small drags (< 5px) don't trigger movement
-   - Edge Case: Tapping screen briefly doesn't move heroes
-   - Verification: Tap screen without dragging, heroes stay in place
+   - Expected: Small drags (< 5px) within same column don't trigger column change
+   - Edge Case: Tapping screen briefly doesn't switch columns
+   - Verification: Tap screen near column boundary, heroes stay in current column
 
 5. **Cross-Platform Input Test**
    - Expected: Drag works on iOS/Android, keyboard works on desktop
@@ -320,18 +334,19 @@ interface GameSettings {
 **Implementation Notes:**
 
 - Use Phaser's built-in pointer tracking: `scene.input.on('pointerdown', callback)`
-- Store pointer.x directly for drag position (already in screen coordinates)
-- Smoothing formula: `smoothedX = smoothedX + (targetX - smoothedX) * smoothingFactor`
-- Keyboard velocity should be negative for left (-600), positive for right (+600)
-- Consider clamping drag X to screen bounds in InputManager (prevents invalid positions)
-- Input smoothing should run in `update()` method using delta time
+- Calculate column positions using same algorithm as HeroManager (consistency critical)
+- Column mapping formula: `columnIndex = Math.round((x - padding) / columnSpacing)`
+- Keyboard increments/decrements column index with boundary clamping (0-11)
+- Use Phaser's key repeat events for smooth keyboard column stepping
+- Deadzone prevents column flicker when dragging near column boundaries
 
 **Design Decisions:**
 
 - **Full-screen drag zone**: Entire screen is draggable (no restricted zones). Simplifies mobile UX.
-- **Velocity vs Position input**: Keyboard provides velocity, drag provides position. Allows different feel for different input methods.
-- **Smoothing applied in InputManager**: Keeps HeroManager simple. InputManager handles raw input quality.
-- **Deadzone on drag**: Prevents accidental movement when user taps pause button or UI elements near gameplay area.
+- **Column snapping**: Both drag and keyboard snap to same 12 discrete columns. Consistent behavior across input methods.
+- **Instant column switch on drag**: Drag immediately snaps to column under finger (no smoothing delay in InputManager, smoothing happens in HeroManager)
+- **Deadzone on drag**: Prevents accidental column switches when user taps or makes tiny adjustments.
+- **Shared column logic**: InputManager and HeroManager use identical column calculation to ensure positions match perfectly.
 
 **Future Considerations:**
 

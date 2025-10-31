@@ -39,7 +39,6 @@ export class GameScene extends Phaser.Scene {
   // Movement cooldown for snap positions
   private movementCooldown: number = 150; // milliseconds between position changes
   private lastMovementTime: number = 0;
-  private lastInputDirection: 'left' | 'right' | null = null;
 
   // Input keys
   private pauseKey: Phaser.Input.Keyboard.Key | undefined;
@@ -242,22 +241,15 @@ export class GameScene extends Phaser.Scene {
       const isMovingLeft = this.inputManager.isMovingLeft();
       const isMovingRight = this.inputManager.isMovingRight();
 
-      // Detect input direction changes or new input after cooldown
+      // Move continuously while button is held (with cooldown)
       if (canMove) {
-        if (isMovingLeft && this.lastInputDirection !== 'left') {
+        if (isMovingLeft) {
           this.heroManager.moveToPreviousPosition();
           this.lastMovementTime = currentTime;
-          this.lastInputDirection = 'left';
-        } else if (isMovingRight && this.lastInputDirection !== 'right') {
+        } else if (isMovingRight) {
           this.heroManager.moveToNextPosition();
           this.lastMovementTime = currentTime;
-          this.lastInputDirection = 'right';
         }
-      }
-
-      // Reset direction when no input
-      if (!isMovingLeft && !isMovingRight) {
-        this.lastInputDirection = null;
       }
 
       this.heroManager.update(delta);

@@ -1,6 +1,6 @@
-# Story: Update Weapon Targeting for Continuous Movement
+# Story: Update Weapon Targeting for 12-Column Movement
 
-**Epic:** Epic 7.1 - Continuous Hero Movement System
+**Epic:** Epic 7.1 - Smooth Hero Movement System
 **Story ID:** 7.1.3
 **Priority:** High
 **Points:** 3
@@ -8,37 +8,42 @@
 
 ## Description
 
-Verify and update the weapon targeting system to work accurately with continuous hero movement from Stories 7.1.1 and 7.1.2. While the WeaponSystem already receives positions as `{x, y}` coordinates and should theoretically work with continuous positions, this story ensures projectiles fire accurately from moving heroes, handles edge cases, and optimizes performance for continuous position updates.
+Verify and update the weapon targeting system to work accurately with the 12-column discrete positioning system from Stories 7.1.1 and 7.1.2. While the WeaponSystem already receives positions as `{x, y}` coordinates and should theoretically work with any position scheme, this story ensures projectiles fire accurately from heroes as they smoothly animate between column positions, and validates the alignment benefits of the discrete column system.
 
-The weapon system currently fires projectiles from hero positions provided by `HeroManager.getHeroPositions()`. With continuous movement, hero positions will update every frame instead of only when switching columns. This story verifies accuracy, tests edge cases (firing while moving, rapid position changes), and ensures no performance degradation.
+The weapon system currently fires projectiles from hero positions provided by `HeroManager.getHeroPositions()`. With the 12-column system, heroes snap to discrete columns but smoothly interpolate between them visually. This story verifies that projectiles fire from the correct interpolated positions, tests edge cases (firing during column transitions), and confirms that column alignment improves targeting accuracy against zomboids.
 
 ## Acceptance Criteria
 
 ### Functional Requirements
 
-- [ ] Projectiles fire from accurate hero X positions during continuous movement
-- [ ] Projectiles fire correctly when heroes are moving (not just stationary)
-- [ ] Multiple projectiles from same hero maintain proper spacing during movement
-- [ ] Projectile firing remains accurate across full screen width (left edge to right edge)
-- [ ] Weapon fire rate is not affected by hero movement
-- [ ] Projectile trajectories are correct regardless of hero movement direction
-- [ ] Hero position sampling for firing is consistent (no frame-timing issues)
+- [ ] Projectiles fire from accurate hero X positions during column transitions
+- [ ] Projectiles fire correctly when heroes are animating between columns
+- [ ] Projectiles fire correctly when heroes are stationary at column positions
+- [ ] Multiple projectiles from same hero maintain proper spacing during column changes
+- [ ] Projectile firing remains accurate across all 12 column positions (0-11)
+- [ ] Weapon fire rate is not affected by hero column changes or interpolation
+- [ ] Projectile trajectories are correct regardless of current column or transition state
+- [ ] Hero position sampling uses interpolated visual position (not just target column)
+- [ ] Column-based positioning improves projectile alignment with zomboid lanes
 
 ### Technical Requirements
 
 - [ ] Code follows TypeScript strict mode standards
-- [ ] Maintains 60 FPS with heroes moving and firing continuously
+- [ ] Maintains 60 FPS with heroes changing columns and firing
 - [ ] No memory leaks or performance degradation
-- [ ] Position data is sampled at correct timing (during fire, not stale data)
+- [ ] Position data uses current interpolated X position (not just target column position)
 - [ ] No floating-point precision errors in projectile spawn positions
-- [ ] WeaponSystem efficiently handles position updates every frame
+- [ ] WeaponSystem efficiently handles smooth position updates during column transitions
+- [ ] `getHeroPositions()` returns interpolated visual positions (current frame's rendered X)
 
 ### Game Design Requirements
 
-- [ ] Projectiles visually appear to fire from hero positions (no offset or lag)
-- [ ] Firing feels accurate and responsive during movement
+- [ ] Projectiles visually appear to fire from current hero positions (no offset or lag)
+- [ ] Firing feels accurate and responsive during column transitions
+- [ ] Projectiles fire from smooth interpolated positions (not snapped to columns mid-animation)
+- [ ] Column alignment benefits are evident (better hit rates when aligned with zomboids)
 - [ ] No visual artifacts (projectiles spawning in wrong positions)
-- [ ] Weapon behavior is consistent across all weapon tiers
+- [ ] Weapon behavior is consistent across all weapon tiers and all 12 columns
 
 ## Technical Specifications
 
@@ -51,8 +56,8 @@ The weapon system currently fires projectiles from hero positions provided by `H
 **Modified Files:**
 
 - `src/systems/WeaponSystem.ts` - Verify position sampling, add validation, potential optimization
-- `src/systems/HeroManager.ts` - Verify `getHeroPositions()` returns up-to-date positions
-- `src/scenes/GameScene.ts` - Verify weapon firing integration with continuous movement
+- `src/systems/HeroManager.ts` - Verify `getHeroPositions()` returns current interpolated positions (not just column positions)
+- `src/scenes/GameScene.ts` - Verify weapon firing integration with 12-column movement system
 
 ### Class/Interface Definitions
 
@@ -61,7 +66,7 @@ The weapon system currently fires projectiles from hero positions provided by `H
 class WeaponSystem {
   /**
    * Fire projectiles from multiple positions (hero positions)
-   * This method should already work with continuous positions
+   * This method should work with both discrete columns and interpolated positions
    */
   fire(positions: { x: number; y: number }[]): void;
 
@@ -76,9 +81,15 @@ class WeaponSystem {
 class HeroManager {
   /**
    * Get positions of all heroes (for weapon firing)
-   * Verify this returns current frame's positions (not cached/stale)
+   * IMPORTANT: Must return current interpolated visual positions (currentX)
+   * NOT just target column positions, to ensure projectiles fire from visible hero location
    */
   getHeroPositions(): { x: number; y: number }[];
+
+  /**
+   * Get current interpolated X position (used during column transitions)
+   */
+  private getCurrentX(): number;
 }
 
 // Projectile (verify spawn position)
@@ -96,13 +107,15 @@ class Projectile extends Phaser.GameObjects.Graphics {
 **Scene Integration:**
 
 - `GameScene.ts`: Verify `weaponSystem.fire(heroManager.getHeroPositions())` is called correctly in update loop
-- Ensure weapon firing happens after hero position updates in the frame
+- Ensure weapon firing happens after hero position/interpolation updates in the frame
+- Ensure `getHeroPositions()` returns interpolated X positions (not snapped column positions)
 
 **System Dependencies:**
 
-- `HeroManager`: Provides current hero positions (must be up-to-date after movement)
+- `HeroManager`: Provides current interpolated hero positions (must reflect smooth animation state)
 - `WeaponSystem`: Consumes positions and spawns projectiles
 - `Projectile`: Spawns at provided positions
+- Column system provides discrete alignment benefits while maintaining smooth visual firing
 
 **Event Communication:**
 
@@ -148,11 +161,11 @@ class Projectile extends Phaser.GameObjects.Graphics {
 
 ## Game Design Context
 
-**GDD Reference:** Weapon System Integration (Phase 7 Continuous Movement)
+**GDD Reference:** Weapon System Integration (Phase 7 - 12-Column Movement)
 
-**Game Mechanic:** Projectile Firing from Continuous Positions
+**Game Mechanic:** Projectile Firing from Column-Based Positions with Smooth Interpolation
 
-**Player Experience Goal:** Players should perceive projectiles as firing directly from hero positions with zero visual lag or offset. Firing should feel accurate and responsive regardless of hero movement state. The weapon system should be transparent to continuous movement changes.
+**Player Experience Goal:** Players should perceive projectiles as firing directly from hero positions with zero visual lag or offset. Firing should feel accurate and responsive during both column transitions and when stationary at columns. The discrete column system should provide noticeable alignment benefits with zomboid lanes, improving hit accuracy. The weapon system should seamlessly integrate with the smooth interpolation between columns.
 
 **Balance Parameters:**
 
@@ -189,15 +202,15 @@ class Projectile extends Phaser.GameObjects.Graphics {
    - Performance: Visual alignment is perfect (no offset)
    - Verification: Position heroes at x=100, x=360, x=620, verify projectiles spawn at those exact X positions
 
-2. **Moving While Firing Test**
-   - Expected: Projectiles fire from current hero position even while moving
-   - Performance: No visual lag between hero movement and projectile spawn
-   - Verification: Drag heroes left while holding fire, projectiles should follow hero position
+2. **Column Transition Firing Test**
+   - Expected: Projectiles fire from current interpolated position during column transitions
+   - Performance: No visual lag between hero animation and projectile spawn
+   - Verification: Fire continuously while moving between columns, projectiles spawn at smooth interpolated positions
 
-3. **Rapid Movement Firing Test**
-   - Expected: Projectiles fire accurately during rapid left/right movement changes
-   - Edge Case: Direction change mid-fire doesn't cause projectile position errors
-   - Verification: Rapidly alternate left/right keyboard input while firing, verify projectiles spawn correctly
+3. **Rapid Column Change Firing Test**
+   - Expected: Projectiles fire accurately during rapid column changes
+   - Edge Case: Column change mid-fire doesn't cause projectile position errors or snapping
+   - Verification: Rapidly switch columns (keyboard or drag) while firing, verify smooth projectile spawning
 
 4. **Boundary Position Firing Test**
    - Expected: Projectiles fire correctly when heroes are at movement boundaries
@@ -228,12 +241,13 @@ class Projectile extends Phaser.GameObjects.Graphics {
 
 **Story Dependencies:**
 
-- **7.1.1**: Continuous Hero Movement (MUST be completed first)
-  - Heroes must have continuous X positions
-  - `HeroManager.repositionHeroes()` must update hero positions continuously
-- **7.1.2**: Drag-to-Move Input System (RECOMMENDED to be completed first)
-  - Enables testing firing during actual movement
-  - Can test with keyboard input if not completed
+- **7.1.1**: 12-Column Hero Movement (MUST be completed first)
+  - Heroes must have 12 discrete column positions with smooth interpolation
+  - `HeroManager` must maintain both target column and interpolated currentX position
+  - `getHeroPositions()` must return interpolated positions for accurate firing
+- **7.1.2**: Drag-to-Column Input System (RECOMMENDED to be completed first)
+  - Enables testing firing during column transitions and drag input
+  - Can test with keyboard column stepping if not completed
 
 **Technical Dependencies:**
 
@@ -266,18 +280,21 @@ class Projectile extends Phaser.GameObjects.Graphics {
 
 **Implementation Notes:**
 
-- Current `getHeroPositions()` implementation (lines 178-183 in HeroManager.ts) uses `.map()` to create new array each call
+- `getHeroPositions()` implementation must return interpolated `currentX` positions (not target column positions)
+  - Use hero's visual position during smooth transitions for accurate projectile spawning
   - This should be fine for performance (< 0.1ms for 20 heroes)
   - If performance issues arise, consider caching positions and invalidating on movement
-- `WeaponSystem.fire()` already accepts `positions: {x, y}[]` array (line 63)
-- `fireFromPosition()` already uses x parameter correctly (lines 88-89)
+- `WeaponSystem.fire()` already accepts `positions: {x, y}[]` array
+- `fireFromPosition()` already uses x parameter correctly
 - `Projectile.launch()` should already set position correctly (verify in testing)
-- The integration should "just work" if Stories 7.1.1 and 7.1.2 are implemented correctly
+- The integration should "just work" if `getHeroPositions()` returns interpolated positions correctly
+- Column-based positioning provides alignment with zomboid lanes, improving targeting effectiveness
 
 **Design Decisions:**
 
-- **No position caching**: Hero positions are sampled fresh each fire call. Simpler and more accurate.
-- **No special handling needed**: Weapon system is agnostic to discrete vs continuous movement (position-based API).
+- **Interpolated position firing**: Projectiles fire from smooth interpolated positions (not snapped column positions) to maintain visual accuracy
+- **No special column handling in WeaponSystem**: Weapon system is agnostic to column logic (position-based API)
+- **Column alignment benefits**: The 12-column discrete system naturally aligns heroes with zomboid lanes
 - **Verification over modification**: This story is primarily verification and testing rather than major code changes.
 
 **Future Considerations:**
@@ -290,10 +307,13 @@ class Projectile extends Phaser.GameObjects.Graphics {
 
 **Expected Outcome:**
 
-This story should require minimal code changes. The existing weapon system API is already position-based, so it should work transparently with continuous movement. The value of this story is:
-1. **Verification**: Confirming the integration works correctly
-2. **Testing**: Comprehensive testing of edge cases and scenarios
-3. **Performance**: Ensuring no degradation with continuous updates
-4. **Documentation**: Capturing the integration verification for future reference
+This story should require minimal code changes. The existing weapon system API is already position-based, so it should work transparently with the 12-column movement system as long as `getHeroPositions()` returns interpolated visual positions. The value of this story is:
+1. **Verification**: Confirming `getHeroPositions()` returns interpolated positions (not just column positions)
+2. **Testing**: Comprehensive testing during column transitions and stationary positions
+3. **Validation**: Confirming column alignment improves targeting accuracy
+4. **Performance**: Ensuring no degradation with smooth interpolation updates
+5. **Documentation**: Capturing the integration verification for future reference
+
+Key validation: Projectiles must fire from smooth interpolated hero positions during column transitions, not snap to discrete column positions mid-animation.
 
 If testing reveals issues, additional implementation tasks will be added to address them.
