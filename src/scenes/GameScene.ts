@@ -728,8 +728,8 @@ export class GameScene extends Phaser.Scene {
 
     console.log('Game Over! Zomboid reached the bottom.');
 
-    // Play game over sound
-    this.audioManager?.playSFX('game_over', { volume: 0.7 });
+    // Play game over sound (once, not looping)
+    this.audioManager?.playSFX('game_over', { volume: 0.7, loop: false });
 
     // Transition to GameOverScene with score and wave data
     this.scene.start('GameOverScene', {
@@ -757,6 +757,12 @@ export class GameScene extends Phaser.Scene {
     // Play wave complete sound
     this.audioManager?.playSFX('wave_complete', { volume: 0.8 });
 
+    // Clean up any existing overlay before creating a new one
+    if (this.waveCompleteOverlay) {
+      this.waveCompleteOverlay.destroy();
+      this.waveCompleteOverlay = null;
+    }
+
     // Display wave complete overlay
     this.waveCompleteOverlay = new WaveCompleteOverlay(this, data.waveNumber, data.stats);
 
@@ -764,6 +770,7 @@ export class GameScene extends Phaser.Scene {
     this.time.delayedCall(3000, () => {
       if (this.waveCompleteOverlay) {
         this.waveCompleteOverlay.fadeOut(() => {
+          this.waveCompleteOverlay = null;
           this.transitionToNextWave(data.hasNextWave);
         });
       } else {
@@ -862,6 +869,16 @@ export class GameScene extends Phaser.Scene {
     if (this.hud) {
       this.hud.destroy();
       this.hud = null;
+    }
+
+    if (this.pauseMenu) {
+      this.pauseMenu.destroy();
+      this.pauseMenu = null;
+    }
+
+    if (this.waveCompleteOverlay) {
+      this.waveCompleteOverlay.destroy();
+      this.waveCompleteOverlay = null;
     }
   }
 }
