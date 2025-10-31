@@ -817,6 +817,12 @@ export class GameScene extends Phaser.Scene {
 
     console.log('Chapter Complete!');
 
+    // Clean up wave complete overlay before transitioning
+    if (this.waveCompleteOverlay) {
+      this.waveCompleteOverlay.destroy();
+      this.waveCompleteOverlay = null;
+    }
+
     // Transition to ChapterCompleteScene with statistics
     this.scene.start('ChapterCompleteScene', {
       chapter: this.currentChapter,
