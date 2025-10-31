@@ -20,7 +20,8 @@
       "Bash(node:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(python analyze_balance.py:*)"
     ],
     "deny": [],
     "ask": []

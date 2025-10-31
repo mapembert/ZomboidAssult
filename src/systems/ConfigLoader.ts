@@ -157,7 +157,16 @@ export class ConfigLoader {
   }
 
   public async getAllChapters(): Promise<ChapterData[]> {
-    const baseChapterIds = ['chapter-01', 'chapter-02', 'chapter-03'];
+    const baseChapterIds = [
+      'chapter-01',
+      'chapter-02',
+      'chapter-03',
+      'chapter-04',
+      'chapter-05',
+      'chapter-06',
+      'chapter-07',
+      'chapter-08'
+    ];
 
     // Include test chapter if unlockAllChapters is enabled
     const chapterIds = this.gameSettings?.debug?.unlockAllChapters

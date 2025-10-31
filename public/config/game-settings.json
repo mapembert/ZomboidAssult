@@ -24,7 +24,7 @@
     "music": {
       "menu": "assets/audio/music/menu_music.mp3",
       "game": null,
-      "gameOver": "assets/audio/music/menu_music2.mp3"
+      "gameOver": "assets/audio/music/menu_music.mp3"
     },
     "sfx": {
       "timerIncrement": "assets/audio/sfx/timer_increment.mp3",

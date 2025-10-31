@@ -62,7 +62,7 @@ export class CollisionManager {
   }
 
   /**
-   * Handle collision outcomes
+   * Handle collision outcomes with penetration support
    */
   handleCollisions(collisions: { projectile: Projectile; zomboid: Zomboid }[]): void {
     for (const collision of collisions) {
@@ -71,9 +71,27 @@ export class CollisionManager {
       // Skip if either entity is already inactive
       if (!projectile.active || !zomboid.active) continue;
 
+      // Get zomboid's current HP before damage
+      const zomboidHP = zomboid.getHealth();
+
+      // Skip if zomboid is already dead (negative HP means already destroyed)
+      if (zomboidHP <= 0) {
+        continue;
+      }
+
       // Apply damage to zomboid
       const damage = projectile.getDamage();
       const destroyed = zomboid.takeDamage(damage);
+
+      // Calculate actual damage dealt (what the zomboid absorbed)
+      // If destroyed, zomboid had less HP than damage, so it only absorbed its remaining HP
+      // If not destroyed, zomboid absorbed the full damage amount
+      const actualDamageDealt = destroyed ? zomboidHP : damage;
+
+      // DEBUG: Log penetration details
+      const penetrationDamage = projectile.getPenetrationDamage();
+      const canPenetrate = projectile.canPenetrate();
+      console.log(`[Penetration] ZomboidHP: ${zomboidHP}, Damage: ${damage}, Destroyed: ${destroyed}, ActualDamage: ${actualDamageDealt}, CanPenetrate: ${canPenetrate}, PenetrationLeft: ${penetrationDamage}`);
 
       // Play hit sound
       this.audioManager.playSFX('zomboid_hit', { volume: 0.3 });
@@ -83,9 +101,19 @@ export class CollisionManager {
         this.audioManager.playSFX('zomboid_destroyed', { volume: 0.5 });
       }
 
-      // Destroy projectile
-      projectile.setActive(false);
-      projectile.setVisible(false);
+      // Handle penetration
+      let shouldDestroyProjectile = true;
+      if (projectile.canPenetrate()) {
+        // Reduce penetration damage by the actual damage dealt
+        shouldDestroyProjectile = projectile.reducePenetrationDamage(actualDamageDealt);
+        console.log(`[Penetration] After reduction - PenetrationLeft: ${projectile.getPenetrationDamage()}, ShouldDestroy: ${shouldDestroyProjectile}`);
+      }
+
+      // Destroy projectile only if it has no penetration left
+      if (shouldDestroyProjectile) {
+        projectile.setActive(false);
+        projectile.setVisible(false);
+      }
 
       // Increment collision count
       this.collisionCount++;
@@ -96,6 +124,7 @@ export class CollisionManager {
         zomboid,
         destroyed,
         score: destroyed ? zomboid.getScoreValue() : 0,
+        penetrated: !shouldDestroyProjectile, // True if bullet continued through
       });
     }
   }

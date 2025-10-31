@@ -1,0 +1,223 @@
+{
+  "chapterId": "chapter-04",
+  "chapterName": "Heavy Defense",
+  "description": "Large zomboids appear - you'll need serious firepower!",
+  "unlockRequirement": "chapter-03",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Size Matters",
+      "duration": 32,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_medium",
+            "count": 15,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "basic_circle_large",
+            "count": 10,
+            "spawnRate": 0.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          },
+          {
+            "type": "square_medium",
+            "count": 8,
+            "spawnRate": 0.9,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "right",
+            "startValue": -35,
+            "resetHeroCount": true,
+            "weaponTier": 4
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 20,
+            "column": "left",
+            "startValue": -30
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "Left Heavy",
+      "duration": 35,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 20,
+            "spawnRate": 1.2,
+            "columns": ["left"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 15,
+            "spawnRate": 1.4,
+            "columns": ["left"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "hex_medium",
+            "count": 12,
+            "spawnRate": 1.1,
+            "columns": ["left"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 8,
+            "column": "right",
+            "startValue": -28
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 18,
+            "column": "right",
+            "startValue": -55,
+            "resetHeroCount": true,
+            "weaponTier": 4
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 28,
+            "column": "right",
+            "startValue": -40
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Giant Hexagons",
+      "duration": 38,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "hex_medium",
+            "count": 18,
+            "spawnRate": 1.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_large",
+            "count": 10,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 6
+          },
+          {
+            "type": "basic_circle_large",
+            "count": 14,
+            "spawnRate": 1.1,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 12,
+            "column": "left",
+            "startValue": -45,
+            "resetHeroCount": true,
+            "weaponTier": 5
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 22,
+            "column": "right",
+            "startValue": -42
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 30,
+            "column": "left",
+            "startValue": -30
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Tank Battalion",
+      "duration": 42,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 22,
+            "spawnRate": 1.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_large",
+            "count": 14,
+            "spawnRate": 1.1,
+            "columns": ["left", "right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "square_medium",
+            "count": 16,
+            "spawnRate": 1.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "hex_medium",
+            "count": 12,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 15
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 8,
+            "column": "right",
+            "startValue": -26
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 16,
+            "column": "left",
+            "startValue": -60,
+            "resetHeroCount": true,
+            "weaponTier": 5
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 26,
+            "column": "right",
+            "startValue": -50
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 35,
+            "column": "left",
+            "startValue": -32
+          }
+        ]
+      }
+    }
+  ]
+}

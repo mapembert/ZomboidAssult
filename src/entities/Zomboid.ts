@@ -197,6 +197,13 @@ export class Zomboid extends Phaser.GameObjects.Container {
   }
 
   /**
+   * Get current health
+   */
+  getHealth(): number {
+    return this.currentHealth;
+  }
+
+  /**
    * Play destruction effect (scale down + fade out)
    */
   private playDestructionEffect(): void {

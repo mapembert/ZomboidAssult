@@ -55,6 +55,7 @@ export interface WeaponType {
   projectileSpeed: number;
   projectileColor: string;
   projectileSize: number;
+  penetrationDamage: number; // Amount of damage that can penetrate through enemies (0 = no penetration)
 }
 
 // Timer Type
@@ -105,6 +106,7 @@ export interface ZomboidSpawnPattern {
   count: number;
   spawnRate: number;
   spawnDelay: number;
+  columns: ('left' | 'right')[]; // Which columns to spawn in (left, right, or both)
 }
 
 export interface TimerSpawnPattern {

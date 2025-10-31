@@ -10,10 +10,27 @@ export class InputManager {
   private touchRight: boolean = false;
   private debugGraphics: Phaser.GameObjects.Graphics | null = null;
 
-  constructor(scene: Phaser.Scene) {
+  // Drag-to-column input properties
+  private isDragging: boolean = false;
+  private currentDragColumn: number | null = null;
+  private dragZone: Phaser.GameObjects.Zone | null = null;
+  private columnCount: number = 12;
+  private screenWidth: number;
+  private boundaryPadding: number;
+  private columnPositions: number[] = [];
+
+  constructor(scene: Phaser.Scene, columnCount: number = 12, boundaryPadding: number = 60) {
     this.scene = scene;
+    this.columnCount = columnCount;
+    this.screenWidth = scene.scale.width;
+    this.boundaryPadding = boundaryPadding;
+
+    // Calculate column positions (same algorithm as HeroManager)
+    this.calculateColumnPositions();
+
     this.setupKeyboardInput();
     this.setupTouchInput();
+    this.setupDragInput();
   }
 
   /**
@@ -82,6 +99,74 @@ export class InputManager {
   }
 
   /**
+   * Calculate column positions (same algorithm as HeroManager)
+   */
+  private calculateColumnPositions(): void {
+    const playableWidth = this.screenWidth - (2 * this.boundaryPadding);
+    const spacing = playableWidth / (this.columnCount - 1);
+
+    this.columnPositions = [];
+    for (let i = 0; i < this.columnCount; i++) {
+      this.columnPositions.push(this.boundaryPadding + i * spacing);
+    }
+  }
+
+  /**
+   * Map screen X position to nearest column index
+   */
+  private xPositionToColumn(x: number): number {
+    if (this.columnPositions.length === 0) return 0;
+
+    let nearestIndex = 0;
+    let minDistance = Math.abs(x - this.columnPositions[0]);
+
+    for (let i = 0; i < this.columnPositions.length; i++) {
+      const distance = Math.abs(x - this.columnPositions[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestIndex = i;
+      }
+    }
+
+    return nearestIndex;
+  }
+
+  /**
+   * Set up drag input (full-screen drag zone)
+   */
+  private setupDragInput(): void {
+    const screenHeight = this.scene.scale.height;
+
+    // Create full-screen drag zone
+    this.dragZone = this.scene.add.zone(0, 0, this.screenWidth, screenHeight);
+    this.dragZone.setOrigin(0, 0);
+    this.dragZone.setInteractive();
+    this.dragZone.setDepth(-2); // Behind touch zones
+
+    // Drag handlers
+    this.dragZone.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      this.isDragging = true;
+      this.currentDragColumn = this.xPositionToColumn(pointer.x);
+    });
+
+    this.dragZone.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+      if (this.isDragging) {
+        this.currentDragColumn = this.xPositionToColumn(pointer.x);
+      }
+    });
+
+    this.dragZone.on('pointerup', () => {
+      this.isDragging = false;
+      this.currentDragColumn = null;
+    });
+
+    this.dragZone.on('pointerout', () => {
+      this.isDragging = false;
+      this.currentDragColumn = null;
+    });
+  }
+
+  /**
    * Check if player is pressing left
    */
   isMovingLeft(): boolean {
@@ -97,6 +182,24 @@ export class InputManager {
     const keyboardRight =
       (this.cursors?.right.isDown ?? false) || (this.rightKey?.isDown ?? false);
     return keyboardRight || this.touchRight;
+  }
+
+  /**
+   * Get target column from drag input
+   * Returns column index (0-11) or null if not dragging
+   */
+  getTargetColumn(): number | null {
+    if (this.isDragging && this.currentDragColumn !== null) {
+      return this.currentDragColumn;
+    }
+    return null;
+  }
+
+  /**
+   * Check if user is currently dragging
+   */
+  isDraggingActive(): boolean {
+    return this.isDragging;
   }
 
   /**
@@ -143,6 +246,12 @@ export class InputManager {
       this.touchZones.left.destroy();
       this.touchZones.right.destroy();
       this.touchZones = null;
+    }
+
+    // Clean up drag zone
+    if (this.dragZone) {
+      this.dragZone.destroy();
+      this.dragZone = null;
     }
 
     // Clean up debug graphics

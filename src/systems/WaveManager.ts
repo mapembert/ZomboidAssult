@@ -14,6 +14,7 @@ import type { WaveStats } from '@/types/GameTypes';
 interface ZomboidSpawnScheduleEntry {
   time: number;
   zomboidType: string;
+  columns: ('left' | 'right')[]; // Which columns to spawn in (left, right, or both)
 }
 
 /**
@@ -157,10 +158,10 @@ export class WaveManager {
       for (let i = 0; i < pattern.count; i++) {
         const spawnTime = pattern.spawnDelay + i * spawnInterval;
 
-
         this.zomboidSpawnSchedule.push({
           time: spawnTime,
           zomboidType: pattern.type,
+          columns: pattern.columns as ('left' | 'right')[], // Store column specification
         });
       }
     });
@@ -264,7 +265,7 @@ export class WaveManager {
 
       // Check if it's time to spawn this zomboid
       if (this.waveElapsedTime >= entry.time) {
-        this.spawnZomboid(entry.zomboidType);
+        this.spawnZomboid(entry.zomboidType, entry.columns);
         this.nextZomboidSpawnIndex++;
       } else {
         break; // Not time yet
@@ -290,29 +291,43 @@ export class WaveManager {
   }
 
   /**
-   * Generate random snap position (6 left or 6 right positions)
+   * Generate random snap position based on specified columns
+   * @param allowedColumns - Array of 'left' and/or 'right' indicating which columns to use
    */
-  private getSnapSpawnX(): number {
+  private getSnapSpawnX(allowedColumns: ('left' | 'right')[]): number {
     const snapPositions = this.heroManager.getSnapPositions();
     if (snapPositions.length === 0) {
       return this.scene.scale.width / 2; // Fallback to center
     }
 
-    // Randomly choose between left (0-5) and right (6-11) positions
-    const useLeft = Phaser.Math.Between(0, 1) === 0;
     const leftPositions = snapPositions.slice(0, 6);
     const rightPositions = snapPositions.slice(6, 12);
 
-    const positions = useLeft ? leftPositions : rightPositions;
-    const randomIndex = Phaser.Math.Between(0, positions.length - 1);
+    // Build available positions based on allowed columns
+    let availablePositions: number[] = [];
+    if (allowedColumns.includes('left')) {
+      availablePositions = availablePositions.concat(leftPositions);
+    }
+    if (allowedColumns.includes('right')) {
+      availablePositions = availablePositions.concat(rightPositions);
+    }
 
-    return positions[randomIndex];
+    // Fallback to all positions if none specified
+    if (availablePositions.length === 0) {
+      availablePositions = snapPositions;
+    }
+
+    // Pick random position from available positions
+    const randomIndex = Phaser.Math.Between(0, availablePositions.length - 1);
+    return availablePositions[randomIndex];
   }
 
   /**
-   * Spawn a zomboid at a random X position
+   * Spawn a zomboid at a random X position in specified columns
+   * @param zomboidTypeId - The type of zomboid to spawn
+   * @param allowedColumns - Array of 'left' and/or 'right' indicating which columns to use
    */
-  private spawnZomboid(zomboidTypeId: string): void {
+  private spawnZomboid(zomboidTypeId: string, allowedColumns: ('left' | 'right')[]): void {
     // Get zomboid config
     const zomboidConfig = this.configLoader.getZomboidType(zomboidTypeId);
     if (!zomboidConfig) {
@@ -323,9 +338,9 @@ export class WaveManager {
     // Acquire zomboid from pool
     const zomboid = this.zomboidPool.acquire();
 
-    // Generate snap spawn position (6 left or 6 right)
+    // Generate snap spawn position based on allowed columns
     const gameSettings = this.configLoader.getGameSettings();
-    const x = this.getSnapSpawnX();
+    const x = this.getSnapSpawnX(allowedColumns);
     const y = gameSettings ? -gameSettings.gameplay.spawnZoneHeight : -100;
 
     // Spawn zomboid

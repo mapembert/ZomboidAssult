@@ -102,7 +102,11 @@ export class GameScene extends Phaser.Scene {
 
     if (heroConfig && gameSettings) {
       this.heroManager = new HeroManager(this, heroConfig, gameSettings);
-      this.inputManager = new InputManager(this);
+
+      // Initialize InputManager with column count and boundary padding
+      const columnCount = 12; // Always 12 columns for movement
+      const boundaryPadding = gameSettings.gameplay.movementBoundaryPadding || 60;
+      this.inputManager = new InputManager(this, columnCount, boundaryPadding);
     }
 
     if (weaponTypes && weaponTypes.length > 0) {
@@ -216,7 +220,7 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(centerX, height - 40, 'Touch left/right half of screen on mobile', {
+      .text(centerX, height - 40, 'Drag or touch left/right to move heroes', {
         fontSize: '14px',
         color: '#606060',
         align: 'center',
@@ -234,21 +238,28 @@ export class GameScene extends Phaser.Scene {
     if (!this.gameActive && !this.isTransitioningWaves) return;
 
     if (this.heroManager && this.inputManager) {
-      // Discrete snap position movement with cooldown
-      const currentTime = time;
-      const canMove = currentTime - this.lastMovementTime >= this.movementCooldown;
+      // Check for drag input first (takes priority)
+      const dragColumn = this.inputManager.getTargetColumn();
+      if (dragColumn !== null) {
+        // Drag input - directly set target column
+        this.heroManager.setTargetColumn(dragColumn);
+      } else {
+        // Keyboard/touch input - discrete snap position movement with cooldown
+        const currentTime = time;
+        const canMove = currentTime - this.lastMovementTime >= this.movementCooldown;
 
-      const isMovingLeft = this.inputManager.isMovingLeft();
-      const isMovingRight = this.inputManager.isMovingRight();
+        const isMovingLeft = this.inputManager.isMovingLeft();
+        const isMovingRight = this.inputManager.isMovingRight();
 
-      // Move continuously while button is held (with cooldown)
-      if (canMove) {
-        if (isMovingLeft) {
-          this.heroManager.moveToPreviousPosition();
-          this.lastMovementTime = currentTime;
-        } else if (isMovingRight) {
-          this.heroManager.moveToNextPosition();
-          this.lastMovementTime = currentTime;
+        // Move continuously while button is held (with cooldown)
+        if (canMove) {
+          if (isMovingLeft) {
+            this.heroManager.moveToPreviousPosition();
+            this.lastMovementTime = currentTime;
+          } else if (isMovingRight) {
+            this.heroManager.moveToNextPosition();
+            this.lastMovementTime = currentTime;
+          }
         }
       }
 

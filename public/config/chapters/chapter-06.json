@@ -1,0 +1,256 @@
+{
+  "chapterId": "chapter-06",
+  "chapterName": "First Boss",
+  "description": "The Tank appears - 150 HP of pure threat!",
+  "unlockRequirement": "chapter-05",
+  "waves": [
+    {
+      "waveId": 1,
+      "waveName": "Boss Incoming",
+      "duration": 35,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 30,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_large",
+            "count": 22,
+            "spawnRate": 1.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "square_medium",
+            "count": 25,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "right",
+            "startValue": -50,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 20,
+            "column": "left",
+            "startValue": -55
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 28,
+            "column": "right",
+            "startValue": -35
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 2,
+      "waveName": "First Contact",
+      "duration": 40,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_circle_tank",
+            "count": 2,
+            "spawnRate": 0.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          },
+          {
+            "type": "square_small",
+            "count": 40,
+            "spawnRate": 2.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_medium",
+            "count": 25,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "basic_circle_large",
+            "count": 18,
+            "spawnRate": 1.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 10,
+            "column": "left",
+            "startValue": -38
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 22,
+            "column": "right",
+            "startValue": -60
+          },
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 32,
+            "column": "left",
+            "startValue": -75,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 3,
+      "waveName": "Boss Swarm",
+      "duration": 45,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_circle_tank",
+            "count": 3,
+            "spawnRate": 0.5,
+            "columns": ["right"],
+            "spawnDelay": 10
+          },
+          {
+            "type": "basic_circle_small",
+            "count": 50,
+            "spawnRate": 2.8,
+            "columns": ["right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 30,
+            "spawnRate": 2.2,
+            "columns": ["right"],
+            "spawnDelay": 5
+          },
+          {
+            "type": "hex_large",
+            "count": 20,
+            "spawnRate": 1.6,
+            "columns": ["right"],
+            "spawnDelay": 15
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 8,
+            "column": "left",
+            "startValue": -65,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 16,
+            "column": "left",
+            "startValue": -40
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 26,
+            "column": "left",
+            "startValue": -70
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 36,
+            "column": "left",
+            "startValue": -42
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Tank Brigade",
+      "duration": 50,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "boss_circle_tank",
+            "count": 4,
+            "spawnRate": 0.6,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          },
+          {
+            "type": "square_small",
+            "count": 45,
+            "spawnRate": 2.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "hex_medium",
+            "count": 30,
+            "spawnRate": 2.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "basic_circle_large",
+            "count": 25,
+            "spawnRate": 1.8,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
+          },
+          {
+            "type": "hex_large",
+            "count": 20,
+            "spawnRate": 1.5,
+            "columns": ["left", "right"],
+            "spawnDelay": 18
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 12,
+            "column": "right",
+            "startValue": -70,
+            "resetHeroCount": true,
+            "weaponTier": 6
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 20,
+            "column": "left",
+            "startValue": -38
+          },
+          {
+            "type": "hero_add_timer",
+            "spawnTime": 30,
+            "column": "right",
+            "startValue": -75
+          },
+          {
+            "type": "rapid_hero_timer",
+            "spawnTime": 40,
+            "column": "left",
+            "startValue": -40
+          }
+        ]
+      }
+    }
+  ]
+}

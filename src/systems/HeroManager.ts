@@ -164,6 +164,30 @@ export class HeroManager {
   }
 
   /**
+   * Get current target column index (0-11)
+   */
+  getTargetColumn(): number {
+    return this.currentSnapIndex;
+  }
+
+  /**
+   * Set target column by index (0-11)
+   */
+  setTargetColumn(columnIndex: number): void {
+    // Clamp to valid column range
+    const clampedIndex = Phaser.Math.Clamp(columnIndex, 0, this.snapPositions.length - 1);
+    this.currentSnapIndex = clampedIndex;
+    this.targetX = this.snapPositions[clampedIndex];
+  }
+
+  /**
+   * Get column count (always 12)
+   */
+  getColumnCount(): number {
+    return this.snapPositions.length;
+  }
+
+  /**
    * Add heroes to the squad
    */
   addHero(count: number): void {
