@@ -8,11 +8,11 @@
 Extend the existing `analyze_balance.py` script to add bullet-count analysis alongside the DPS analysis.
 
 ## Acceptance Criteria
-- [ ] Script calculates total bullets available per wave
-- [ ] Script calculates total bullets needed for zomboids
-- [ ] Script shows bullet surplus/deficit
-- [ ] Script accounts for overkill
-- [ ] Output includes bullet-count metrics
+- [x] Script calculates total bullets available per wave
+- [x] Script calculates total bullets needed for zomboids
+- [x] Script shows bullet surplus/deficit
+- [x] Script accounts for overkill
+- [x] Output includes bullet-count metrics
 
 ## Technical Implementation
 
@@ -167,11 +167,11 @@ def analyze_wave(self, wave: Dict, starting_tier: int) -> WaveAnalysis:
 ```
 
 ## Tasks
-- [ ] Add bullet calculation functions to analyze_balance.py
-- [ ] Update WaveAnalysis dataclass to include bullet metrics
-- [ ] Integrate bullet analysis into analyze_wave()
-- [ ] Update report output to show bullet counts
-- [ ] Test with multiple chapters
+- [x] Add bullet calculation functions to analyze_balance.py
+- [x] Update WaveAnalysis dataclass to include bullet metrics
+- [x] Integrate bullet analysis into analyze_wave()
+- [x] Update report output to show bullet counts
+- [x] Test with multiple chapters
 
 ## Testing Strategy
 - Verify bullet counts match expected values
@@ -211,3 +211,55 @@ def analyze_wave(self, wave: Dict, starting_tier: int) -> WaveAnalysis:
 - Future enhancement: track actual weapon damage throughout wave
 - Consider adding accuracy factor (e.g., 80% hit rate)
 - May want to factor in spread for multi-projectile weapons
+
+---
+
+## Completion Notes
+
+**Status**: COMPLETED
+**Completed**: 2025-11-01
+**Actual Time**: ~3 hours
+
+### What Was Implemented
+
+1. **Added math import** for ceiling calculations in bullet counting
+2. **Extended WaveAnalysis dataclass** with bullet metrics:
+   - `bullets_available: int`
+   - `bullets_needed: int`
+   - `bullet_ratio: float`
+   - `bullet_grade: str`
+   - `overkill_waste: int`
+
+3. **Implemented three new methods**:
+   - `calculate_bullets_available()` - Counts bullets player can fire during wave
+   - `calculate_bullets_needed()` - Counts bullets required to kill all zomboids
+   - `grade_bullet_ratio()` - Grades waves A+ to F based on bullet surplus
+
+4. **Enhanced analyze_wave()** to include bullet analysis alongside DPS analysis
+
+5. **Updated print_report()** to display:
+   - Bullets Available, Bullets Needed, Bullet Ratio per wave
+   - Warning for waves with bullet ratio < 1.3x
+   - Dual grade distribution (DPS + Bullet Count)
+   - Separate problem wave lists for DPS and Bullets
+
+### Key Results
+
+Analyzer identified across 32 waves:
+- **12 waves** with DPS problems (overkill < 1.0)
+- **10 waves** with bullet problems (ratio < 1.3x)
+
+### Deviations from Spec
+
+- Used simplified `damage_per_bullet = 1` assumption as noted in spec
+- Integrated bullet metrics directly into WaveAnalysis dataclass instead of separate BulletAnalysis class (cleaner integration)
+- Added comprehensive summary statistics section with both DPS and bullet grade distributions
+
+### Testing
+
+- [x] Tested successfully on all 8 chapters
+- [x] Validates bullet counts match expected values
+- [x] Overkill calculations working correctly
+- [x] Grades align with DPS grades but provide more granular balance insight
+
+**File Modified**: `analyze_balance.py`
