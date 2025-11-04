@@ -30,7 +30,7 @@
             "type": "hero_add_timer",
             "spawnTime": 8,
             "column": "right",
-            "startValue": -20
+            "startValue": -10
           }
         ]
       }
@@ -59,7 +59,7 @@
         "timers": [
           {
             "type": "rapid_hero_timer",
-            "spawnTime": 8,
+            "spawnTime": 6,
             "column": "left",
             "startValue": -30
           }

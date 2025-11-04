@@ -35,6 +35,7 @@ export class GameScene extends Phaser.Scene {
   private totalZomboidsKilled: number = 0;
   private hudUpdateInterval: number = 100; // Update every 100ms
   private lastHudUpdate: number = 0;
+  private gameOverTriggered: boolean = false;
 
   // Movement cooldown for snap positions
   private movementCooldown: number = 150; // milliseconds between position changes
@@ -68,6 +69,7 @@ export class GameScene extends Phaser.Scene {
     this.chapterStartTime = 0;
     this.totalZomboidsKilled = 0;
     this.waveCompleteOverlay = null;
+    this.gameOverTriggered = false;
 
     console.log('GameScene initialized with chapter: ' + this.currentChapter.chapterName);
     console.log('Logs cleared for new chapter');
@@ -724,6 +726,12 @@ export class GameScene extends Phaser.Scene {
    * Trigger game over and transition to GameOverScene
    */
   private triggerGameOver(): void {
+    // Prevent multiple calls
+    if (this.gameOverTriggered) {
+      return;
+    }
+
+    this.gameOverTriggered = true;
     this.gameActive = false;
 
     console.log('Game Over! Zomboid reached the bottom.');
