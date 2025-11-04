@@ -1,0 +1,877 @@
+Loading configurations...
+Loaded 7 weapons, 11 zomboid types, 8 chapters
+
+================================================================================
+ZOMBOID ASSAULT - BALANCE ANALYSIS REPORT
+================================================================================
+
+
+================================================================================
+[CHAPTER] First Contact (chapter-01)
+================================================================================
+
+[WAVE 1] Tutorial Wave
+   Duration: 20s
+   Weapon: Tier 1
+   Total Enemy HP: 20
+   Damage Capacity: 40
+   Overkill Ratio: 2.00x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 40
+   Bullets Needed: 20
+   Bullet Ratio: 2.00x
+   [BULLET GRADE]: A (Comfortable)
+
+[WAVE 2] First Hero
+   Duration: 25s
+   Weapon: Tier 1
+   Total Enemy HP: 25
+   Damage Capacity: 50
+   Overkill Ratio: 2.00x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 50
+   Bullets Needed: 25
+   Bullet Ratio: 2.00x
+   [BULLET GRADE]: A (Comfortable)
+
+[WAVE 3] First Upgrade
+   Duration: 30s
+   Weapon: Tier 1 -> Tier 2
+   Total Enemy HP: 41
+   Damage Capacity: 205
+   Overkill Ratio: 2.50x
+   [GRADE]: A+ (Very Easy) [Spawn Pressure!]
+   Bullets Available: 204
+   Bullets Needed: 41
+   Bullet Ratio: 4.98x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+   Details:
+   Zomboids:
+     - basic_circle_small: 25 × 1HP = 25HP
+     - basic_circle_medium: 8 × 2HP = 16HP
+   Damage Output:
+     - T1 (Single Gun) for 8.0s @ 2.0 DPS = 16 damage
+     - [CATCHING TIMER] for 3.1s - NO DAMAGE (enemies accumulate!)
+     - T2 (Double Gun) for 18.9s @ 10.0 DPS = 189 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T1 weapon: 2.9 HP/sec spawning vs 2.0 DPS (SHORT 0.9 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 204
+     Bullets Needed: 41
+     Bullet Ratio: 4.98x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: A+ (Plenty of Ammo)
+     - T1: 16.0 shots x 1 projectiles = 16 bullets
+     - [CATCHING TIMER] 3.1s - NO SHOOTING
+     - T2: 94.4 shots x 2 projectiles = 189 bullets
+     - basic_circle_small: 25 x 1HP = 25 bullets (overkill: 0)
+     - basic_circle_medium: 8 x 2HP = 16 bullets (overkill: 0)
+
+================================================================================
+[CHAPTER] One-Side Pressure (chapter-02)
+================================================================================
+
+[WAVE 1] Left Side Focus
+   Duration: 28s
+   Weapon: Tier 2
+   Total Enemy HP: 45
+   Damage Capacity: 280
+   Overkill Ratio: 6.22x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 280
+   Bullets Needed: 45
+   Bullet Ratio: 6.22x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 2] Right Side Pressure
+   Duration: 30s
+   Weapon: Tier 2
+   Total Enemy HP: 64
+   Damage Capacity: 300
+   Overkill Ratio: 4.69x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 300
+   Bullets Needed: 64
+   Bullet Ratio: 4.69x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 3] Power Up
+   Duration: 32s
+   Weapon: Tier 2 -> Tier 3
+   Total Enemy HP: 126
+   Damage Capacity: 345
+   Overkill Ratio: 1.37x
+   [GRADE]: B (Balanced) [Spawn Pressure!]
+   Bullets Available: 345
+   Bullets Needed: 126
+   Bullet Ratio: 2.74x
+   [BULLET GRADE]: A (Comfortable)
+
+   Details:
+   Zomboids:
+     - basic_circle_large: 18 × 3HP = 54HP
+     - square_medium: 14 × 3HP = 42HP
+     - hex_small: 10 × 3HP = 30HP
+   Damage Output:
+     - T2 (Double Gun) for 12.0s @ 10.0 DPS = 120 damage
+     - [CATCHING TIMER] for 5.0s - NO DAMAGE (enemies accumulate!)
+     - T3 (Triple Gun) for 15.0s @ 15.0 DPS = 225 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T2 weapon: 10.8 HP/sec spawning vs 10.0 DPS (SHORT 0.8 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 345
+     Bullets Needed: 126
+     Bullet Ratio: 2.74x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: A (Comfortable)
+     - T2: 60.0 shots x 2 projectiles = 120 bullets
+     - [CATCHING TIMER] 5.0s - NO SHOOTING
+     - T3: 75.0 shots x 3 projectiles = 225 bullets
+     - basic_circle_large: 18 x 3HP = 54 bullets (overkill: 0)
+     - square_medium: 14 x 3HP = 42 bullets (overkill: 0)
+     - hex_small: 10 x 3HP = 30 bullets (overkill: 0)
+
+[WAVE 4] Both Sides
+   Duration: 35s
+   Weapon: Tier 3
+   Total Enemy HP: 144
+   Damage Capacity: 525
+   Overkill Ratio: 3.65x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 525
+   Bullets Needed: 144
+   Bullet Ratio: 3.65x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+================================================================================
+[CHAPTER] Speed Demons (chapter-03)
+================================================================================
+
+[WAVE 1] Fast Intro
+   Duration: 26s
+   Weapon: Tier 3
+   Total Enemy HP: 54
+   Damage Capacity: 390
+   Overkill Ratio: 7.22x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 390
+   Bullets Needed: 54
+   Bullet Ratio: 7.22x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 2] Right Rush
+   Duration: 28s
+   Weapon: Tier 3
+   Total Enemy HP: 102
+   Damage Capacity: 420
+   Overkill Ratio: 4.12x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 420
+   Bullets Needed: 102
+   Bullet Ratio: 4.12x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 3] Hexagon Storm
+   Duration: 32s
+   Weapon: Tier 3
+   Total Enemy HP: 136
+   Damage Capacity: 480
+   Overkill Ratio: 3.53x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 480
+   Bullets Needed: 136
+   Bullet Ratio: 3.53x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 4] Speed Challenge
+   Duration: 35s
+   Weapon: Tier 3
+   Total Enemy HP: 247
+   Damage Capacity: 525
+   Overkill Ratio: 2.13x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 525
+   Bullets Needed: 247
+   Bullet Ratio: 2.13x
+   [BULLET GRADE]: A (Comfortable)
+
+================================================================================
+[CHAPTER] Heavy Defense (chapter-04)
+================================================================================
+
+[WAVE 1] Size Matters
+   Duration: 32s
+   Weapon: Tier 3 -> Tier 2
+   Total Enemy HP: 52
+   Damage Capacity: 319
+   Overkill Ratio: 6.13x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 318
+   Bullets Needed: 52
+   Bullet Ratio: 6.12x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 2] Left Heavy
+   Duration: 35s
+   Weapon: Tier 2 -> Tier 3
+   Total Enemy HP: 108
+   Damage Capacity: 366
+   Overkill Ratio: 3.39x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 365
+   Bullets Needed: 108
+   Bullet Ratio: 3.38x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 3] Giant Hexagons
+   Duration: 38s
+   Weapon: Tier 3 -> Tier 4
+   Total Enemy HP: 159
+   Damage Capacity: 1,370
+   Overkill Ratio: 8.62x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 1,370
+   Bullets Needed: 159
+   Bullet Ratio: 8.62x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 4] Tank Battalion
+   Duration: 42s
+   Weapon: Tier 4 -> Tier 5
+   Total Enemy HP: 198
+   Damage Capacity: 1,135
+   Overkill Ratio: 5.73x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 1,135
+   Bullets Needed: 198
+   Bullet Ratio: 5.73x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+================================================================================
+[CHAPTER] Mixed Assault (chapter-05)
+================================================================================
+
+[WAVE 1] Everything at Once
+   Duration: 35s
+   Weapon: Tier 5 -> Tier 3
+   Total Enemy HP: 106
+   Damage Capacity: 509
+   Overkill Ratio: 4.80x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 508
+   Bullets Needed: 106
+   Bullet Ratio: 4.79x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 2] Penetration Test
+   Duration: 38s
+   Weapon: Tier 3 -> Tier 4
+   Total Enemy HP: 156
+   Damage Capacity: 1,269
+   Overkill Ratio: 8.13x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 1,268
+   Bullets Needed: 156
+   Bullet Ratio: 8.13x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 3] Right Side Chaos
+   Duration: 42s
+   Weapon: Tier 4 -> Tier 5
+   Total Enemy HP: 208
+   Damage Capacity: 1,195
+   Overkill Ratio: 5.75x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 1,195
+   Bullets Needed: 208
+   Bullet Ratio: 5.75x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 4] Maximum Mix
+   Duration: 45s
+   Weapon: Tier 5
+   Total Enemy HP: 257
+   Damage Capacity: 775
+   Overkill Ratio: 3.02x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 775
+   Bullets Needed: 257
+   Bullet Ratio: 3.02x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+================================================================================
+[CHAPTER] First Boss (chapter-06)
+================================================================================
+
+[WAVE 1] Boss Incoming
+   Duration: 35s
+   Weapon: Tier 5 -> Tier 4
+   Total Enemy HP: 130
+   Damage Capacity: 1,291
+   Overkill Ratio: 9.93x
+   [GRADE]: A+ (Very Easy)
+   Bullets Available: 1,291
+   Bullets Needed: 130
+   Bullet Ratio: 9.93x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+[WAVE 2] First Contact
+   Duration: 40s
+   Weapon: Tier 4 -> Tier 5
+   Total Enemy HP: 318
+   Damage Capacity: 1,202
+   Overkill Ratio: 1.89x
+   [GRADE]: A (Easy) [Spawn Pressure!]
+   Bullets Available: 1,202
+   Bullets Needed: 318
+   Bullet Ratio: 3.78x
+   [BULLET GRADE]: A+ (Plenty of Ammo)
+
+   Details:
+   Zomboids:
+     - basic_circle_medium: 20 × 2HP = 40HP
+     - boss_circle_tank: 1 × 150HP = 150HP
+     - square_small: 18 × 2HP = 36HP
+     - hex_medium: 14 × 4HP = 56HP
+     - basic_circle_large: 12 × 3HP = 36HP
+   Damage Output:
+     - T4 (Pulse Laser) for 18.0s @ 50.0 DPS = 900 damage
+     - [CATCHING TIMER] for 6.9s - NO DAMAGE (enemies accumulate!)
+     - T5 (Mega Machine Gun) for 15.1s @ 20.0 DPS = 302 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T4 weapon: 54.0 HP/sec spawning vs 50.0 DPS (SHORT 4.0 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T5 weapon: 56.7 HP/sec spawning vs 20.0 DPS (SHORT 36.7 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 1,202
+     Bullets Needed: 318
+     Bullet Ratio: 3.78x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: A+ (Plenty of Ammo)
+     - T4: 180.0 shots x 5 projectiles = 900 bullets
+     - [CATCHING TIMER] 6.9s - NO SHOOTING
+     - T5: 302.5 shots x 1 projectiles = 302 bullets
+     - basic_circle_medium: 20 x 2HP = 40 bullets (overkill: 0)
+     - boss_circle_tank: 1 x 150HP = 150 bullets (overkill: 0)
+     - square_small: 18 x 2HP = 36 bullets (overkill: 0)
+     - hex_medium: 14 x 4HP = 56 bullets (overkill: 0)
+     - basic_circle_large: 12 x 3HP = 36 bullets (overkill: 0)
+
+[WAVE 3] Boss Swarm
+   Duration: 45s
+   Weapon: Tier 5
+   Total Enemy HP: 495
+   Damage Capacity: 788
+   Overkill Ratio: 0.80x
+   [GRADE]: E (Very Hard) [Spawn Pressure!]
+   Bullets Available: 787
+   Bullets Needed: 495
+   Bullet Ratio: 1.59x
+   [BULLET GRADE]: B (Adequate)
+   [WARNING]: -292 damage SHORT! Wave may be too hard!
+
+   Details:
+   Zomboids:
+     - basic_circle_small: 25 × 1HP = 25HP
+     - boss_circle_tank: 2 × 150HP = 300HP
+     - square_medium: 18 × 3HP = 54HP
+     - hex_medium: 14 × 4HP = 56HP
+     - hex_large: 10 × 6HP = 60HP
+   Damage Output:
+     - T5 (Mega Machine Gun) for 8.0s @ 20.0 DPS = 160 damage
+     - [CATCHING TIMER] for 5.6s - NO DAMAGE (enemies accumulate!)
+     - T5 (Mega Machine Gun) for 31.4s @ 20.0 DPS = 628 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Final phase: T5 weapon: 73.8 HP/sec spawning vs 20.0 DPS (SHORT 53.8 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 787
+     Bullets Needed: 495
+     Bullet Ratio: 1.59x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: B (Adequate)
+     - T5: 160.0 shots x 1 projectiles = 160 bullets
+     - [CATCHING TIMER] 5.6s - NO SHOOTING
+     - T5: 627.5 shots x 1 projectiles = 628 bullets
+     - basic_circle_small: 25 x 1HP = 25 bullets (overkill: 0)
+     - boss_circle_tank: 2 x 150HP = 300 bullets (overkill: 0)
+     - square_medium: 18 x 3HP = 54 bullets (overkill: 0)
+     - hex_medium: 14 x 4HP = 56 bullets (overkill: 0)
+     - hex_large: 10 x 6HP = 60 bullets (overkill: 0)
+
+[WAVE 4] Tank Brigade
+   Duration: 50s
+   Weapon: Tier 5
+   Total Enemy HP: 706
+   Damage Capacity: 875
+   Overkill Ratio: 0.62x
+   [GRADE]: E (Very Hard) [Spawn Pressure!]
+   Bullets Available: 875
+   Bullets Needed: 706
+   Bullet Ratio: 1.24x
+   [BULLET GRADE]: C (Tight)
+   [WARNING]: -169 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - square_small: 28 × 2HP = 56HP
+     - boss_circle_tank: 3 × 150HP = 450HP
+     - hex_medium: 20 × 4HP = 80HP
+     - basic_circle_large: 16 × 3HP = 48HP
+     - hex_large: 12 × 6HP = 72HP
+   Damage Output:
+     - T5 (Mega Machine Gun) for 10.0s @ 20.0 DPS = 200 damage
+     - [CATCHING TIMER] for 6.2s - NO DAMAGE (enemies accumulate!)
+     - T5 (Mega Machine Gun) for 33.8s @ 20.0 DPS = 675 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Final phase: T5 weapon: 91.9 HP/sec spawning vs 20.0 DPS (SHORT 71.9 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 875
+     Bullets Needed: 706
+     Bullet Ratio: 1.24x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: C (Tight)
+     - T5: 200.0 shots x 1 projectiles = 200 bullets
+     - [CATCHING TIMER] 6.2s - NO SHOOTING
+     - T5: 675.0 shots x 1 projectiles = 675 bullets
+     - square_small: 28 x 2HP = 56 bullets (overkill: 0)
+     - boss_circle_tank: 3 x 150HP = 450 bullets (overkill: 0)
+     - hex_medium: 20 x 4HP = 80 bullets (overkill: 0)
+     - basic_circle_large: 16 x 3HP = 48 bullets (overkill: 0)
+     - hex_large: 12 x 6HP = 72 bullets (overkill: 0)
+
+================================================================================
+[CHAPTER] Ultimate Challenge (chapter-07)
+================================================================================
+
+[WAVE 1] Fortress Introduction
+   Duration: 42s
+   Weapon: Tier 5 -> Tier 6
+   Total Enemy HP: 940
+   Damage Capacity: 513
+   Overkill Ratio: 0.55x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 336
+   Bullets Needed: 940
+   Bullet Ratio: 0.36x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 427 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_square_fortress: 2 × 200HP = 400HP
+     - boss_circle_tank: 2 × 150HP = 300HP
+     - square_small: 45 × 2HP = 90HP
+     - hex_large: 25 × 6HP = 150HP
+   Damage Output:
+     - T5 (Mega Machine Gun) for 8.0s @ 20.0 DPS = 160 damage
+     - [CATCHING TIMER] for 7.5s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 26.5s @ 13.3 DPS = 353 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Final phase: T6 weapon: 171.4 HP/sec spawning vs 13.3 DPS (SHORT 158.1 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 336
+     Bullets Needed: 940
+     Bullet Ratio: 0.36x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T5: 160.0 shots x 1 projectiles = 160 bullets
+     - [CATCHING TIMER] 7.5s - NO SHOOTING
+     - T6: 176.7 shots x 1 projectiles = 177 bullets
+     - boss_square_fortress: 2 x 200HP = 400 bullets (overkill: 0)
+     - boss_circle_tank: 2 x 150HP = 300 bullets (overkill: 0)
+     - square_small: 45 x 2HP = 90 bullets (overkill: 0)
+     - hex_large: 25 x 6HP = 150 bullets (overkill: 0)
+
+[WAVE 2] Juggernaut Arrival
+   Duration: 48s
+   Weapon: Tier 6
+   Total Enemy HP: 1,450
+   Damage Capacity: 515
+   Overkill Ratio: 0.36x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 257
+   Bullets Needed: 1,450
+   Bullet Ratio: 0.18x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 935 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_hex_juggernaut: 2 × 400HP = 800HP
+     - boss_circle_tank: 3 × 150HP = 450HP
+     - basic_circle_small: 60 × 1HP = 60HP
+     - hex_medium: 35 × 4HP = 140HP
+   Damage Output:
+     - T6 (Sniper Rifle) for 10.0s @ 13.3 DPS = 133 damage
+     - [CATCHING TIMER] for 9.4s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 28.6s @ 13.3 DPS = 382 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T6 weapon: 86.8 HP/sec spawning vs 13.3 DPS (SHORT 73.5 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T6 weapon: 206.8 HP/sec spawning vs 13.3 DPS (SHORT 193.5 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 257
+     Bullets Needed: 1,450
+     Bullet Ratio: 0.18x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T6: 66.7 shots x 1 projectiles = 67 bullets
+     - [CATCHING TIMER] 9.4s - NO SHOOTING
+     - T6: 190.8 shots x 1 projectiles = 191 bullets
+     - boss_hex_juggernaut: 2 x 400HP = 800 bullets (overkill: 0)
+     - boss_circle_tank: 3 x 150HP = 450 bullets (overkill: 0)
+     - basic_circle_small: 60 x 1HP = 60 bullets (overkill: 0)
+     - hex_medium: 35 x 4HP = 140 bullets (overkill: 0)
+
+[WAVE 3] All Bosses
+   Duration: 52s
+   Weapon: Tier 6
+   Total Enemy HP: 1,930
+   Damage Capacity: 560
+   Overkill Ratio: 0.29x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 280
+   Bullets Needed: 1,930
+   Bullet Ratio: 0.15x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 1370 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_circle_tank: 3 × 150HP = 450HP
+     - boss_square_fortress: 2 × 200HP = 400HP
+     - boss_hex_juggernaut: 2 × 400HP = 800HP
+     - square_small: 50 × 2HP = 100HP
+     - hex_large: 30 × 6HP = 180HP
+   Damage Output:
+     - T6 (Sniper Rifle) for 16.0s @ 13.3 DPS = 213 damage
+     - [CATCHING TIMER] for 10.0s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 26.0s @ 13.3 DPS = 347 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T6 weapon: 188.0 HP/sec spawning vs 13.3 DPS (SHORT 174.7 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T6 weapon: 308.0 HP/sec spawning vs 13.3 DPS (SHORT 294.7 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 280
+     Bullets Needed: 1,930
+     Bullet Ratio: 0.15x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T6: 106.7 shots x 1 projectiles = 107 bullets
+     - [CATCHING TIMER] 10.0s - NO SHOOTING
+     - T6: 173.3 shots x 1 projectiles = 173 bullets
+     - boss_circle_tank: 3 x 150HP = 450 bullets (overkill: 0)
+     - boss_square_fortress: 2 x 200HP = 400 bullets (overkill: 0)
+     - boss_hex_juggernaut: 2 x 400HP = 800 bullets (overkill: 0)
+     - square_small: 50 x 2HP = 100 bullets (overkill: 0)
+     - hex_large: 30 x 6HP = 180 bullets (overkill: 0)
+
+[WAVE 4] Final Gauntlet
+   Duration: 58s
+   Weapon: Tier 6
+   Total Enemy HP: 2,760
+   Damage Capacity: 498
+   Overkill Ratio: 0.18x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 249
+   Bullets Needed: 2,760
+   Bullet Ratio: 0.09x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 2262 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_hex_juggernaut: 3 × 400HP = 1200HP
+     - boss_square_fortress: 3 × 200HP = 600HP
+     - boss_circle_tank: 4 × 150HP = 600HP
+     - basic_circle_small: 60 × 1HP = 60HP
+     - square_medium: 40 × 3HP = 120HP
+     - hex_large: 30 × 6HP = 180HP
+   Damage Output:
+     - T6 (Sniper Rifle) for 10.0s @ 13.3 DPS = 133 damage
+     - [CATCHING TIMER] for 9.4s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 26.6s @ 13.3 DPS = 355 damage
+     - [CATCHING TIMER] for 11.2s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 0.8s @ 13.3 DPS = 10 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T6 weapon: 127.7 HP/sec spawning vs 13.3 DPS (SHORT 114.4 HP/sec!)
+     [SPAWN PRESSURE] Phase 2: T6 weapon: 387.7 HP/sec spawning vs 13.3 DPS (SHORT 374.4 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T6 weapon: 387.7 HP/sec spawning vs 13.3 DPS (SHORT 374.4 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 249
+     Bullets Needed: 2,760
+     Bullet Ratio: 0.09x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T6: 66.7 shots x 1 projectiles = 67 bullets
+     - [CATCHING TIMER] 9.4s - NO SHOOTING
+     - T6: 177.5 shots x 1 projectiles = 178 bullets
+     - [CATCHING TIMER] 11.2s - NO SHOOTING
+     - T6: 5.0 shots x 1 projectiles = 5 bullets
+     - boss_hex_juggernaut: 3 x 400HP = 1200 bullets (overkill: 0)
+     - boss_square_fortress: 3 x 200HP = 600 bullets (overkill: 0)
+     - boss_circle_tank: 4 x 150HP = 600 bullets (overkill: 0)
+     - basic_circle_small: 60 x 1HP = 60 bullets (overkill: 0)
+     - square_medium: 40 x 3HP = 120 bullets (overkill: 0)
+     - hex_large: 30 x 6HP = 180 bullets (overkill: 0)
+
+================================================================================
+[CHAPTER] Test Playground (chapter-08)
+================================================================================
+
+[WAVE 1] Warm Up Mayhem
+   Duration: 45s
+   Weapon: Tier 6
+   Total Enemy HP: 665
+   Damage Capacity: 483
+   Overkill Ratio: 0.73x
+   [GRADE]: E (Very Hard)
+   Bullets Available: 241
+   Bullets Needed: 665
+   Bullet Ratio: 0.36x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 182 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - basic_circle_small: 80 × 1HP = 80HP
+     - square_small: 60 × 2HP = 120HP
+     - hex_medium: 45 × 4HP = 180HP
+     - basic_circle_large: 35 × 3HP = 105HP
+     - hex_large: 30 × 6HP = 180HP
+   Damage Output:
+     - T6 (Sniper Rifle) for 12.0s @ 13.3 DPS = 160 damage
+     - [CATCHING TIMER] for 8.8s - NO DAMAGE (enemies accumulate!)
+     - T6 (Sniper Rifle) for 24.2s @ 13.3 DPS = 323 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T6 weapon: 36.7 HP/sec spawning vs 13.3 DPS (SHORT 23.4 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T6 weapon: 36.7 HP/sec spawning vs 13.3 DPS (SHORT 23.4 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 241
+     Bullets Needed: 665
+     Bullet Ratio: 0.36x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T6: 80.0 shots x 1 projectiles = 80 bullets
+     - [CATCHING TIMER] 8.8s - NO SHOOTING
+     - T6: 161.7 shots x 1 projectiles = 162 bullets
+     - basic_circle_small: 80 x 1HP = 80 bullets (overkill: 0)
+     - square_small: 60 x 2HP = 120 bullets (overkill: 0)
+     - hex_medium: 45 x 4HP = 180 bullets (overkill: 0)
+     - basic_circle_large: 35 x 3HP = 105 bullets (overkill: 0)
+     - hex_large: 30 x 6HP = 180 bullets (overkill: 0)
+
+[WAVE 2] Ultimate Power
+   Duration: 50s
+   Weapon: Tier 6 -> Tier 7
+   Total Enemy HP: 2,070
+   Damage Capacity: 783
+   Overkill Ratio: 0.38x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 79
+   Bullets Needed: 2,070
+   Bullet Ratio: 0.04x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 1287 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_circle_tank: 5 × 150HP = 750HP
+     - boss_square_fortress: 4 × 200HP = 800HP
+     - basic_circle_small: 100 × 1HP = 100HP
+     - square_medium: 60 × 3HP = 180HP
+     - hex_large: 40 × 6HP = 240HP
+   Damage Output:
+     - T6 (Sniper Rifle) for 10.0s @ 13.3 DPS = 133 damage
+     - [CATCHING TIMER] for 7.5s - NO DAMAGE (enemies accumulate!)
+     - T7 (Ultimate Gun) for 32.5s @ 20.0 DPS = 650 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T6 weapon: 146.2 HP/sec spawning vs 13.3 DPS (SHORT 132.9 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T7 weapon: 266.2 HP/sec spawning vs 20.0 DPS (SHORT 246.2 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 79
+     Bullets Needed: 2,070
+     Bullet Ratio: 0.04x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T6: 66.7 shots x 1 projectiles = 67 bullets
+     - [CATCHING TIMER] 7.5s - NO SHOOTING
+     - T7: 13.0 shots x 1 projectiles = 13 bullets
+     - boss_circle_tank: 5 x 150HP = 750 bullets (overkill: 0)
+     - boss_square_fortress: 4 x 200HP = 800 bullets (overkill: 0)
+     - basic_circle_small: 100 x 1HP = 100 bullets (overkill: 0)
+     - square_medium: 60 x 3HP = 180 bullets (overkill: 0)
+     - hex_large: 40 x 6HP = 240 bullets (overkill: 0)
+
+[WAVE 3] Boss Rush
+   Duration: 55s
+   Weapon: Tier 7
+   Total Enemy HP: 4,760
+   Damage Capacity: 925
+   Overkill Ratio: 0.19x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 18
+   Bullets Needed: 4,760
+   Bullet Ratio: 0.00x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 3835 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_hex_juggernaut: 5 × 400HP = 2000HP
+     - boss_square_fortress: 6 × 200HP = 1200HP
+     - boss_circle_tank: 8 × 150HP = 1200HP
+     - square_small: 80 × 2HP = 160HP
+     - hex_medium: 50 × 4HP = 200HP
+   Damage Output:
+     - T7 (Ultimate Gun) for 8.0s @ 20.0 DPS = 160 damage
+     - [CATCHING TIMER] for 8.8s - NO DAMAGE (enemies accumulate!)
+     - T7 (Ultimate Gun) for 38.2s @ 20.0 DPS = 765 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T7 weapon: 168.8 HP/sec spawning vs 20.0 DPS (SHORT 148.8 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T7 weapon: 548.8 HP/sec spawning vs 20.0 DPS (SHORT 528.8 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 18
+     Bullets Needed: 4,760
+     Bullet Ratio: 0.00x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T7: 3.2 shots x 1 projectiles = 3 bullets
+     - [CATCHING TIMER] 8.8s - NO SHOOTING
+     - T7: 15.3 shots x 1 projectiles = 15 bullets
+     - boss_hex_juggernaut: 5 x 400HP = 2000 bullets (overkill: 0)
+     - boss_square_fortress: 6 x 200HP = 1200 bullets (overkill: 0)
+     - boss_circle_tank: 8 x 150HP = 1200 bullets (overkill: 0)
+     - square_small: 80 x 2HP = 160 bullets (overkill: 0)
+     - hex_medium: 50 x 4HP = 200 bullets (overkill: 0)
+
+[WAVE 4] Absolute Chaos
+   Duration: 60s
+   Weapon: Tier 7
+   Total Enemy HP: 6,980
+   Damage Capacity: 825
+   Overkill Ratio: 0.12x
+   [GRADE]: F (Nearly Impossible)
+   Bullets Available: 16
+   Bullets Needed: 6,980
+   Bullet Ratio: 0.00x
+   [BULLET GRADE]: F (Critical Shortage)
+   [WARNING]: 6155 damage SHORT! Wave may be too hard!
+   [WARNING]: Bullet ratio below recommended 1.3x threshold!
+
+   Details:
+   Zomboids:
+     - boss_hex_juggernaut: 8 × 400HP = 3200HP
+     - boss_square_fortress: 8 × 200HP = 1600HP
+     - boss_circle_tank: 10 × 150HP = 1500HP
+     - basic_circle_small: 120 × 1HP = 120HP
+     - square_small: 100 × 2HP = 200HP
+     - hex_large: 60 × 6HP = 360HP
+   Damage Output:
+     - T7 (Ultimate Gun) for 10.0s @ 20.0 DPS = 200 damage
+     - [CATCHING TIMER] for 8.1s - NO DAMAGE (enemies accumulate!)
+     - T7 (Ultimate Gun) for 23.9s @ 20.0 DPS = 478 damage
+     - [CATCHING TIMER] for 10.6s - NO DAMAGE (enemies accumulate!)
+     - T7 (Ultimate Gun) for 7.4s @ 20.0 DPS = 148 damage
+   Spawn Pressure Analysis:
+     [SPAWN PRESSURE] Phase 1: T7 weapon: 390.5 HP/sec spawning vs 20.0 DPS (SHORT 370.5 HP/sec!)
+     [SPAWN PRESSURE] Phase 2: T7 weapon: 710.5 HP/sec spawning vs 20.0 DPS (SHORT 690.5 HP/sec!)
+     [SPAWN PRESSURE] Final phase: T7 weapon: 710.5 HP/sec spawning vs 20.0 DPS (SHORT 690.5 HP/sec!)
+   
+   Bullet Count Analysis:
+     Bullets Available: 16
+     Bullets Needed: 6,980
+     Bullet Ratio: 0.00x
+     Overkill Waste: 0 damage
+     [BULLET GRADE]: F (Critical Shortage)
+     - T7: 4.0 shots x 1 projectiles = 4 bullets
+     - [CATCHING TIMER] 8.1s - NO SHOOTING
+     - T7: 9.6 shots x 1 projectiles = 10 bullets
+     - [CATCHING TIMER] 10.6s - NO SHOOTING
+     - T7: 3.0 shots x 1 projectiles = 3 bullets
+     - boss_hex_juggernaut: 8 x 400HP = 3200 bullets (overkill: 0)
+     - boss_square_fortress: 8 x 200HP = 1600 bullets (overkill: 0)
+     - boss_circle_tank: 10 x 150HP = 1500 bullets (overkill: 0)
+     - basic_circle_small: 120 x 1HP = 120 bullets (overkill: 0)
+     - square_small: 100 x 2HP = 200 bullets (overkill: 0)
+     - hex_large: 60 x 6HP = 360 bullets (overkill: 0)
+
+
+================================================================================
+[SUMMARY STATISTICS]
+================================================================================
+
+Total Waves Analyzed: 31
+
+DPS Grade Distribution:
+  A: 2 waves
+  A+: 12 waves
+  D: 3 waves
+  E: 3 waves
+  F: 11 waves
+
+Bullet Count Grade Distribution:
+  A: 2 waves
+  A+: 12 waves
+  B: 2 waves
+  C: 2 waves
+  E: 2 waves
+  F: 11 waves
+
+[PROBLEM WAVES - DPS] (17 waves with overkill < 1.0):
+  - Left Side Focus: 0.62x (needs 38% more damage capacity)
+  - Right Side Pressure: 0.94x (needs 6% more damage capacity)
+  - Power Up: 0.99x (needs 1% more damage capacity)
+  - Fast Intro: 0.96x (needs 4% more damage capacity)
+  - Right Rush: 0.55x (needs 45% more damage capacity)
+  - Hexagon Storm: 0.47x (needs 53% more damage capacity)
+  - Speed Challenge: 0.28x (needs 72% more damage capacity)
+  - Boss Swarm: 0.80x (needs 20% more damage capacity)
+  - Tank Brigade: 0.62x (needs 38% more damage capacity)
+  - Fortress Introduction: 0.39x (needs 61% more damage capacity)
+  - Juggernaut Arrival: 0.36x (needs 64% more damage capacity)
+  - All Bosses: 0.29x (needs 71% more damage capacity)
+  - Final Gauntlet: 0.18x (needs 82% more damage capacity)
+  - Warm Up Mayhem: 0.52x (needs 48% more damage capacity)
+  - Ultimate Power: 0.38x (needs 62% more damage capacity)
+  - Boss Rush: 0.19x (needs 81% more damage capacity)
+  - Absolute Chaos: 0.12x (needs 88% more damage capacity)
+
+[PROBLEM WAVES - BULLETS] (15 waves with bullet ratio < 1.3):
+  - Left Side Focus: 1.24x (recommended: >=1.3x)
+  - Right Side Pressure: 0.94x (recommended: >=1.3x)
+  - Fast Intro: 0.96x (recommended: >=1.3x)
+  - Right Rush: 0.55x (recommended: >=1.3x)
+  - Hexagon Storm: 0.47x (recommended: >=1.3x)
+  - Speed Challenge: 0.28x (recommended: >=1.3x)
+  - Tank Brigade: 1.24x (recommended: >=1.3x)
+  - Fortress Introduction: 0.20x (recommended: >=1.3x)
+  - Juggernaut Arrival: 0.18x (recommended: >=1.3x)
+  - All Bosses: 0.15x (recommended: >=1.3x)
+  - Final Gauntlet: 0.09x (recommended: >=1.3x)
+  - Warm Up Mayhem: 0.28x (recommended: >=1.3x)
+  - Ultimate Power: 0.04x (recommended: >=1.3x)
+  - Boss Rush: 0.00x (recommended: >=1.3x)
+  - Absolute Chaos: 0.00x (recommended: >=1.3x)
+
+================================================================================
+END OF REPORT
+================================================================================

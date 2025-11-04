@@ -15,10 +15,16 @@ export class WeaponSystem {
   private lastFireSoundTime: number = 0;
   private fireSoundThrottle: number = 50; // ms, prevent overlap
 
-  constructor(scene: Phaser.Scene, weaponTiers: WeaponType[]) {
+  constructor(scene: Phaser.Scene, weaponTiers: WeaponType[], startingWeaponTier?: number) {
     this.scene = scene;
     this.weaponTiers = weaponTiers.sort((a, b) => a.tier - b.tier);
-    this.currentWeapon = this.weaponTiers[0]; // Start with tier 1
+
+    // Start with the specified tier or tier 1
+    const tierToStart = startingWeaponTier ?? 1;
+    const startingWeapon = this.weaponTiers.find(w => w.tier === tierToStart);
+    this.currentWeapon = startingWeapon || this.weaponTiers[0];
+    console.log(`WeaponSystem: Starting with Tier ${this.currentWeapon.tier} - ${this.currentWeapon.name}`);
+
     this.activeProjectiles = [];
     this.lastFireTime = 0;
 

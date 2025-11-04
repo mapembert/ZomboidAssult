@@ -6,10 +6,12 @@ This script analyzes the difficulty balance of each chapter and wave by:
 1. Calculating total enemy HP
 2. Estimating player damage output based on weapons and timing
 3. Comparing damage capacity vs enemy health
-4. Grading each wave on difficulty
+4. Calculating bullet counts (bullets available vs bullets needed)
+5. Grading each wave on difficulty
 """
 
 import json
+import math
 import os
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -49,6 +51,11 @@ class WaveAnalysis:
     overkill_ratio: float  # damage_capacity / total_hp (>1 is good, <1 is hard)
     grade: str
     details: List[str]
+    bullets_available: int = 0
+    bullets_needed: int = 0
+    bullet_ratio: float = 0.0
+    bullet_grade: str = ""
+    overkill_waste: int = 0
 
 class BalanceAnalyzer:
     def __init__(self, config_dir: str):
@@ -204,6 +211,82 @@ class BalanceAnalyzer:
         ending_tier = current_tier
         return total_damage, starting_tier, ending_tier, details
 
+
+    def calculate_bullets_available(self, wave: Dict, starting_tier: int) -> Tuple[int, List[str]]:
+        """Calculate total bullets available during wave"""
+        duration = wave['duration']
+        current_tier = starting_tier
+        current_time = 0
+        total_bullets = 0
+        details = []
+        upgrades = self.find_weapon_upgrades(wave)
+        upgrade_index = 0
+
+        while current_time < duration:
+            if upgrade_index < len(upgrades):
+                catch_time, upgrade_tier, catch_duration = upgrades[upgrade_index]
+                timer_spawn_time = catch_time - catch_duration
+                if timer_spawn_time > current_time:
+                    time_segment = timer_spawn_time - current_time
+                    weapon = self.weapons.get(current_tier)
+                    if weapon:
+                        shots = time_segment / weapon.fire_rate
+                        bullets = shots * weapon.projectile_count
+                        total_bullets += bullets
+                        details.append(f"  - T{current_tier}: {shots:.1f} shots x {weapon.projectile_count} projectiles = {bullets:.0f} bullets")
+                    current_time = timer_spawn_time
+                details.append(f"  - [CATCHING TIMER] {catch_duration:.1f}s - NO SHOOTING")
+                current_time = catch_time
+                current_tier = upgrade_tier
+                upgrade_index += 1
+            else:
+                time_segment = duration - current_time
+                weapon = self.weapons.get(current_tier)
+                if weapon:
+                    shots = time_segment / weapon.fire_rate
+                    bullets = shots * weapon.projectile_count
+                    total_bullets += bullets
+                    details.append(f"  - T{current_tier}: {shots:.1f} shots x {weapon.projectile_count} projectiles = {bullets:.0f} bullets")
+                current_time = duration
+        return int(total_bullets), details
+
+    def calculate_bullets_needed(self, wave: Dict) -> Tuple[int, int, List[str]]:
+        """Calculate bullets needed to kill all zomboids"""
+        bullets_needed = 0
+        overkill_waste = 0
+        details = []
+        damage_per_bullet = 1
+
+        for zomboid_pattern in wave['spawnPattern']['zomboids']:
+            zomboid_type = zomboid_pattern['type']
+            count = zomboid_pattern['count']
+            if zomboid_type in self.zomboids:
+                zomboid = self.zomboids[zomboid_type]
+                shots_needed = math.ceil(zomboid.health / damage_per_bullet)
+                total_bullets = shots_needed * count
+                overkill = (shots_needed * damage_per_bullet - zomboid.health) * count
+                bullets_needed += total_bullets
+                overkill_waste += overkill
+                details.append(f"  - {zomboid_type}: {count} x {zomboid.health}HP = {total_bullets} bullets (overkill: {overkill})")
+        return bullets_needed, overkill_waste, details
+
+    def grade_bullet_ratio(self, bullet_ratio: float) -> str:
+        """Grade based on bullet surplus"""
+        if bullet_ratio >= 3.0:
+            return "A+ (Plenty of Ammo)"
+        elif bullet_ratio >= 2.0:
+            return "A (Comfortable)"
+        elif bullet_ratio >= 1.5:
+            return "B (Adequate)"
+        elif bullet_ratio >= 1.2:
+            return "C (Tight)"
+        elif bullet_ratio >= 1.0:
+            return "D (Very Tight)"
+        elif bullet_ratio >= 0.8:
+            return "E (Insufficient)"
+        else:
+            return "F (Critical Shortage)"
+
     def grade_wave(self, overkill_ratio: float) -> str:
         """Grade a wave based on overkill ratio"""
         if overkill_ratio >= 2.0:
@@ -294,6 +377,12 @@ class BalanceAnalyzer:
         # Check spawn pressure
         has_pressure, pressure_details = self.calculate_spawn_pressure(wave, starting_tier)
 
+        # Calculate bullet analysis
+        bullets_available, bullet_details_avail = self.calculate_bullets_available(wave, starting_tier)
+        bullets_needed, overkill_waste, bullet_details_need = self.calculate_bullets_needed(wave)
+        bullet_ratio = bullets_available / bullets_needed if bullets_needed > 0 else 0
+        bullet_grade = self.grade_bullet_ratio(bullet_ratio)
+
         overkill_ratio = damage_capacity / total_hp if total_hp > 0 else 0
 
         # Adjust grade if spawn pressure exists
@@ -307,6 +396,19 @@ class BalanceAnalyzer:
         if pressure_details:
             all_details += ["Spawn Pressure Analysis:"] + pressure_details
 
+        # Add bullet analysis details
+        all_details += [
+            "",
+            "Bullet Count Analysis:",
+            f"  Bullets Available: {bullets_available:,}",
+            f"  Bullets Needed: {bullets_needed:,}",
+            f"  Bullet Ratio: {bullet_ratio:.2f}x",
+            f"  Overkill Waste: {overkill_waste} damage",
+            f"  [BULLET GRADE]: {bullet_grade}"
+        ]
+        all_details += bullet_details_avail
+        all_details += bullet_details_need
+
         return WaveAnalysis(
             wave_id=wave['waveId'],
             wave_name=wave['waveName'],
@@ -317,12 +419,17 @@ class BalanceAnalyzer:
             damage_capacity=damage_capacity,
             overkill_ratio=overkill_ratio,
             grade=grade,
-            details=all_details
+            details=all_details,
+            bullets_available=bullets_available,
+            bullets_needed=bullets_needed,
+            bullet_ratio=bullet_ratio,
+            bullet_grade=bullet_grade,
+            overkill_waste=overkill_waste
         )
 
-    def analyze_chapter(self, chapter: Dict) -> List[WaveAnalysis]:
+    def analyze_chapter(self, chapter: Dict, starting_tier: int = 1) -> List[WaveAnalysis]:
         """Analyze all waves in a chapter"""
-        current_tier = 1  # Always start with tier 1 weapon
+        current_tier = starting_tier
         analyses = []
 
         for wave in chapter['waves']:
@@ -340,6 +447,9 @@ class BalanceAnalyzer:
         print("=" * 80)
         print()
 
+        # Track weapon tier across chapters for progressive mode
+        progressive_tier = 1
+
         for chapter in self.chapters:
             chapter_id = chapter['chapterId']
             chapter_name = chapter['chapterName']
@@ -348,7 +458,11 @@ class BalanceAnalyzer:
             print(f"[CHAPTER] {chapter_name} ({chapter_id})")
             print(f"{'=' * 80}")
 
-            analyses = self.analyze_chapter(chapter)
+            analyses = self.analyze_chapter(chapter, progressive_tier)
+
+            # Update progressive tier for next chapter
+            if analyses:
+                progressive_tier = analyses[-1].weapon_tier_end
 
             for analysis in analyses:
                 print(f"\n[WAVE {analysis.wave_id}] {analysis.wave_name}")
@@ -363,12 +477,21 @@ class BalanceAnalyzer:
                 print(f"   Overkill Ratio: {analysis.overkill_ratio:.2f}x")
                 print(f"   [GRADE]: {analysis.grade}")
 
-                # Show details for problem waves (overkill < 1.0 or spawn pressure)
-                show_details = analysis.overkill_ratio < 1.0 or "[Spawn Pressure!]" in analysis.grade
+                # Display bullet count metrics
+                print(f"   Bullets Available: {analysis.bullets_available:,}")
+                print(f"   Bullets Needed: {analysis.bullets_needed:,}")
+                print(f"   Bullet Ratio: {analysis.bullet_ratio:.2f}x")
+                print(f"   [BULLET GRADE]: {analysis.bullet_grade}")
+
+                # Show details for problem waves
+                show_details = analysis.overkill_ratio < 1.0 or "[Spawn Pressure!]" in analysis.grade or analysis.bullet_ratio < 1.3
 
                 if analysis.overkill_ratio < 1.0:
                     deficit = analysis.total_zomboid_hp - analysis.damage_capacity
                     print(f"   [WARNING]: {deficit:.0f} damage SHORT! Wave may be too hard!")
+
+                if analysis.bullet_ratio < 1.3:
+                    print(f"   [WARNING]: Bullet ratio below recommended 1.3x threshold!")
 
                 if show_details:
                     print("\n   Details:")
@@ -385,28 +508,49 @@ class BalanceAnalyzer:
             all_analyses.extend(self.analyze_chapter(chapter))
 
         grades = {}
+        bullet_grades = {}
         problem_waves = []
+        bullet_problems = []
 
         for analysis in all_analyses:
             grade_letter = analysis.grade.split()[0]
             grades[grade_letter] = grades.get(grade_letter, 0) + 1
+
+            bullet_grade_letter = analysis.bullet_grade.split()[0]
+            bullet_grades[bullet_grade_letter] = bullet_grades.get(bullet_grade_letter, 0) + 1
 
             if analysis.overkill_ratio < 1.0:
                 problem_waves.append(
                     f"  - {analysis.wave_name}: {analysis.overkill_ratio:.2f}x (needs {(1.0 - analysis.overkill_ratio) * 100:.0f}% more damage capacity)"
                 )
 
+            if analysis.bullet_ratio < 1.3:
+                bullet_problems.append(
+                    f"  - {analysis.wave_name}: {analysis.bullet_ratio:.2f}x (recommended: >=1.3x)"
+                )
+
         print(f"\nTotal Waves Analyzed: {len(all_analyses)}")
-        print("\nGrade Distribution:")
+        print("\nDPS Grade Distribution:")
         for grade in sorted(grades.keys()):
             print(f"  {grade}: {grades[grade]} waves")
 
+        print("\nBullet Count Grade Distribution:")
+        for grade in sorted(bullet_grades.keys()):
+            print(f"  {grade}: {bullet_grades[grade]} waves")
+
         if problem_waves:
-            print(f"\n[PROBLEM WAVES] ({len(problem_waves)} waves with overkill < 1.0):")
+            print(f"\n[PROBLEM WAVES - DPS] ({len(problem_waves)} waves with overkill < 1.0):")
             for wave in problem_waves:
                 print(wave)
         else:
-            print("\n[SUCCESS] No problem waves detected! All waves appear balanced.")
+            print("\n[SUCCESS - DPS] No problem waves detected! All waves appear balanced.")
+
+        if bullet_problems:
+            print(f"\n[PROBLEM WAVES - BULLETS] ({len(bullet_problems)} waves with bullet ratio < 1.3):")
+            for wave in bullet_problems:
+                print(wave)
+        else:
+            print("\n[SUCCESS - BULLETS] All waves meet the 1.3x bullet ratio threshold!")
 
         print("\n" + "=" * 80)
         print("END OF REPORT")

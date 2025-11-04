@@ -12,6 +12,9 @@ export interface ChapterProgress {
   playCount: number;
   firstCompletedDate: string | null;
   lastPlayedDate: string | null;
+  // Progressive campaign state
+  finalWeaponTier: number; // Weapon tier when chapter was completed
+  finalHeroCount: number; // Hero count when chapter was completed
 }
 
 export interface GameProgress {
@@ -94,6 +97,8 @@ export class ProgressManager {
         playCount: 0,
         firstCompletedDate: null,
         lastPlayedDate: null,
+        finalWeaponTier: 0,
+        finalHeroCount: 0,
       };
     }
     return this.progress.chapters[chapterId];
@@ -143,7 +148,8 @@ export class ProgressManager {
     score: number,
     completionTime: number,
     zomboidsKilled: number,
-    weaponTier: number
+    weaponTier: number,
+    heroCount: number = 1
   ): void {
     const progress = this.initChapterProgress(chapterId, true);
 
@@ -165,6 +171,10 @@ export class ProgressManager {
       progress.highestWeaponTier = weaponTier;
     }
 
+    // Save final state for progressive campaign
+    progress.finalWeaponTier = weaponTier;
+    progress.finalHeroCount = heroCount;
+
     // Mark as completed
     if (!progress.completed) {
       progress.completed = true;
@@ -180,7 +190,7 @@ export class ProgressManager {
 
     this.saveProgress();
 
-    console.log(`Chapter ${chapterId} completed! Progress saved.`);
+    console.log(`Chapter ${chapterId} completed! Progress saved. Final state: T${weaponTier}, ${heroCount} heroes`);
   }
 
   /**
@@ -229,5 +239,32 @@ export class ProgressManager {
     }
     // All completed or none unlocked, return first chapter
     return allChapters[0] || null;
+  }
+
+  /**
+   * Get starting state for a chapter (weapon tier and hero count)
+   * In progressive mode, uses the previous chapter's final state
+   */
+  getChapterStartingState(chapterId: string): { weaponTier: number; heroCount: number } {
+    // First chapter always starts with T1 and 1 hero
+    if (chapterId === 'chapter-01') {
+      return { weaponTier: 1, heroCount: 1 };
+    }
+
+    // Get previous chapter
+    const chapterNumber = parseInt(chapterId.split('-')[1]);
+    const previousChapterId = `chapter-${String(chapterNumber - 1).padStart(2, '0')}`;
+    const previousProgress = this.progress.chapters[previousChapterId];
+
+    // If previous chapter was completed, use its final state
+    if (previousProgress && previousProgress.completed) {
+      return {
+        weaponTier: previousProgress.finalWeaponTier || 1,
+        heroCount: previousProgress.finalHeroCount || 1,
+      };
+    }
+
+    // Otherwise start with defaults
+    return { weaponTier: 1, heroCount: 1 };
   }
 }

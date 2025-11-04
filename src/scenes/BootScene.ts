@@ -207,7 +207,7 @@ export class BootScene extends Phaser.Scene {
       'hero_remove',
       'weapon_upgrade',
       'wave_complete',
-      'game_over',
+      // 'game_over', // Disabled - was looping on death
     ];
 
     sfxKeys.forEach((key) => {
