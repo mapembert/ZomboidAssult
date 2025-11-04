@@ -19,7 +19,7 @@
           },
           {
             "type": "square_small",
-            "count": 10,
+            "count": 8,
             "spawnRate": 1.0,
             "columns": ["left"],
             "spawnDelay": 3
@@ -28,7 +28,7 @@
         "timers": [
           {
             "type": "hero_add_timer",
-            "spawnTime": 10,
+            "spawnTime": 8,
             "column": "right",
             "startValue": -20
           }
