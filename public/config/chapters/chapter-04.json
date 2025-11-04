@@ -7,221 +7,179 @@
     {
       "waveId": 1,
       "waveName": "Size Matters",
-      "duration": 32,
+      "duration": 30,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_small",
-            "count": 18,
-            "spawnRate": 1.2,
+            "count": 22,
+            "spawnRate": 1.3,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "basic_circle_medium",
-            "count": 8,
-            "spawnRate": 1.1,
+            "count": 18,
+            "spawnRate": 1.2,
             "columns": ["left", "right"],
-            "spawnDelay": 8
+            "spawnDelay": 4
           },
           {
             "type": "basic_circle_large",
-            "count": 6,
-            "spawnRate": 0.8,
+            "count": 12,
+            "spawnRate": 1.0,
             "columns": ["left", "right"],
-            "spawnDelay": 14
+            "spawnDelay": 8
           }
         ],
         "timers": [
           {
-            "type": "weapon_upgrade_timer",
-            "spawnTime": 6,
-            "column": "right",
-            "startValue": -25,
-            "resetHeroCount": true,
-            "weaponTier": 2
-          },
-          {
             "type": "hero_add_timer",
-            "spawnTime": 18,
-            "column": "left",
-            "startValue": -30
+            "spawnTime": 12,
+            "column": "right",
+            "startValue": -25
           }
         ]
       }
     },
     {
       "waveId": 2,
-      "waveName": "Left Heavy",
-      "duration": 35,
+      "waveName": "Large Threat",
+      "duration": 32,
       "spawnPattern": {
         "zomboids": [
           {
-            "type": "basic_circle_medium",
-            "count": 18,
-            "spawnRate": 1.3,
-            "columns": ["left"],
+            "type": "basic_circle_large",
+            "count": 20,
+            "spawnRate": 1.4,
+            "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
-            "type": "basic_circle_large",
-            "count": 14,
-            "spawnRate": 1.0,
-            "columns": ["left"],
-            "spawnDelay": 5
+            "type": "square_medium",
+            "count": 16,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
           },
           {
-            "type": "square_medium",
-            "count": 10,
-            "spawnRate": 1.1,
-            "columns": ["left"],
-            "spawnDelay": 10
+            "type": "hex_medium",
+            "count": 12,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
           }
         ],
         "timers": [
           {
             "type": "rapid_hero_timer",
-            "spawnTime": 5,
-            "column": "right",
-            "startValue": -25
-          },
-          {
-            "type": "weapon_upgrade_timer",
-            "spawnTime": 15,
-            "column": "right",
-            "startValue": -45,
-            "resetHeroCount": true,
-            "weaponTier": 3
+            "spawnTime": 8,
+            "column": "left",
+            "startValue": -30
           },
           {
             "type": "hero_add_timer",
-            "spawnTime": 25,
+            "spawnTime": 20,
             "column": "right",
-            "startValue": -35
+            "startValue": -25
           }
         ]
       }
     },
     {
       "waveId": 3,
-      "waveName": "Giant Hexagons",
-      "duration": 38,
-      "spawnPattern": {
-        "zomboids": [
-          {
-            "type": "square_medium",
-            "count": 15,
-            "spawnRate": 1.2,
-            "columns": ["left", "right"],
-            "spawnDelay": 0
-          },
-          {
-            "type": "hex_medium",
-            "count": 12,
-            "spawnRate": 1.1,
-            "columns": ["left", "right"],
-            "spawnDelay": 6
-          },
-          {
-            "type": "basic_circle_large",
-            "count": 10,
-            "spawnRate": 1.0,
-            "columns": ["left", "right"],
-            "spawnDelay": 12
-          },
-          {
-            "type": "hex_large",
-            "count": 6,
-            "spawnRate": 0.8,
-            "columns": ["left", "right"],
-            "spawnDelay": 18
-          }
-        ],
-        "timers": [
-          {
-            "type": "weapon_upgrade_timer",
-            "spawnTime": 8,
-            "column": "left",
-            "startValue": -40,
-            "resetHeroCount": true,
-            "weaponTier": 4
-          },
-          {
-            "type": "hero_add_timer",
-            "spawnTime": 20,
-            "column": "right",
-            "startValue": -38
-          },
-          {
-            "type": "rapid_hero_timer",
-            "spawnTime": 28,
-            "column": "left",
-            "startValue": -28
-          }
-        ]
-      }
-    },
-    {
-      "waveId": 4,
-      "waveName": "Tank Battalion",
-      "duration": 42,
+      "waveName": "Upgrade Time",
+      "duration": 35,
       "spawnPattern": {
         "zomboids": [
           {
             "type": "basic_circle_large",
-            "count": 16,
+            "count": 18,
             "spawnRate": 1.3,
             "columns": ["left", "right"],
             "spawnDelay": 0
           },
           {
             "type": "square_medium",
-            "count": 14,
+            "count": 16,
             "spawnRate": 1.2,
             "columns": ["left", "right"],
-            "spawnDelay": 6
+            "spawnDelay": 4
           },
           {
             "type": "hex_medium",
-            "count": 12,
+            "count": 14,
             "spawnRate": 1.1,
             "columns": ["left", "right"],
-            "spawnDelay": 12
+            "spawnDelay": 8
           },
           {
             "type": "hex_large",
             "count": 10,
             "spawnRate": 0.9,
             "columns": ["left", "right"],
-            "spawnDelay": 18
+            "spawnDelay": 12
+          }
+        ],
+        "timers": [
+          {
+            "type": "weapon_upgrade_timer",
+            "spawnTime": 10,
+            "column": "left",
+            "startValue": -45,
+            "resetHeroCount": true,
+            "weaponTier": 4
+          }
+        ]
+      }
+    },
+    {
+      "waveId": 4,
+      "waveName": "Tank Test",
+      "duration": 38,
+      "spawnPattern": {
+        "zomboids": [
+          {
+            "type": "basic_circle_large",
+            "count": 20,
+            "spawnRate": 1.4,
+            "columns": ["left", "right"],
+            "spawnDelay": 0
+          },
+          {
+            "type": "square_medium",
+            "count": 18,
+            "spawnRate": 1.3,
+            "columns": ["left", "right"],
+            "spawnDelay": 4
+          },
+          {
+            "type": "hex_medium",
+            "count": 16,
+            "spawnRate": 1.2,
+            "columns": ["left", "right"],
+            "spawnDelay": 8
+          },
+          {
+            "type": "hex_large",
+            "count": 14,
+            "spawnRate": 1.0,
+            "columns": ["left", "right"],
+            "spawnDelay": 12
           }
         ],
         "timers": [
           {
             "type": "rapid_hero_timer",
-            "spawnTime": 6,
+            "spawnTime": 8,
             "column": "right",
-            "startValue": -24
-          },
-          {
-            "type": "weapon_upgrade_timer",
-            "spawnTime": 14,
-            "column": "left",
-            "startValue": -50,
-            "resetHeroCount": true,
-            "weaponTier": 5
+            "startValue": -30
           },
           {
             "type": "hero_add_timer",
-            "spawnTime": 24,
-            "column": "right",
-            "startValue": -45
-          },
-          {
-            "type": "rapid_hero_timer",
-            "spawnTime": 32,
+            "spawnTime": 22,
             "column": "left",
-            "startValue": -30
+            "startValue": -25
           }
         ]
       }
