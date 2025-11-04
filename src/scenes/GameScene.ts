@@ -737,7 +737,8 @@ export class GameScene extends Phaser.Scene {
     console.log('Game Over! Zomboid reached the bottom.');
 
     // Play game over sound (once, not looping)
-    this.audioManager?.playSFX('game_over', { volume: 0.7, loop: false });
+    // Disabled - sound was looping/causing issues
+    // this.audioManager?.playSFX('game_over', { volume: 0.7, loop: false });
 
     // Transition to GameOverScene with score and wave data
     this.scene.start('GameOverScene', {
