@@ -32,7 +32,7 @@
       "heroRemove": "assets/audio/sfx/hero_remove.mp3",
       "weaponUpgrade": "assets/audio/sfx/weapon_upgrade.mp3",
       "waveComplete": "assets/audio/sfx/wave_complete.mp3",
-      "gameOver": "assets/audio/sfx/game_over.mp3"
+      "gameOver": ""
     }
   },
   "debug": {

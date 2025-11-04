@@ -102,8 +102,16 @@ export class GameScene extends Phaser.Scene {
       this.safeZoneHeight = gameSettings.gameplay.safeZoneHeight || 150;
     }
 
+    // Get starting state for progressive campaign
+    const progressManager = ProgressManager.getInstance();
+    const startingState = this.currentChapter
+      ? progressManager.getChapterStartingState(this.currentChapter.chapterId)
+      : { weaponTier: 1, heroCount: 1 };
+
+    console.log(`GameScene: Starting chapter ${this.currentChapter?.chapterId} with Tier ${startingState.weaponTier}, ${startingState.heroCount} heroes`);
+
     if (heroConfig && gameSettings) {
-      this.heroManager = new HeroManager(this, heroConfig, gameSettings);
+      this.heroManager = new HeroManager(this, heroConfig, gameSettings, startingState.heroCount);
 
       // Initialize InputManager with column count and boundary padding
       const columnCount = 12; // Always 12 columns for movement
@@ -112,7 +120,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (weaponTypes && weaponTypes.length > 0) {
-      this.weaponSystem = new WeaponSystem(this, weaponTypes);
+      this.weaponSystem = new WeaponSystem(this, weaponTypes, startingState.weaponTier);
     }
 
     // Initialize WaveManager (requires heroManager for snap positions)
@@ -832,6 +840,9 @@ export class GameScene extends Phaser.Scene {
       this.waveCompleteOverlay = null;
     }
 
+    // Get current hero count for progressive campaign
+    const heroCount = this.heroManager?.getHeroCount() || 1;
+
     // Transition to ChapterCompleteScene with statistics
     this.scene.start('ChapterCompleteScene', {
       chapter: this.currentChapter,
@@ -839,6 +850,7 @@ export class GameScene extends Phaser.Scene {
       completionTime,
       zomboidsKilled: this.totalZomboidsKilled,
       weaponTier,
+      heroCount,
     });
   }
 

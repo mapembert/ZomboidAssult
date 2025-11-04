@@ -15,6 +15,7 @@ export class ChapterCompleteScene extends Phaser.Scene {
   private completionTime: number = 0;
   private zomboidsKilled: number = 0;
   private weaponTier: number = 0;
+  private heroCount: number = 0;
   private audioManager: AudioManager | null = null;
 
   constructor() {
@@ -27,14 +28,16 @@ export class ChapterCompleteScene extends Phaser.Scene {
     completionTime: number;
     zomboidsKilled: number;
     weaponTier: number;
+    heroCount: number;
   }): void {
     this.chapter = data.chapter;
     this.score = data.score || 0;
     this.completionTime = data.completionTime || 0;
     this.zomboidsKilled = data.zomboidsKilled || 0;
     this.weaponTier = data.weaponTier || 0;
+    this.heroCount = data.heroCount || 1;
 
-    // Save progress
+    // Save progress (including final state for progressive campaign)
     if (this.chapter) {
       const progressManager = ProgressManager.getInstance();
       progressManager.onChapterComplete(
@@ -42,7 +45,8 @@ export class ChapterCompleteScene extends Phaser.Scene {
         this.score,
         this.completionTime,
         this.zomboidsKilled,
-        this.weaponTier
+        this.weaponTier,
+        this.heroCount
       );
     }
   }

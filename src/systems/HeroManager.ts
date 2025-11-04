@@ -19,20 +19,20 @@ export class HeroManager {
   private snapPositions: number[] = []; // Calculated snap positions
   private currentSnapIndex: number = 0; // Current snap position index (0-11)
 
-  constructor(scene: Phaser.Scene, config: HeroConfig, gameSettings: GameSettings) {
+  constructor(scene: Phaser.Scene, config: HeroConfig, gameSettings: GameSettings, startingHeroCount?: number) {
     this.scene = scene;
     this.config = config;
     this.gameSettings = gameSettings;
     this.heroes = [];
-    
+
     // Initialize continuous movement system
     const screenWidth = gameSettings.gameSettings.screenWidth;
     const padding = gameSettings.gameplay.movementBoundaryPadding || 60;
-    
+
     // Calculate movement boundaries
     this.minX = padding;
     this.maxX = screenWidth - padding;
-    
+
     // Calculate 12 snap positions evenly distributed across the screen
     this.calculateSnapPositions(screenWidth, padding);
 
@@ -44,8 +44,9 @@ export class HeroManager {
     this.targetX = this.currentX;
     this.velocityX = 0;
 
-    // Create initial heroes
-    const initialCount = config.heroConfig.defaultHeroCount;
+    // Create initial heroes (use starting count from progressive mode or default)
+    const initialCount = startingHeroCount ?? config.heroConfig.defaultHeroCount;
+    console.log(`HeroManager: Starting with ${initialCount} heroes`);
     for (let i = 0; i < initialCount; i++) {
       this.createHero();
     }
