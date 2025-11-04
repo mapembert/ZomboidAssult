@@ -427,9 +427,9 @@ class BalanceAnalyzer:
             overkill_waste=overkill_waste
         )
 
-    def analyze_chapter(self, chapter: Dict) -> List[WaveAnalysis]:
+    def analyze_chapter(self, chapter: Dict, starting_tier: int = 1) -> List[WaveAnalysis]:
         """Analyze all waves in a chapter"""
-        current_tier = 1  # Always start with tier 1 weapon
+        current_tier = starting_tier
         analyses = []
 
         for wave in chapter['waves']:
@@ -447,6 +447,9 @@ class BalanceAnalyzer:
         print("=" * 80)
         print()
 
+        # Track weapon tier across chapters for progressive mode
+        progressive_tier = 1
+
         for chapter in self.chapters:
             chapter_id = chapter['chapterId']
             chapter_name = chapter['chapterName']
@@ -455,7 +458,11 @@ class BalanceAnalyzer:
             print(f"[CHAPTER] {chapter_name} ({chapter_id})")
             print(f"{'=' * 80}")
 
-            analyses = self.analyze_chapter(chapter)
+            analyses = self.analyze_chapter(chapter, progressive_tier)
+
+            # Update progressive tier for next chapter
+            if analyses:
+                progressive_tier = analyses[-1].weapon_tier_end
 
             for analysis in analyses:
                 print(f"\n[WAVE {analysis.wave_id}] {analysis.wave_name}")
